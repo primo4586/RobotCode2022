@@ -6,16 +6,27 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Shooter;
 
-public class ManualFeeder extends CommandBase {
-  /** Creates a new ManualFeeder. */
+public class ManualShoot extends CommandBase {
+  /** Creates a new ManualShoot. */
+
   private Feeder feeder;
-  private double feederSpeed;
+  private Shooter shooter;
 
-  public ManualFeeder(Feeder feeder, Double feederSpeed) {
+  private double feederSpeed;
+  private double shooterSpeed;
+
+
+  public ManualShoot(Feeder feeder,Shooter shooter,double feederSpeed, double shooterSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.feeder = feeder;
+    this.shooter = shooter;
+
     this.feederSpeed = feederSpeed;
+    this. shooterSpeed = shooterSpeed;
+
+    addRequirements(shooter);
     addRequirements(feeder);
   }
 
@@ -27,11 +38,13 @@ public class ManualFeeder extends CommandBase {
   @Override
   public void execute() {
     feeder.setSpeed(feederSpeed);
+    shooter.setSpeed(shooterSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooter.setSpeed(0);
     feeder.setSpeed(0);
   }
 
