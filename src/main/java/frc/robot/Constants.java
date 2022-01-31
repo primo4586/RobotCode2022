@@ -25,6 +25,9 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
  */
 public final class Constants {
 
+    public static final class ShooterConstants{
+        public static final int ShooterPort = 0;
+    }
     public static final class DriverConstants {
         public static final PIDConfig L_CONFIG = new PIDConfig(1, 0, 0, 0);
         public static final PIDConfig R_CONFIG = new PIDConfig(1, 0, 0, 0);
