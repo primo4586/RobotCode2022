@@ -2,38 +2,41 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.IntakeCommands;
+package frc.robot.commands.ClimbCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Climb;
 
-public class ManualRoller extends CommandBase {
-  /** Creates a new ManualRoller. */
-  private Intake intake;
- 
- 
-  public ManualRoller(Intake intake) {
+public class ManualRotateChain extends CommandBase {
+  /** Creates a new ManualRotateChain. */
+  private Climb climb;
+  private boolean isOk;
+  
+  public ManualRotateChain(Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.intake = intake;
+    this.climb = climb;
 
-    addRequirements(intake);
+    addRequirements(climb);
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    this.isOk = climb.isHang();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.intake.setRollerSpeed(Constants.IntakeConstants.rollerSpeed);
+    if(isOk){
+      this.climb.setSpeed(Constants.ClimbConstants.motorSpeed);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.intake.setRollerSpeed(0);
+    this.climb.setSpeed(0);
   }
 
   // Returns true when the command should end.

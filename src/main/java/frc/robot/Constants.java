@@ -30,6 +30,7 @@ public final class Constants {
         public static final int FeederPort = 0;
 
     }
+
     public static final class DriverConstants {
         public static final int leftLeaderPort = 0;
         public static final int rightLeaderPort = 0;
@@ -43,6 +44,74 @@ public final class Constants {
         // Limiter for arcade drive.
         public static final double DRIVE_LIMITER = 0.7;
     }
+
+    public static final class ClimbConstants{
+        public static final double motorSpeed = 0;
+    }
+
+    public static final class IntakeConstants{
+        public static final double rollerSpeed = 0;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static final class AutoConstants {
 

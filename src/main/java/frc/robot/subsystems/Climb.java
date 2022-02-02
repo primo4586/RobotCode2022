@@ -4,23 +4,25 @@
 
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class Climb extends SubsystemBase {
 
   private WPI_TalonFX m_climb;
-  private DoubleSolenoid p_right;
-  private DoubleSolenoid p_left;
+  private Solenoid p_level2;
+  private Solenoid p_level3;
+
+  //we neeed to add 4 sensors for knowing when the claw is closed and
+  // it is ok to move to the next level
   
   public Climb() 
   {
     this.m_climb = new WPI_TalonFX(0);
 
-    this.p_right = new DoubleSolenoid(null, 1,2);
-    this.p_left = new DoubleSolenoid(null, 1,2);
+    this.p_level2 = new Solenoid(0,null,1);
+    this.p_level3 = new Solenoid(0,null, 1);
   }
 
   public void setSpeed(double Speed)
@@ -33,76 +35,42 @@ public class Climb extends SubsystemBase {
     return m_climb.get();
   }
 
-  public void setRightPistonValue(int pValue)
+  public void setSolenoidLevel2State(boolean state)
   {
-    //0: k0ff -1:kReverse 1:kForward
-
-    switch(pValue){
-      case 0:
-        p_right.set(Value.kOff);
-        break;
-      case -1:
-        p_right.set(Value.kReverse);
-        break;
-      case 1:
-        p_right.set(Value.kForward);
-        break;
-    }
+    this.p_level2.set(state);
   }
 
-  public void setLeftPistonValue(int pValue)
+  public void setSolenoidLevel3State(boolean state)
   {
-    //0: k0ff -1:kReverse 1:kForward
-
-    switch(pValue){
-      case 0:
-        p_left.set(Value.kOff);
-        break;
-      case -1:
-        p_left.set(Value.kReverse);
-        break;
-      case 1:
-        p_left.set(Value.kForward);
-        break;
-    }
+    this.p_level3.set(state);
   }
 
-  public int getRightPistonValue()
-  {
-   //0: k0ff -1:kReverse 1:kForward
-
-    Value value = p_right.get();
-
-    switch(value){
-      case kReverse:
-        return -1;
-      case kOff:
-        return 0;
-    }
-
-    return 1;
+  public boolean isSolenoidLevel2Open(){
+    return this.p_level2.get();
   }
-
-  public int getLeftPistonValue()
-  {
-   //0: k0ff -1:kReverse 1:kForward
-
-    Value value = p_left.get();
-
-    switch(value){
-      case kReverse:
-        return -1;
-      case kOff:
-        return 0;
-    }
-
-    return 1;
-  }
-
-
-
-
   
+  public boolean isSolenoidLevel3Open(){
+    return this.p_level3.get();
+  }
+
+  public boolean islevel2Secure(){
+    //just for now untill we will know better
+    return true;
+  }
+
+  public boolean islevel3Secure(){
+    //just for now untill we will know better
+    return true;
+  }
+
+  public boolean islevel4Secure(){
+    //just for now untill we will know better
+    return true;
+  }
+
+  public boolean isHang(){
+    return islevel2Secure() || islevel3Secure() ||islevel4Secure();
+  }
 
   @Override
   public void periodic() {
