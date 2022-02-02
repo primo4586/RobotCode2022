@@ -29,8 +29,14 @@ public final class Constants {
         public static final int ShooterPort = 0;
     }
     public static final class DriverConstants {
+        public static final int leftLeaderPort = 0;
+        public static final int rightLeaderPort = 0;
+        public static final int leftFollowerPort = 0;
+        public static final int rightFollowerPort = 0;
+        public static final double METER_PER_TICK = 0.0001558524480;
         public static final PIDConfig L_CONFIG = new PIDConfig(1, 0, 0, 0);
         public static final PIDConfig R_CONFIG = new PIDConfig(1, 0, 0, 0);
+
 
         // Limiter for arcade drive.
         public static final double DRIVE_LIMITER = 0.7;

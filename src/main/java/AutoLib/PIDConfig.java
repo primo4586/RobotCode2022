@@ -29,7 +29,7 @@ public class PIDConfig implements Sendable {
         builder.addDoubleProperty("Kd", this::getKd, this::setKd);
         builder.addDoubleProperty("Kf", this::getKf, this::setKf);
     }
-
+    
     public double getKp(){return this.Kp;}
     public double getKi(){return this.Ki;}
     public double getKd(){return this.Kd;}
