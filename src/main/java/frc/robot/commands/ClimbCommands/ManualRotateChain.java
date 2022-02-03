@@ -4,6 +4,8 @@
 
 package frc.robot.commands.ClimbCommands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climb;
@@ -12,10 +14,12 @@ public class ManualRotateChain extends CommandBase {
   /** Creates a new ManualRotateChain. */
   private Climb climb;
   private boolean isOk;
+  private DoubleSupplier speed;
   
-  public ManualRotateChain(Climb climb) {
+  public ManualRotateChain(Climb climb, DoubleSupplier speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.climb = climb;
+    this.speed= speed;
 
     addRequirements(climb);
   }
@@ -29,7 +33,7 @@ public class ManualRotateChain extends CommandBase {
   @Override
   public void execute() {
     if(isOk){
-      this.climb.setSpeed(Constants.ClimbConstants.motorSpeed);
+      this.climb.setSpeed(speed.getAsDouble());
     }
   }
 
