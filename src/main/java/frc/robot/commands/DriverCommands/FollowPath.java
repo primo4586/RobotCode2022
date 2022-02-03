@@ -43,7 +43,7 @@ public class FollowPath extends CommandBase {
   @Override
   public void initialize() {
     if(setOdometry) {
-      driver.getOdometry().resetOdmetry(trajectory.getInitialPose());
+      // driver.getOdometry().resetOdmetry(trajectory.getInitialPose());
     } 
     timer.reset();
     timer.start();
@@ -58,11 +58,11 @@ public class FollowPath extends CommandBase {
     Trajectory.State goal = trajectory.sample(timer.get()); // Gets the state we want to get to in a specific point of time
     
     // Calculates the linear and angular speeds needed to get from the current robot position, to the position we want to get to
-    ChassisSpeeds speeds = controller.calculate(driver.getPose2d(), goal); 
+    // ChassisSpeeds speeds = controller.calculate(driver.getPose2d(), goal); 
 
     // Translates the speeds to left/right motor speeds
-    DifferentialDriveWheelSpeeds wheelSpeeds = Constants.AutoConstants.KINEMATICS.toWheelSpeeds(speeds);
-    driver.driveVelocity(wheelSpeeds.rightMetersPerSecond, wheelSpeeds.leftMetersPerSecond);
+    // DifferentialDriveWheelSpeeds wheelSpeeds = Constants.AutoConstants.KINEMATICS.toWheelSpeeds(speeds);
+    // driver.driveVelocity(wheelSpeeds.rightMetersPerSecond, wheelSpeeds.leftMetersPerSecond);
   }
 
   // Called once the command ends or is interrupted.

@@ -1,8 +1,8 @@
 package AutoLib;
 
-import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 
 public class PIDConfig implements Sendable {
 
@@ -39,4 +39,5 @@ public class PIDConfig implements Sendable {
     public void setKi(double Ki){this.Ki = Ki;}
     public void setKd(double Kd){this.Kd = Kd;}
     public void setKf(double Kf){this.Kf = Kf;}
+
 }

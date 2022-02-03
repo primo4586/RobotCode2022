@@ -28,7 +28,8 @@ public final class Constants {
     public static final class ShooterConstants{
         public static final int ShooterPort = 0;
         public static final int FeederPort = 0;
-
+        public static final double FeederSpeed = 20;
+        public static final double ShooterSpeed = 20;
     }
 
     public static final class DriverConstants {
