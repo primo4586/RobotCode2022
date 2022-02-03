@@ -11,10 +11,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ClimbCommands.ManualMoveNextLevel;
 import frc.robot.commands.ClimbCommands.ManualRotateChain;
+import frc.robot.commands.IntakeCommands.ManualJoint;
+import frc.robot.commands.IntakeCommands.ManualRoller;
 import frc.robot.subsystems.Climb;
 import frc.robot.commands.ShooterCommands.ManualFeeder;
 import frc.robot.commands.ShooterCommands.ManualShooter;
 import frc.robot.subsystems.Driver;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -28,6 +31,9 @@ public class RobotContainer {
   private Joystick joystick; 
   private JoystickButton B_OPERATOR;
   private JoystickButton X_OPERATOR;
+  private JoystickButton A_Opperator;
+  private Intake intake;
+  private JoystickButton RB_Driver;
 
   //subsystem
   private Climb climb;
@@ -40,6 +46,8 @@ public class RobotContainer {
     this.joystick = new Joystick(0);
     //build subsystems
     this.climb = new Climb(); 
+    this.intake = new Intake();
+    this.shooter = new Shooter();
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -55,6 +63,8 @@ public class RobotContainer {
     this.bButton.whileHeld(new ManualShooter(shooter,Constants.ShooterConstants.ShooterSpeed));
     B_OPERATOR.whenPressed(new ManualMoveNextLevel(climb, 3));
     X_OPERATOR.whenPressed(new ManualMoveNextLevel(climb, 2));
+    RB_Driver.whileHeld(new ManualRoller(intake));
+    A_Opperator.whenPressed(new ManualJoint(intake));
     climb.setDefaultCommand(new ManualRotateChain(climb, () -> joystick.getRawAxis(XboxController.Axis.kRightX.value)));
   }
 
