@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ClimbCommands.ManualMoveNextLevel;
 import frc.robot.commands.ClimbCommands.ManualRotateChain;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
+import frc.robot.commands.IntakeCommands.JointAndRoller;
 import frc.robot.commands.IntakeCommands.ManualJoint;
 import frc.robot.commands.IntakeCommands.ManualRoller;
 import frc.robot.subsystems.Climb;
@@ -40,8 +41,6 @@ public class RobotContainer {
   //private JoystickButton RT_Driver; //boost
   //private JoystickButton LT_Driver; //slow
 
- 
-
   //operator buttons:
   private JoystickButton B_Operator; //claw level 2;
   private JoystickButton X_Operator; //claw level 3;
@@ -67,13 +66,13 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     
-    
+
     this.A_Driver.whileHeld(new ManualFeeder(shooter,Constants.ShooterConstants.FeederSpeed));
     this.B_Driver.whileHeld(new ManualShooter(shooter,Constants.ShooterConstants.ShooterSpeed));
     B_Operator.whenPressed(new ManualMoveNextLevel(climb, 3));
     X_Operator.whenPressed(new ManualMoveNextLevel(climb, 2));
     
-    //RB_Driver.whileHeld(new ManualRoller(intake));
+    RB_Driver.whileHeld(new JointAndRoller(intake));
     climb.setDefaultCommand(new ManualRotateChain(climb, () -> o_joystick.getRawAxis(XboxController.Axis.kRightX.value)));
     driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(XboxController.Axis.kRightY.value) ,() -> d_joystick.getRawAxis(XboxController.Axis.kLeftX.value)));
   
