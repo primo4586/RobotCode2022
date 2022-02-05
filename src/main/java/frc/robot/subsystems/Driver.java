@@ -27,6 +27,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     private WPI_TalonFX m_leftFollower;
     private WPI_TalonFX m_rightLeader;
     private WPI_TalonFX m_rightFollower;
+    
   
     // for the controllers to work togther:
     private MotorControllerGroup rightGroup;
@@ -35,6 +36,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
     //sensors
     private PigeonIMU gyro;
+    private WPI_TalonSRX gyroTalon;
     
     //shufelboard insert and get - object
     private PrimoTab tab;
@@ -47,7 +49,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
       public PrimoDifferentialDriveOdometry primoOdometry;
 
 
-  public Driver(WPI_TalonSRX gyroTalon) {
+  public Driver() {
     /*
       Create new objects for motors, sensors
     */
@@ -61,6 +63,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
    
     this.diffDrive = new DifferentialDrive(leftGroup, rightGroup);
 
+    this.gyroTalon = new WPI_TalonSRX(Constants.DriverConstants.gyroPorts);
     this.gyro = new PigeonIMU(gyroTalon);
     this.gyro.configFactoryDefault();
     
