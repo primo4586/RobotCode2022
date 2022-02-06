@@ -16,7 +16,7 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
   this.m_roller = new WPI_TalonSRX(0);
-  this.p_joint = new Solenoid(0, null, 0); //?
+  // this.p_joint = new Solenoid(0, null, 0); //?
 
   }
 

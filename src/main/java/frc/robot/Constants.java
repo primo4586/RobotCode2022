@@ -34,10 +34,10 @@ public final class Constants {
 
     public static final class DriverConstants {
         //motor ports:
-        public static final int leftLeaderPort = 0;
+        public static final int leftLeaderPort = 2;
         public static final int rightLeaderPort = 0;
-        public static final int leftFollowerPort = 0;
-        public static final int rightFollowerPort = 0;
+        public static final int leftFollowerPort = 1;
+        public static final int rightFollowerPort = 3;
 
         //pid?
         public static final double METER_PER_TICK = 0.0001558524480;
@@ -47,7 +47,7 @@ public final class Constants {
         //sensors:
         public static final int gyroPorts = 0;
 
-        
+
         // Limiter for arcade drive.
         public static final double DRIVE_LIMITER = 0.7;
     }

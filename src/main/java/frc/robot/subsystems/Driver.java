@@ -60,13 +60,16 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
    
     this.leftGroup = new MotorControllerGroup(m_leftLeader, m_leftFollower);
     this.rightGroup = new MotorControllerGroup(m_rightLeader, m_rightFollower);
+
+    this.leftGroup.setInverted(true);
+    this.rightGroup.setInverted(true);
    
     this.diffDrive = new DifferentialDrive(leftGroup, rightGroup);
+
 
     this.gyroTalon = new WPI_TalonSRX(Constants.DriverConstants.gyroPorts);
     this.gyro = new PigeonIMU(gyroTalon);
     this.gyro.configFactoryDefault();
-    
 
     this.tab = new PrimoTab("Driver");
     this.gyroAngleEntry = tab.addEntry("gyro angle");

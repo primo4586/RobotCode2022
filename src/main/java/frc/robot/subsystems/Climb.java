@@ -21,8 +21,8 @@ public class Climb extends SubsystemBase {
   {
     this.m_climb = new WPI_TalonFX(0);
 
-    this.p_level2 = new Solenoid(0,null,1);
-    this.p_level3 = new Solenoid(0,null, 1);
+    // this.p_level2 = new Solenoid(0,null,1);
+    // this.p_level3 = new Solenoid(0,null, 1);
   }
 
   public void setSpeed(double Speed)

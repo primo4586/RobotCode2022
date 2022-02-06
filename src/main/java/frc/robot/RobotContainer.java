@@ -41,6 +41,7 @@ public class RobotContainer {
   //private JoystickButton RT_Driver; //boost
   //private JoystickButton LT_Driver; //slow
 
+
   //operator buttons:
   private JoystickButton B_Operator; //claw level 2;
   private JoystickButton X_Operator; //claw level 3;
@@ -74,7 +75,7 @@ public class RobotContainer {
     
     RB_Driver.whileHeld(new JointAndRoller(intake));
     climb.setDefaultCommand(new ManualRotateChain(climb, () -> o_joystick.getRawAxis(XboxController.Axis.kRightX.value)));
-    driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(XboxController.Axis.kRightY.value) ,() -> d_joystick.getRawAxis(XboxController.Axis.kLeftX.value)));
+    driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(4) ,() -> d_joystick.getRawAxis(1)));
   
   }
 
@@ -90,8 +91,8 @@ public class RobotContainer {
     this.A_Driver = new JoystickButton(d_joystick, XboxController.Button.kA.value);
     this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
     
-    this.B_Operator = new JoystickButton(o_joystick, 0);
-    this.X_Operator = new JoystickButton(o_joystick, 0); 
+    this.B_Operator = new JoystickButton(o_joystick, 1);
+    this.X_Operator = new JoystickButton(o_joystick, 1); 
   }
 
   /**
