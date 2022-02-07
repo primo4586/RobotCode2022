@@ -67,7 +67,6 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     
-
     this.A_Driver.whileHeld(new ManualFeeder(shooter,Constants.ShooterConstants.FeederSpeed));
     this.B_Driver.whileHeld(new ManualShooter(shooter,Constants.ShooterConstants.ShooterSpeed));
     B_Operator.whenPressed(new ManualMoveNextLevel(climb, 3));

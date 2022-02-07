@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import autonomous.DifferentialDriveData;
 import autonomous.PIDConfig;
@@ -71,16 +72,17 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     this.gyro = new PigeonIMU(gyroTalon);
     this.gyro.configFactoryDefault();
 
-    this.tab = new PrimoTab("Driver");
-    this.gyroAngleEntry = tab.addEntry("gyro angle");
+    this.tab = PrimoShuffleboard.getPrimoTab("Driver");
+
+    this.gyroAngleEntry = tab.addEntry("Gyro angle (yaw)");
     this.xEntry = tab.addEntry("X position");
     this.yEntry = tab.addEntry("Y position");
 
-    this.leftPos = tab.addEntry("left position meters");
-    this.rightPos = tab.addEntry("right position meters");
+    this.leftPos = tab.addEntry("Left pos. meters");
+    this.rightPos = tab.addEntry("Right pos. meters");
 
-    this.leftVelocityEntry = tab.addEntry("left velocity");
-    this.rightVelocityEntry = tab.addEntry("right velocity");
+    this.leftVelocityEntry = tab.addEntry("Left velocity");
+    this.rightVelocityEntry = tab.addEntry("Right velocity");
 
 
     this.rightConfig = new PIDConfig(0, 0, 0, 0);
@@ -128,6 +130,12 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    // Debug Info, general subsystem info we might need
+    leftVelocityEntry.setNumber(getLeftVelocity());
+    rightVelocityEntry.setNumber(getRightVelocity());
+    rightPos.setNumber(getRightPositionInMeters());
+    leftPos.setNumber(getLeftPositionInMeters());    
   }
 
   @Override

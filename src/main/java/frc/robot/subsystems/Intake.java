@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import PrimoLib.PrimoShuffleboard;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -16,7 +18,7 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
   this.m_roller = new WPI_TalonSRX(0);
-  // this.p_joint = new Solenoid(0, null, 0); //?
+  // this.p_joint = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0); //Commented because solenoids aren't installed yet
 
   }
 
