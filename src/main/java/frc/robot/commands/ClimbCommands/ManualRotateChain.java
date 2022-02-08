@@ -7,7 +7,6 @@ package frc.robot.commands.ClimbCommands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Climb;
 
 public class ManualRotateChain extends CommandBase {
