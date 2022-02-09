@@ -72,7 +72,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     this.gyro = new PigeonIMU(gyroTalon);
     this.gyro.configFactoryDefault();
 
-    this.tab = PrimoShuffleboard.getPrimoTab("Driver");
+    this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Driver");
 
     this.gyroAngleEntry = tab.addEntry("Gyro angle (yaw)");
     this.xEntry = tab.addEntry("X position");
