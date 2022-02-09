@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 public class PrimoShuffleboard {
     
     private Map<String,PrimoTab> tabs;
-    private PrimoShuffleboard instance;
+    private static PrimoShuffleboard instance;
     private PrimoShuffleboard(){
         tabs = new HashMap<>();
     }
 
-    public PrimoShuffleboard getInstance(){
+    public static PrimoShuffleboard getInstance(){
         if (instance == null)
             instance = new PrimoShuffleboard();
         return instance;

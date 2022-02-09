@@ -80,7 +80,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
     this.leftPos = tab.addEntry("Left pos. meters");
     this.rightPos = tab.addEntry("Right pos. meters");
-
     this.leftVelocityEntry = tab.addEntry("Left velocity");
     this.rightVelocityEntry = tab.addEntry("Right velocity");
 
