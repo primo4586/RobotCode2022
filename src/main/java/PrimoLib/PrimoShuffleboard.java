@@ -24,7 +24,7 @@ public class PrimoShuffleboard {
             return tabs.get(tabName);
         
         PrimoTab tab = new PrimoTab(tabName);
-        tabs.put(tabName, new PrimoTab(tabName)); 
+        tabs.put(tabName, tab); 
         return tab;
     }
 
