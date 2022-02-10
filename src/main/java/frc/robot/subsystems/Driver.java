@@ -41,7 +41,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     //shufelboard insert and get - object
     private PrimoTab tab;
       //all the values we want to be in the shufelboard:
-      public NetworkTableEntry gyroAngleEntry, xEntry, yEntry, leftPos, rightPos, leftVelocityEntry, rightVelocityEntry;
+      // public NetworkTableEntry gyroAngleEntry, xEntry, yEntry, leftPos, rightPos, leftVelocityEntry, rightVelocityEntry;
       
 
     private boolean isForward;
@@ -63,8 +63,8 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     this.leftGroup = new MotorControllerGroup(m_leftLeader, m_leftFollower);
     this.rightGroup = new MotorControllerGroup(m_rightLeader, m_rightFollower);
 
-    //this.leftGroup.setInverted(true);
-    //this.rightGroup.setInverted(true);
+    this.leftGroup.setInverted(true);
+    this.rightGroup.setInverted(false);
    
     this.diffDrive = new DifferentialDrive(leftGroup, rightGroup);
 
@@ -76,14 +76,14 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Driver");
 
-    this.gyroAngleEntry = tab.addEntry("Gyro angle (yaw)");
-    this.xEntry = tab.addEntry("X position");
-    this.yEntry = tab.addEntry("Y position");
+    // this.gyroAngleEntry = tab.addEntry("Gyro angle (yaw)");
+    // this.xEntry = tab.addEntry("X position");
+    // this.yEntry = tab.addEntry("Y position");
 
-    this.leftPos = tab.addEntry("Left pos. meters");
-    this.rightPos = tab.addEntry("Right pos. meters");
-    this.leftVelocityEntry = tab.addEntry("Left velocity");
-    this.rightVelocityEntry = tab.addEntry("Right velocity");
+    // this.leftPos = tab.addEntry("Left pos. meters");
+    // this.rightPos = tab.addEntry("Right pos. meters");
+    // this.leftVelocityEntry = tab.addEntry("Left velocity");
+    // this.rightVelocityEntry = tab.addEntry("Right velocity");
 
 
     this.rightConfig = new PIDConfig(0, 0, 0, 0);
@@ -97,7 +97,19 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     /*
       Gets speed and rotation and set data in the differentialDrive object
     */
-    rotation *= -1.0;
+
+    // double rotation2 = rotation *-1;
+
+    if(!isDirectionForward()){
+      // System.out.println("INNNNNNNNNNNNNNNNN");
+      speed *= -1.0;
+      rotation *= -1.0;
+    }
+
+    // System.out.println("rotaion:"+rotation+"speed:"+speed);
+    tab.addEntry("Arcade Rotation").setNumber(rotation);
+    tab.addEntry("Arcade Speed").setNumber(speed);
+
     this.diffDrive.arcadeDrive(speed, rotation);
   }
   
@@ -147,8 +159,13 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     leftVelocityEntry.setNumber(getLeftVelocity());
     rightVelocityEntry.setNumber(getRightVelocity());
     rightPos.setNumber(getRightPositionInMeters());
-    leftPos.setNumber(getLeftPositionInMeters());    
+    leftPos.setNumber(getLeftPositionInMeters());  
+      
   }
+
+public PrimoTab getTab() {
+    return tab;
+}
 
   @Override
   public double getLeftVelocity() {

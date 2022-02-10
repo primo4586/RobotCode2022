@@ -37,13 +37,8 @@ public class ArcadeDrive extends CommandBase {
     this.speedAsDouble = this.speed.getAsDouble() *0.5;
     this.rotationAsDouble = this.rotation.getAsDouble() *0.7;
 
-    if(!driver.isDirectionForward()){
-      System.out.println("INNNNNNNNNNNNN");
-      speedAsDouble *= -1.0;
-      rotationAsDouble *= 1.0;
-    }
-    
-    System.out.println("Direction forward: " + driver.isDirectionForward());
+
+    // System.out.println("Direction forward: " + driver.isDirectionForward());
 
     driver.d_control(speedAsDouble, rotationAsDouble);
   }

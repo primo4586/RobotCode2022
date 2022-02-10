@@ -77,10 +77,10 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     //driver:
-    driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(4) ,() -> d_joystick.getRawAxis(1)));
+    driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(1) ,() -> d_joystick.getRawAxis(4)));
     this.LB_Driver.whenPressed(new InstantCommand(()->driver.changeDirection()));
 
-    //shooter:
+    //shoter:
     this.A_Driver.whileHeld(new ManualFeeder(feeder,Constants.ShooterConstants.FeederSpeed));
     this.B_Driver.whileHeld(new ManualShooter(shooter,Constants.ShooterConstants.ShooterSpeed));
    
