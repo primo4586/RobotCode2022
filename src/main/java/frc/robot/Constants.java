@@ -39,6 +39,7 @@ public final class Constants {
         public static final int leftFollowerPort = 1;
         public static final int rightFollowerPort = 3;
 
+
         //pid?
         public static final double METER_PER_TICK = 0.0001558524480;
         public static final PIDConfig L_CONFIG = new PIDConfig(1, 0, 0, 0);
@@ -49,7 +50,14 @@ public final class Constants {
 
 
         // Limiter for arcade drive.
-        public static final double DRIVE_LIMITER = 0.7;
+        public static final double SPEED_LIMITER = 0.5;
+        public static final double ROTATION_LIMITER = 0.5;
+        public static final double SLOW = 0.7;
+        public static final double BOOST = 1.5;
+
+
+
+        
     }
 
     public static final class ClimbConstants{

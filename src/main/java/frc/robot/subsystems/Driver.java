@@ -98,17 +98,10 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
       Gets speed and rotation and set data in the differentialDrive object
     */
 
-    // double rotation2 = rotation *-1;
-
     if(!isDirectionForward()){
-      // System.out.println("INNNNNNNNNNNNNNNNN");
       speed *= -1.0;
       rotation *= -1.0;
     }
-
-    // System.out.println("rotaion:"+rotation+"speed:"+speed);
-    tab.addEntry("Arcade Rotation").setNumber(rotation);
-    tab.addEntry("Arcade Speed").setNumber(speed);
 
     this.diffDrive.arcadeDrive(speed, rotation);
   }
@@ -127,8 +120,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
   public void changeDirection(){
           this.isForward = !this.isForward;
-          System.out.println("dirrrrrrrrrrrrrrrrrrrrrrrrrrrr:" 
-          + this.isForward);
+          
   }
 
   public boolean isDirectionForward(){
@@ -156,10 +148,12 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     // This method will be called once per scheduler run
 
     // Debug Info, general subsystem info we might need
+    /*
     leftVelocityEntry.setNumber(getLeftVelocity());
     rightVelocityEntry.setNumber(getRightVelocity());
     rightPos.setNumber(getRightPositionInMeters());
     leftPos.setNumber(getLeftPositionInMeters());  
+    */
       
   }
 

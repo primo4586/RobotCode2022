@@ -37,8 +37,9 @@ public class RobotContainer {
   private JoystickButton A_Driver; //feeder
   private JoystickButton B_Driver; //shooter
   private JoystickButton LB_Driver; //change direction
+  private JoystickButton RT_Driver; //boost
+  private JoystickButton LT_Driver; //slow
  
-
 
   //operator buttons:
   private JoystickButton B_Operator; //claw level 2;
@@ -77,8 +78,13 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     //driver:
-    driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(1) ,() -> d_joystick.getRawAxis(4)));
-    this.LB_Driver.whenPressed(new InstantCommand(()->driver.changeDirection()));
+    driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(1) ,
+    () -> d_joystick.getRawAxis(4),
+     ()-> d_joystick.getRawAxis(XboxController.Axis.kLeftTrigger.value),
+     ()-> d_joystick.getRawAxis(XboxController.Axis.kRightTrigger.value)));
+    
+    
+     this.LB_Driver.whenPressed(new InstantCommand(()->driver.changeDirection()));
 
     //shoter:
     this.A_Driver.whileHeld(new ManualFeeder(feeder,Constants.ShooterConstants.FeederSpeed));
