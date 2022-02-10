@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import PrimoLib.PrimoShuffleboard;
+import PrimoLib.PrimoTab;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,6 +17,7 @@ public class Climb extends SubsystemBase {
   private WPI_TalonFX m_climb;
   private Solenoid p_level2;
   private Solenoid p_level3;
+  private PrimoTab tab;
 
   //we neeed to add 4 sensors for knowing when the claw is closed and
   // it is ok to move to the next level
@@ -22,7 +25,7 @@ public class Climb extends SubsystemBase {
   public Climb() 
   {
     this.m_climb = new WPI_TalonFX(0);
-
+    this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Climb");
     // this.p_level2 = new Solenoid(0,PneumaticsModuleType.CTREPCM,1);
     // this.p_level3 = new Solenoid(0,PneumaticsModuleType.CTREPCM, 1);
   }
@@ -76,6 +79,16 @@ public class Climb extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    tab.addEntry("Is Hang").setBoolean(isHang());
+    tab.addEntry("Level 2 Secure").setBoolean(islevel2Secure());
+    tab.addEntry("Level 3 Secure").setBoolean(islevel3Secure());
+    tab.addEntry("Level 4 Secure").setBoolean(islevel4Secure());
+    tab.addEntry("Climb Speed").setNumber(getSpeed());
+    tab.addEntry("Solenoid Lv2").setBoolean(isSolenoidLevel2Open());
+    tab.addEntry("Solenoid Lv3").setBoolean(isSolenoidLevel3Open());
+    
+
     // This method will be called once per scheduler run
   }
 }
