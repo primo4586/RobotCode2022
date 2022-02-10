@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
-
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import autonomous.DifferentialDriveData;
@@ -44,6 +43,8 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
       //all the values we want to be in the shufelboard:
       public NetworkTableEntry gyroAngleEntry, xEntry, yEntry, leftPos, rightPos, leftVelocityEntry, rightVelocityEntry;
       
+
+    private boolean isForward;
       //pid:
       private final PIDConfig rightConfig;
       private final PIDConfig leftConfig;
@@ -62,11 +63,12 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     this.leftGroup = new MotorControllerGroup(m_leftLeader, m_leftFollower);
     this.rightGroup = new MotorControllerGroup(m_rightLeader, m_rightFollower);
 
-    this.leftGroup.setInverted(true);
-    this.rightGroup.setInverted(true);
+    //this.leftGroup.setInverted(true);
+    //this.rightGroup.setInverted(true);
    
     this.diffDrive = new DifferentialDrive(leftGroup, rightGroup);
 
+    this.isForward = true;
 
     this.gyroTalon = new WPI_TalonSRX(Constants.DriverConstants.gyroPorts);
     this.gyro = new PigeonIMU(gyroTalon);
@@ -95,9 +97,10 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     /*
       Gets speed and rotation and set data in the differentialDrive object
     */
+    rotation *= -1.0;
     this.diffDrive.arcadeDrive(speed, rotation);
   }
-
+  
 
 
   //general funcions
@@ -108,6 +111,16 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
       Gets a Talon instance and sets it's speed
     */
     motor.set(speed);
+  }
+
+  public void changeDirection(){
+          this.isForward = !this.isForward;
+          System.out.println("dirrrrrrrrrrrrrrrrrrrrrrrrrrrr:" 
+          + this.isForward);
+  }
+
+  public boolean isDirectionForward(){
+    return this.isForward;
   }
 
   public double getYaw() {

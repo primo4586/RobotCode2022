@@ -13,6 +13,7 @@ public class ArcadeDrive extends CommandBase {
   /** Creates a new ArcadeDrive. */
   private Driver driver;
   private DoubleSupplier speed,rotation;
+  private double speedAsDouble, rotationAsDouble;
 
   public ArcadeDrive(Driver driver, DoubleSupplier speed, DoubleSupplier rotation) {
     this.driver = driver;
@@ -24,12 +25,27 @@ public class ArcadeDrive extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    this.speedAsDouble = this.speed.getAsDouble() *0.5;
+    this.rotationAsDouble = this.rotation.getAsDouble() *0.7;
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driver.d_control(speed.getAsDouble() * 0.5, rotation.getAsDouble() * -0.7);
+    this.speedAsDouble = this.speed.getAsDouble() *0.5;
+    this.rotationAsDouble = this.rotation.getAsDouble() *0.7;
+
+    if(!driver.isDirectionForward()){
+      System.out.println("INNNNNNNNNNNNN");
+      speedAsDouble *= -1.0;
+      rotationAsDouble *= 1.0;
+    }
+    
+    System.out.println("Direction forward: " + driver.isDirectionForward());
+
+    driver.d_control(speedAsDouble, rotationAsDouble);
   }
 
   // Called once the command ends or is interrupted.

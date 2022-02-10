@@ -26,10 +26,10 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 public final class Constants {
 
     public static final class ShooterConstants{
-        public static final int ShooterPort = 0;
-        public static final int FeederPort = 0;
-        public static final double FeederSpeed = 20;
-        public static final double ShooterSpeed = 20;
+        public static final int ShooterPort = 15;
+        public static final int FeederPort = 6;
+        public static final double FeederSpeed = 0.5;
+        public static final double ShooterSpeed = 0.5;
     }
 
     public static final class DriverConstants {
@@ -57,7 +57,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants{
-        public static final double rollerSpeed = 0;
+        public static final double rollerSpeed = 5;
     }
 
 

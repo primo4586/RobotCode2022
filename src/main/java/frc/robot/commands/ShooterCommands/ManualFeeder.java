@@ -5,17 +5,18 @@
 package frc.robot.commands.ShooterCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Feeder;
 
 public class ManualFeeder extends CommandBase {
   /** Creates a new ManualFeeder. */
-  private Shooter shooter;
+  private Feeder feeder;
   private double feederSpeed;
-  public ManualFeeder(Shooter shooter, double feederSpeed) {
+  
+  public ManualFeeder(Feeder feeder, double feederSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shooter = shooter;
+    this.feeder = feeder;
     this.feederSpeed = feederSpeed;
-    addRequirements(shooter);
+    addRequirements(feeder);
   }
 
   // Called when the command is initially scheduled.
@@ -25,13 +26,13 @@ public class ManualFeeder extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.shooter.setFeederSpeed(this.feederSpeed);
+    this.feeder.setFeederSpeed(this.feederSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.shooter.setFeederSpeed(0);
+    this.feeder.setFeederSpeed(0);
   }
 
   // Returns true when the command should end.
