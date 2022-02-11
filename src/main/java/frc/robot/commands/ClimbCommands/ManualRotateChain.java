@@ -7,7 +7,6 @@ package frc.robot.commands.ClimbCommands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Climb;
 
 public class ManualRotateChain extends CommandBase {
@@ -33,14 +32,14 @@ public class ManualRotateChain extends CommandBase {
   @Override
   public void execute() {
     if(isOk){
-      this.climb.setSpeed(speed.getAsDouble());
+      this.climb.c_control(speed.getAsDouble());
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.climb.setSpeed(0);
+    this.climb.c_control(0);
   }
 
   // Returns true when the command should end.

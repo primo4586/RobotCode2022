@@ -7,13 +7,12 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import autonomous.DifferentialDriveData;
 import autonomous.PIDConfig;
 import autonomous.PrimoDifferentialDriveOdometry;
-import edu.wpi.first.networktables.NetworkTableEntry;
-
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,7 +27,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     private WPI_TalonFX m_rightLeader;
     private WPI_TalonFX m_rightFollower;
     
-  
     // for the controllers to work togther:
     private MotorControllerGroup rightGroup;
     private MotorControllerGroup leftGroup;
@@ -40,15 +38,16 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     
     //shufelboard insert and get - object
     private PrimoTab tab;
-      //all the values we want to be in the shufelboard:
+      
+    //all the values we want to be in the shufelboard:
       // public NetworkTableEntry gyroAngleEntry, xEntry, yEntry, leftPos, rightPos, leftVelocityEntry, rightVelocityEntry;
       
 
     private boolean isForward;
       //pid:
-      private final PIDConfig rightConfig;
-      private final PIDConfig leftConfig;
-      public PrimoDifferentialDriveOdometry primoOdometry;
+    private final PIDConfig rightConfig;
+    private final PIDConfig leftConfig;
+    public PrimoDifferentialDriveOdometry primoOdometry;
 
 
   public Driver() {
@@ -85,31 +84,23 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     // this.leftVelocityEntry = tab.addEntry("Left velocity");
     // this.rightVelocityEntry = tab.addEntry("Right velocity");
 
-
+    // TO-DO: change pid config to right config
     this.rightConfig = new PIDConfig(0, 0, 0, 0);
     this.leftConfig = new PIDConfig(0, 0, 0, 0);
-    
-
   }
 
-  //Driver control funcions
   public void d_control(double speed, double rotation){
     /*
       Gets speed and rotation and set data in the differentialDrive object
     */
-
     if(!isDirectionForward()){
       speed *= -1.0;
-      rotation *= -1.0;
+      rotation *= 1.0;
     }
-
-    this.diffDrive.arcadeDrive(speed, rotation);
+    this.diffDrive.arcadeDrive(speed, -rotation);
   }
   
-
-
   //general funcions
-
   public static void setMotorSpeed(WPI_TalonFX motor, double speed)
   {
     /* 
@@ -127,6 +118,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     return this.isForward;
   }
 
+  // TO-DO: Add doc about this function and var name
   public double getYaw() {
     
     double[] ypr = new double[3];

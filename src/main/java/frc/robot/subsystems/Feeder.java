@@ -17,11 +17,10 @@ public class Feeder extends SubsystemBase {
     this.m_feeder = new WPI_TalonSRX(Constants.ShooterConstants.FeederPort);
   }
 
-  public void setFeederSpeed (double feederSpeed){
+  public void f_control (double feederSpeed){
     //give m_feeder speed
      m_feeder.set(feederSpeed);
    }
-
 
   @Override
   public void periodic() {

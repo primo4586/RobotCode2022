@@ -28,14 +28,14 @@ public class JointAndRoller extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.intake.setRollerSpeed(Constants.IntakeConstants.rollerSpeed);
+    this.intake.r_control(Constants.IntakeConstants.rollerSpeed);
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.intake.setRollerSpeed(0);
+    this.intake.r_control(0);
 
     this.intake.setJointState(false);
 

@@ -7,26 +7,27 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import PrimoLib.PrimoShuffleboard;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   private WPI_TalonSRX m_roller;
   private Solenoid p_joint;
 
-
   public Intake() {
-  this.m_roller = new WPI_TalonSRX(0);
-  // this.p_joint = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0); //Commented because solenoids aren't installed yet
-
+    this.m_roller = new WPI_TalonSRX(Constants.IntakeConstants.rollerPort);
+    // this.p_joint = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0); //Commented because solenoids aren't installed yet
   }
 
   public double getRollerSpeed(){
     return this.m_roller.get();
   }
 
-  public void setRollerSpeed(double m_rollerSpeed ){
+  public void r_control(double m_rollerSpeed ){
+    /*
+      Gets speed and set data to motor
+    */
     this.m_roller.set(m_rollerSpeed); 
   }
   

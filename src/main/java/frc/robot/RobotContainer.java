@@ -12,10 +12,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ClimbCommands.ManualMoveNextLevel;
 import frc.robot.commands.ClimbCommands.ManualRotateChain;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
-import frc.robot.commands.IntakeCommands.JointAndRoller;
-import frc.robot.subsystems.Climb;
+import frc.robot.commands.IntakeCommands.ManualRoller;
 import frc.robot.commands.ShooterCommands.ManualFeeder;
 import frc.robot.commands.ShooterCommands.ManualShooter;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Driver;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
@@ -33,18 +33,14 @@ public class RobotContainer {
   private Joystick o_joystick;
 
   //driver buttons:
-  private JoystickButton RB_Driver; //open joint and rolling while pressed;
+  private JoystickButton RB_Driver; //rolling while pressed;
   private JoystickButton A_Driver; //feeder
   private JoystickButton B_Driver; //shooter
   private JoystickButton LB_Driver; //change direction
-  private JoystickButton RT_Driver; //boost
-  private JoystickButton LT_Driver; //slow
- 
 
   //operator buttons:
   private JoystickButton B_Operator; //claw level 2;
   private JoystickButton X_Operator; //claw level 3;
-
 
   //subsystem
   private Climb climb;
@@ -70,19 +66,16 @@ public class RobotContainer {
     this.A_Driver = new JoystickButton(d_joystick, XboxController.Button.kA.value);
     this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
     this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
-    
-    this.B_Operator = new JoystickButton(o_joystick, 1);
-    this.X_Operator = new JoystickButton(o_joystick, 1); 
+     
   }
 
-
   private void configureButtonBindings() {
+
     //driver:
-    driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(1) ,
-    () -> d_joystick.getRawAxis(4),
+    driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(XboxController.Axis.kLeftY.value) ,
+     () -> d_joystick.getRawAxis(XboxController.Axis.kRightX.value),
      ()-> d_joystick.getRawAxis(XboxController.Axis.kLeftTrigger.value),
      ()-> d_joystick.getRawAxis(XboxController.Axis.kRightTrigger.value)));
-    
     
      this.LB_Driver.whenPressed(new InstantCommand(()->driver.changeDirection()));
 
@@ -94,11 +87,9 @@ public class RobotContainer {
     B_Operator.whenPressed(new ManualMoveNextLevel(climb, 3));
     X_Operator.whenPressed(new ManualMoveNextLevel(climb, 2));
     climb.setDefaultCommand(new ManualRotateChain(climb, () -> o_joystick.getRawAxis(XboxController.Axis.kRightX.value)));
-
     
     //intake
-    RB_Driver.whileHeld(new JointAndRoller(intake));
-  
+    RB_Driver.whileHeld(new ManualRoller(intake));
   }
 
   private void buildSubsystems(){

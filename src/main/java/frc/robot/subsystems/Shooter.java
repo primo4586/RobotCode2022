@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -18,9 +17,10 @@ public class Shooter extends SubsystemBase {
   
   public Shooter() {
       this.m_shooter = new WPI_TalonFX(Constants.ShooterConstants.ShooterPort);
+      this.m_shooter.setInverted(true);
   }
 
-  public void setShooterSpeed (double shooterSpeed){
+  public void s_control (double shooterSpeed){
    //give m_shooter speed
     m_shooter.set(shooterSpeed);
   }

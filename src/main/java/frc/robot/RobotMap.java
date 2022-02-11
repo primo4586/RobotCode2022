@@ -9,7 +9,7 @@ public class RobotMap {
 
     public final class DriverPorts {
 
-        // TODO: Add the actual ports of the motors.
+        // TODO: Delete if used in constants.
         public static final int LEFT_FOLLOWER = 0;
         public static final int LEFT_LEADER = 0;
         public static final int RIGHT_FOLLOWER = 0;

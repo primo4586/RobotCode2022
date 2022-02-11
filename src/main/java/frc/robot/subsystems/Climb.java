@@ -5,9 +5,9 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 
 public class Climb extends SubsystemBase {
@@ -16,19 +16,26 @@ public class Climb extends SubsystemBase {
   private Solenoid p_level2;
   private Solenoid p_level3;
 
-  //we neeed to add 4 sensors for knowing when the claw is closed and
-  // it is ok to move to the next level
+  /* 
+   TO-DO: we need to add 4 sensors for knowing when the claw is closed and
+    it is ok to move to the next level
+    in addition, we need to handle the solenoids
+  */
   
   public Climb() 
   {
-    this.m_climb = new WPI_TalonFX(0);
-
+    this.m_climb = new WPI_TalonFX(Constants.ClimbConstants.climbPort);
+  
+    //Commented because solenoids aren't installed yet:
     // this.p_level2 = new Solenoid(0,PneumaticsModuleType.CTREPCM,1);
     // this.p_level3 = new Solenoid(0,PneumaticsModuleType.CTREPCM, 1);
   }
 
-  public void setSpeed(double Speed)
+  public void c_control(double Speed)
   {
+    /*
+      Gets speed and set data to motor
+    */
     m_climb.set(Speed);
   }
 
@@ -39,22 +46,35 @@ public class Climb extends SubsystemBase {
 
   public void setSolenoidLevel2State(boolean state)
   {
+    /*
+      sets the first to climb piston state 
+    */
     this.p_level2.set(state);
   }
 
   public void setSolenoidLevel3State(boolean state)
   {
+    /*
+      sets the second to climb piston state 
+    */
     this.p_level3.set(state);
   }
 
   public boolean isSolenoidLevel2Open(){
+    /*
+      gets the first to climb piston state 
+    */
     return this.p_level2.get();
   }
   
   public boolean isSolenoidLevel3Open(){
+    /*
+      gets the first to climb piston state 
+    */
     return this.p_level3.get();
   }
 
+  /* TO-DO: explain logic in comments, why do you need three functions? */
   public boolean islevel2Secure(){
     //just for now untill we will know better
     return true;

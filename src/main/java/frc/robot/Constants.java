@@ -24,48 +24,45 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
     public static final class ShooterConstants{
-        public static final int ShooterPort = 15;
-        public static final int FeederPort = 6;
+        public static final int ShooterPort = 15;  
+        public static final int FeederPort = 6;  
         public static final double FeederSpeed = 0.5;
         public static final double ShooterSpeed = 0.5;
     }
 
     public static final class DriverConstants {
         //motor ports:
-        public static final int leftLeaderPort = 2;
-        public static final int rightLeaderPort = 0;
-        public static final int leftFollowerPort = 1;
-        public static final int rightFollowerPort = 3;
+        public static final int leftLeaderPort = 2;     
+        public static final int rightLeaderPort = 0;    
+        public static final int leftFollowerPort = 1;   
+        public static final int rightFollowerPort = 3;  
 
 
-        //pid?
+        // pid?
         public static final double METER_PER_TICK = 0.0001558524480;
         public static final PIDConfig L_CONFIG = new PIDConfig(1, 0, 0, 0);
         public static final PIDConfig R_CONFIG = new PIDConfig(1, 0, 0, 0);
 
-        //sensors:
+        // Sensors:
         public static final int gyroPorts = 0;
 
 
         // Limiter for arcade drive.
         public static final double SPEED_LIMITER = 0.5;
-        public static final double ROTATION_LIMITER = 0.5;
+        public static final double ROTATION_LIMITER = 0.3;
         public static final double SLOW = 0.7;
         public static final double BOOST = 1.5;
-
-
-
-        
     }
 
     public static final class ClimbConstants{
+        public static final int climbPort = 0;
         public static final double motorSpeed = 0;
     }
 
     public static final class IntakeConstants{
-        public static final double rollerSpeed = 5;
+        public static final double rollerSpeed = 0.7;
+        public static final int rollerPort = 5;     
     }
 
 
