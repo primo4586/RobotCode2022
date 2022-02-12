@@ -21,17 +21,14 @@ public class Feeder extends SubsystemBase {
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Feeder");
   }
 
-<<<<<<< HEAD
   public void f_control (double feederSpeed){
     //give m_feeder speed
      m_feeder.set(feederSpeed);
    }
-=======
   public void setFeederSpeed(double feederSpeed) {
     // give m_feeder speed
     m_feeder.set(feederSpeed);
   }
->>>>>>> 637f9b787003b8af8163b40b34151a9b1dfd93bf
 
   @Override
   public void periodic() {

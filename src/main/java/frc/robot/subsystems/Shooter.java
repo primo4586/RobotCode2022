@@ -20,11 +20,8 @@ public class Shooter extends SubsystemBase {
   
   public Shooter() {
       this.m_shooter = new WPI_TalonFX(Constants.ShooterConstants.ShooterPort);
-<<<<<<< HEAD
       this.m_shooter.setInverted(true);
-=======
       this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
->>>>>>> 637f9b787003b8af8163b40b34151a9b1dfd93bf
   }
 
   public void s_control (double shooterSpeed){

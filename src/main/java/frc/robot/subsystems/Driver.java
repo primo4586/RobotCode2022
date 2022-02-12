@@ -38,13 +38,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     
     //shufelboard insert and get - object
     private PrimoTab tab;
-<<<<<<< HEAD
-      
-    //all the values we want to be in the shufelboard:
-      // public NetworkTableEntry gyroAngleEntry, xEntry, yEntry, leftPos, rightPos, leftVelocityEntry, rightVelocityEntry;
-      
-=======
->>>>>>> 637f9b787003b8af8163b40b34151a9b1dfd93bf
 
     private boolean isForward;
       //pid:
@@ -78,19 +71,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Driver");
 
-<<<<<<< HEAD
-    // this.gyroAngleEntry = tab.addEntry("Gyro angle (yaw)");
-    // this.xEntry = tab.addEntry("X position");
-    // this.yEntry = tab.addEntry("Y position");
-
-    // this.leftPos = tab.addEntry("Left pos. meters");
-    // this.rightPos = tab.addEntry("Right pos. meters");
-    // this.leftVelocityEntry = tab.addEntry("Left velocity");
-    // this.rightVelocityEntry = tab.addEntry("Right velocity");
-
-    // TO-DO: change pid config to right config
-=======
->>>>>>> 637f9b787003b8af8163b40b34151a9b1dfd93bf
     this.rightConfig = new PIDConfig(0, 0, 0, 0);
     this.leftConfig = new PIDConfig(0, 0, 0, 0);
   }
@@ -151,7 +131,8 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     tab.addEntry("Left Pos. ").setNumber(getLeftPositionInMeters());
     tab.addEntry("Right Velocity").setNumber(getRightVelocity());
     tab.addEntry("Right Pos. ").setNumber(getRightPositionInMeters());
-    tab.addEntry("Gyro angle").setNumber(getYaw());
+    // TODO: Commented because gyro isn't installed, this doesn't crash it's just flooding the rio log
+    // tab.addEntry("Gyro angle").setNumber(getYaw());
     tab.addEntry("Is forward").setBoolean(isDirectionForward());
   }
 

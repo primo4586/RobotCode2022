@@ -5,12 +5,9 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-<<<<<<< HEAD
-=======
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
->>>>>>> 637f9b787003b8af8163b40b34151a9b1dfd93bf
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -31,14 +28,8 @@ public class Climb extends SubsystemBase {
   
   public Climb() 
   {
-<<<<<<< HEAD
-    this.m_climb = new WPI_TalonFX(Constants.ClimbConstants.climbPort);
-  
-    //Commented because solenoids aren't installed yet:
-=======
     this.m_climb = new WPI_TalonFX(0);
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Climb");
->>>>>>> 637f9b787003b8af8163b40b34151a9b1dfd93bf
     // this.p_level2 = new Solenoid(0,PneumaticsModuleType.CTREPCM,1);
     // this.p_level3 = new Solenoid(0,PneumaticsModuleType.CTREPCM, 1);
   }
@@ -109,13 +100,14 @@ public class Climb extends SubsystemBase {
   @Override
   public void periodic() {
 
-    tab.addEntry("Is Hang").setBoolean(isHang());
-    tab.addEntry("Level 2 Secure").setBoolean(islevel2Secure());
-    tab.addEntry("Level 3 Secure").setBoolean(islevel3Secure());
-    tab.addEntry("Level 4 Secure").setBoolean(islevel4Secure());
-    tab.addEntry("Climb Speed").setNumber(getSpeed());
-    tab.addEntry("Solenoid Lv2").setBoolean(isSolenoidLevel2Open());
-    tab.addEntry("Solenoid Lv3").setBoolean(isSolenoidLevel3Open());
+    // TODO: Commented because this crashes the robot because solenoids aren't installed yet
+    // tab.addEntry("Is Hang").setBoolean(isHang());
+    // tab.addEntry("Level 2 Secure").setBoolean(islevel2Secure());
+    // tab.addEntry("Level 3 Secure").setBoolean(islevel3Secure());
+    // tab.addEntry("Level 4 Secure").setBoolean(islevel4Secure());
+    // tab.addEntry("Climb Speed").setNumber(getSpeed());
+    // tab.addEntry("Solenoid Lv2").setBoolean(isSolenoidLevel2Open());
+    // tab.addEntry("Solenoid Lv3").setBoolean(isSolenoidLevel3Open());
     
 
     // This method will be called once per scheduler run
