@@ -67,6 +67,8 @@ public class RobotContainer {
     this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
     this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
      
+    this.B_Operator = new JoystickButton(o_joystick, XboxController.Button.kB.value);
+    this.X_Operator = new JoystickButton(o_joystick, XboxController.Button.kX.value);
   }
 
   private void configureButtonBindings() {
