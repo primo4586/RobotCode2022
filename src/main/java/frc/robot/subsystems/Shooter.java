@@ -12,15 +12,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-  /** Creates a new Shooter. */
-
   //create the shooter motor
   private WPI_TalonFX m_shooter;
+  
   private PrimoTab tab;
   
   public Shooter() {
       this.m_shooter = new WPI_TalonFX(Constants.ShooterConstants.ShooterPort);
       this.m_shooter.setInverted(true);
+      
       this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
   }
 

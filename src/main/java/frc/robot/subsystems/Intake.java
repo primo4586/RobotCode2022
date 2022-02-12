@@ -18,7 +18,7 @@ public class Intake extends SubsystemBase {
   private PrimoTab tab;
 
   public Intake() {
-    this.m_roller = new WPI_TalonSRX(0);
+    this.m_roller = new WPI_TalonSRX(Constants.IntakeConstants.rollerPort);
     // this.p_joint = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0); //Commented
     // because solenoids aren't installed yet
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Feeder");
@@ -34,6 +34,7 @@ public class Intake extends SubsystemBase {
     */
     this.m_roller.set(m_rollerSpeed); 
   }
+  
   public void setRollerSpeed(double m_rollerSpeed) {
     this.m_roller.set(m_rollerSpeed);
   }
