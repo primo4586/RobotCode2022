@@ -19,8 +19,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Driver extends SubsystemBase implements DifferentialDriveData{
-  /** Creates a new Driver. */
-
     // Motors
     private WPI_TalonFX m_leftLeader;
     private WPI_TalonFX m_leftFollower;
@@ -39,8 +37,9 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     //shufelboard insert and get - object
     private PrimoTab tab;
 
-    private boolean isForward;
-      //pid:
+    private boolean isForward; 
+    
+    //pid:
     private final PIDConfig rightConfig;
     private final PIDConfig leftConfig;
     public PrimoDifferentialDriveOdometry primoOdometry;
@@ -106,7 +105,10 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
   // TO-DO: Add doc about this function and var name
   public double getYaw() {
-    
+    /*
+      creat an arr of 3 types of angle: Yaw, pitch and roll.
+      return the yaw angle 
+    */
     double[] ypr = new double[3];
     this.gyro.getYawPitchRoll(ypr);
 
@@ -123,9 +125,10 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-
-    // Debug Info, general subsystem info we might need
+    /*
+      This method will be called once per scheduler run
+      Debug Info, general subsystem info we might need
+    */
    
     tab.addEntry("Left Velocity").setNumber(getLeftVelocity());
     tab.addEntry("Left Pos. ").setNumber(getLeftPositionInMeters());

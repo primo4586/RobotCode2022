@@ -27,7 +27,8 @@ import frc.robot.subsystems.Shooter;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer {
+
+ public class RobotContainer {
   //joystick setup
   private Joystick d_joystick; 
   private Joystick o_joystick;
@@ -61,16 +62,22 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
+  private void buildSubsystems(){
+    this.climb = new Climb(); 
+    this.intake = new Intake();
+    this.shooter = new Shooter();
+    this.feeder = new Feeder();
+    this.driver = new Driver();
+  }
+
   private void buildButtons(){
     this.RB_Driver = new JoystickButton(d_joystick, XboxController.Button.kRightBumper.value);
     this.A_Driver = new JoystickButton(d_joystick, XboxController.Button.kA.value);
     this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
     this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
-     
   }
 
   private void configureButtonBindings() {
-
     //driver:
     driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(XboxController.Axis.kLeftY.value) ,
      () -> d_joystick.getRawAxis(XboxController.Axis.kRightX.value),
@@ -79,26 +86,19 @@ public class RobotContainer {
     
      this.LB_Driver.whenPressed(new InstantCommand(()->driver.changeDirection()));
 
-    //shoter:
+    //shooter:
     this.A_Driver.whileHeld(new ManualFeeder(feeder,Constants.ShooterConstants.FeederSpeed));
     this.B_Driver.whileHeld(new ManualShooter(shooter,Constants.ShooterConstants.ShooterSpeed));
    
+    //intake
+    RB_Driver.whileHeld(new ManualRoller(intake));
+
     //climb:
     B_Operator.whenPressed(new ManualMoveNextLevel(climb, 3));
     X_Operator.whenPressed(new ManualMoveNextLevel(climb, 2));
     climb.setDefaultCommand(new ManualRotateChain(climb, () -> o_joystick.getRawAxis(XboxController.Axis.kRightX.value)));
-    
-    //intake
-    RB_Driver.whileHeld(new ManualRoller(intake));
   }
 
-  private void buildSubsystems(){
-    this.climb = new Climb(); 
-    this.intake = new Intake();
-    this.shooter = new Shooter();
-    this.feeder = new Feeder();
-    this.driver = new Driver();
-  }
 
   
   /**
