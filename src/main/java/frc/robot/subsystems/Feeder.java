@@ -26,11 +26,6 @@ public class Feeder extends SubsystemBase {
      m_feeder.set(feederSpeed);
   }
 
-  public void setFeederSpeed(double feederSpeed) {
-    // give m_feeder speed
-    m_feeder.set(feederSpeed);
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

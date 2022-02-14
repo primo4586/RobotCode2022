@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
+  
   private WPI_TalonSRX m_roller;
   private Solenoid p_joint;
+  
   private PrimoTab tab;
 
   public Intake() {
@@ -35,10 +37,6 @@ public class Intake extends SubsystemBase {
     this.m_roller.set(m_rollerSpeed); 
   }
   
-  public void setRollerSpeed(double m_rollerSpeed) {
-    this.m_roller.set(m_rollerSpeed);
-  }
-
   public boolean isJointOpen() {
     return this.p_joint.get();
   }

@@ -89,7 +89,7 @@ import frc.robot.subsystems.Shooter;
     //shooter:
     this.A_Driver.whileHeld(new ManualFeeder(feeder,Constants.ShooterConstants.FeederSpeed));
     this.B_Driver.whileHeld(new ManualShooter(shooter,Constants.ShooterConstants.ShooterSpeed));
-   
+
     //intake
     RB_Driver.whileHeld(new ManualRoller(intake));
 
@@ -98,7 +98,6 @@ import frc.robot.subsystems.Shooter;
     X_Operator.whenPressed(new ManualMoveNextLevel(climb, 2));
     climb.setDefaultCommand(new ManualRotateChain(climb, () -> o_joystick.getRawAxis(XboxController.Axis.kRightX.value)));
   }
-
 
   
   /**

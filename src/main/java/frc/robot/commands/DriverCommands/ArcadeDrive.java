@@ -13,7 +13,7 @@ import frc.robot.subsystems.Driver;
 public class ArcadeDrive extends CommandBase {
   /** Creates a new ArcadeDrive. */
   private Driver driver;
-  private DoubleSupplier speed,rotation,slow, boost;
+  private DoubleSupplier speed, rotation, slow, boost;
   private double speedAsDouble, rotationAsDouble;
 
   public ArcadeDrive(Driver driver, DoubleSupplier speed, DoubleSupplier rotation, DoubleSupplier slow, DoubleSupplier boost) {
@@ -31,7 +31,6 @@ public class ArcadeDrive extends CommandBase {
   public void initialize() {
     this.speedAsDouble = this.speed.getAsDouble() * Constants.DriverConstants.SPEED_LIMITER;
     this.rotationAsDouble = this.rotation.getAsDouble() * Constants.DriverConstants.ROTATION_LIMITER;
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.

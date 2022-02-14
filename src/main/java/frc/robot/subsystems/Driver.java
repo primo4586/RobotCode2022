@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -19,7 +22,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Driver extends SubsystemBase implements DifferentialDriveData{
-    // Motors
+    
+  // Motors
     private WPI_TalonFX m_leftLeader;
     private WPI_TalonFX m_leftFollower;
     private WPI_TalonFX m_rightLeader;
@@ -42,7 +46,8 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     //pid:
     private final PIDConfig rightConfig;
     private final PIDConfig leftConfig;
-    public PrimoDifferentialDriveOdometry primoOdometry;
+    
+    private PrimoDifferentialDriveOdometry primoOdometry;
 
 
   public Driver() {
@@ -72,6 +77,8 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
     this.rightConfig = new PIDConfig(0, 0, 0, 0);
     this.leftConfig = new PIDConfig(0, 0, 0, 0);
+
+    primoOdometry = new PrimoDifferentialDriveOdometry(this, ()-> resetEncoders());
   }
 
   public void d_control(double speed, double rotation){
@@ -86,6 +93,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   }
   
   //general funcions
+  
   public static void setMotorSpeed(WPI_TalonFX motor, double speed)
   {
     /* 
@@ -95,15 +103,15 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   }
 
   public void changeDirection(){
-          this.isForward = !this.isForward;
-          
+          this.isForward = !this.isForward;     
   }
 
   public boolean isDirectionForward(){
     return this.isForward;
   }
 
-  // TO-DO: Add doc about this function and var name
+
+  //auto relate function:
   public double getYaw() {
     /*
       creat an arr of 3 types of angle: Yaw, pitch and roll.
@@ -115,6 +123,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     return ypr[0];
   }
 
+  
   public double getLeftPositionInMeters() {
     return this.m_leftLeader.getSelectedSensorPosition() * Constants.DriverConstants.METER_PER_TICK;
   }
@@ -123,23 +132,36 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     return this.m_rightLeader.getSelectedSensorPosition() * Constants.DriverConstants.METER_PER_TICK;
   }
 
-  @Override
-  public void periodic() {
-    /*
-      This method will be called once per scheduler run
-      Debug Info, general subsystem info we might need
-    */
-   
-    tab.addEntry("Left Velocity").setNumber(getLeftVelocity());
-    tab.addEntry("Left Pos. ").setNumber(getLeftPositionInMeters());
-    tab.addEntry("Right Velocity").setNumber(getRightVelocity());
-    tab.addEntry("Right Pos. ").setNumber(getRightPositionInMeters());
-    // TODO: Commented because gyro isn't installed, this doesn't crash it's just flooding the rio log
-    // tab.addEntry("Gyro angle").setNumber(getYaw());
-    tab.addEntry("Is forward").setBoolean(isDirectionForward());
+  public void resetEncoders(){
+    this.m_rightLeader.setSelectedSensorPosition(0,0,10);
+    this.m_leftLeader.setSelectedSensorPosition(0,0,10);
   }
 
+  public PrimoDifferentialDriveOdometry getPrimoOdometry(){
+    return primoOdometry;
+  }
 
+  public void driveVelocity(double rightMetersPerSecond, double leftMetersPerSecond) {
+
+    double leftFFPercent = Constants.AutoConstants.FEEDFORWARD_LEFT.calculate(leftMetersPerSecond) / 12;
+    double rightFFPercent = Constants.AutoConstants.FEEDFORWARD_RIGHT.calculate(rightMetersPerSecond) / 12;
+
+    this.m_leftFollower.follow(this.m_leftLeader,FollowerType.PercentOutput);
+    this.m_rightFollower.follow(this.m_rightLeader,FollowerType.PercentOutput);
+
+    // Tranlsates the speeds to be per 100ms (The motors update at a rate of 100hz)
+    double leftSpeedsIn100ms = leftMetersPerSecond / 10;
+    double rightSpeedsIn100ms = rightMetersPerSecond / 10;
+
+
+    // Sets the motor's velocity setpoint to the velocity given, and uses the FeedForward voltages to make it more accurate
+    this.m_leftLeader.set(ControlMode.Velocity, leftSpeedsIn100ms / Constants.AutoConstants.METER_PER_TICK, DemandType.ArbitraryFeedForward, leftFFPercent);
+    this.m_rightLeader.set(ControlMode.Velocity, rightSpeedsIn100ms / Constants.AutoConstants.METER_PER_TICK, DemandType.ArbitraryFeedForward, rightFFPercent);
+    diffDrive.feed();
+  }
+
+  
+  //implement Dif-drive function:
   @Override
   public double getLeftVelocity() {
     // TODO Auto-generated method stub
@@ -169,5 +191,29 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     // TODO Auto-generated method stub
     return getRightPositionInMeters();
   }
+
+
+
+
+
+
+  @Override
+  public void periodic() {
+    /*
+      This method will be called once per scheduler run
+      Debug Info, general subsystem info we might need
+    */
+   
+    tab.addEntry("Left Velocity").setNumber(getLeftVelocity());
+    tab.addEntry("Left Pos. ").setNumber(getLeftPositionInMeters());
+    tab.addEntry("Right Velocity").setNumber(getRightVelocity());
+    tab.addEntry("Right Pos. ").setNumber(getRightPositionInMeters());
+    // TODO: Commented because gyro isn't installed, this doesn't crash it's just flooding the rio log
+    // tab.addEntry("Gyro angle").setNumber(getYaw());
+    tab.addEntry("Is forward").setBoolean(isDirectionForward());
+  }
+
+  
+
 
 }
