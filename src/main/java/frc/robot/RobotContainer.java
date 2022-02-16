@@ -4,6 +4,12 @@
 
 package frc.robot;
 
+import java.util.Map;
+
+import PrimoLib.PrimoTab;
+import autonomous.CommandSelector;
+import autonomous.PathHandler;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -50,6 +56,14 @@ import frc.robot.subsystems.Shooter;
   private Intake intake;
   private Driver driver;
 
+  //autonomous
+  private PrimoTab tab;
+  private PathHandler pathHandler;
+  private CommandSelector selector;
+  private Command autoShoot2ball, test;
+  private Trajectory shoot2ballTrajectory;
+
+
 
   public RobotContainer() {
     this.d_joystick = new Joystick(0);
@@ -60,10 +74,13 @@ import frc.robot.subsystems.Shooter;
     buildButtons();
     
     configureButtonBindings();
+
+    buildAutonomous();
   }
 
+  
   private void buildSubsystems(){
-    this.climb = new Climb(); 
+    //this.climb = new Climb(); 
     this.intake = new Intake();
     this.shooter = new Shooter();
     this.feeder = new Feeder();
@@ -94,10 +111,25 @@ import frc.robot.subsystems.Shooter;
     RB_Driver.whileHeld(new ManualRoller(intake));
 
     //climb:
+    /*
     B_Operator.whenPressed(new ManualMoveNextLevel(climb, 3));
     X_Operator.whenPressed(new ManualMoveNextLevel(climb, 2));
     climb.setDefaultCommand(new ManualRotateChain(climb, () -> o_joystick.getRawAxis(XboxController.Axis.kRightX.value)));
+  */
   }
+
+  private void buildAutonomous() {
+    this.pathHandler = new PathHandler();
+    this.tab = new PrimoTab("Competition Dashboard");
+
+
+    this.shoot2ballTrajectory = pathHandler.loadPath(Constants.pathJson.shoot2ball);
+
+    this.test = new InstantCommand(()->System.out.println("!!!!!!!!!!!AUTOOOOOO!!!!!!!!!!!!"));
+    
+    this.selector = new CommandSelector(Map.ofEntries(Map.entry("Trench To Mid", test)), tab.getTab());
+  }
+
 
   
   /**
@@ -107,6 +139,7 @@ import frc.robot.subsystems.Shooter;
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return selector.getCommand();
+
   }
 }

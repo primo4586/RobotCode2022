@@ -32,7 +32,7 @@ public class ManualRotateChain extends CommandBase {
   @Override
   public void execute() {
     if(isOk){
-      this.climb.c_control(speed.getAsDouble());
+      this.climb.c_control(speed.getAsDouble() * 0.5);
     }
   }
 

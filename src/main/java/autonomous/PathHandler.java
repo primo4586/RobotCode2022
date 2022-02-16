@@ -27,7 +27,7 @@ public class PathHandler {
      * @param path Directory to the path's location (always will be under src/main/deploy)
      * @return The path's Trajectory
      */
-    public static Trajectory loadPath(String path){
+    public Trajectory loadPath(String path){
         Trajectory trajectory = null;
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(path);

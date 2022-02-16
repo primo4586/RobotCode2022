@@ -4,13 +4,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climb;
 
 public class ManualMoveNextLevel extends CommandBase {
-  /** Creates a new ManualLevel2. */
   private Climb climb;
   private boolean isOk;
   private int numLevel; //the level the robot on 
   
   public ManualMoveNextLevel(Climb climb, int numLevel) {
-    // Use addRequirements() here to declare subsystem dependencies.
     this.climb = climb;
     this.numLevel = numLevel;
 

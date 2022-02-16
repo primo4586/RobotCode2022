@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -43,10 +44,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
     private boolean isForward; 
     
-    //pid:
-    private final PIDConfig rightConfig;
-    private final PIDConfig leftConfig;
-    
+  
     private PrimoDifferentialDriveOdometry primoOdometry;
 
 
@@ -59,8 +57,14 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     this.m_rightLeader = new WPI_TalonFX(Constants.DriverConstants.rightLeaderPort);
     this.m_rightFollower = new WPI_TalonFX(Constants.DriverConstants.rightFollowerPort);
    
+    this.m_leftLeader.setNeutralMode(NeutralMode.Brake);
+    this.m_rightLeader.setNeutralMode(NeutralMode.Brake);
+    this.m_rightFollower.setNeutralMode(NeutralMode.Brake);
+    this.m_leftFollower.setNeutralMode(NeutralMode.Brake);
+
     this.leftGroup = new MotorControllerGroup(m_leftLeader, m_leftFollower);
     this.rightGroup = new MotorControllerGroup(m_rightLeader, m_rightFollower);
+
 
     this.leftGroup.setInverted(true);
     this.rightGroup.setInverted(false);
@@ -75,10 +79,11 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Driver");
 
-    this.rightConfig = new PIDConfig(0, 0, 0, 0);
-    this.leftConfig = new PIDConfig(0, 0, 0, 0);
+    m_rightLeader.config_kP(0, Constants.AutoConstants.RIGHT_CONFIG.getKp());
+    m_leftLeader.config_kP(0, Constants.AutoConstants.LEFT_CONFIG.getKp());
 
     primoOdometry = new PrimoDifferentialDriveOdometry(this, ()-> resetEncoders());
+  
   }
 
   public void d_control(double speed, double rotation){
@@ -208,9 +213,10 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     tab.addEntry("Left Pos. ").setNumber(getLeftPositionInMeters());
     tab.addEntry("Right Velocity").setNumber(getRightVelocity());
     tab.addEntry("Right Pos. ").setNumber(getRightPositionInMeters());
-    // TODO: Commented because gyro isn't installed, this doesn't crash it's just flooding the rio log
-    // tab.addEntry("Gyro angle").setNumber(getYaw());
+    tab.addEntry("Gyro angle").setNumber(getYaw());
     tab.addEntry("Is forward").setBoolean(isDirectionForward());
+
+    
   }
 
   

@@ -45,14 +45,14 @@ public final class Constants {
         public static final PIDConfig R_CONFIG = new PIDConfig(1, 0, 0, 0);
 
         // Sensors:
-        public static final int gyroPorts = 0;
+        public static final int gyroPorts = 7;
 
 
         // Limiter for arcade drive.
-        public static final double SPEED_LIMITER = 0.5;
-        public static final double ROTATION_LIMITER = 0.3;
+        public static final double SPEED_LIMITER = 0.6;
+        public static final double ROTATION_LIMITER = 0.5;
         public static final double SLOW = 0.7;
-        public static final double BOOST = 1.5;
+        public static final double BOOST = 1.2;
     }
 
     public static final class ClimbConstants{
@@ -253,8 +253,12 @@ public final class Constants {
          * 
          * @see https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/feedforward.html
          */
-        public static final SimpleMotorFeedforward FEEDFORWARD_RIGHT = new SimpleMotorFeedforward(0, 0);
-        public static final SimpleMotorFeedforward FEEDFORWARD_LEFT = new SimpleMotorFeedforward(0, 0);
+        public static final SimpleMotorFeedforward FEEDFORWARD_RIGHT = new SimpleMotorFeedforward(0.6831, 1.6503, 0.37373);
+        public static final SimpleMotorFeedforward FEEDFORWARD_LEFT = new SimpleMotorFeedforward(0.6831, 1.6503, 0.37373);
+
+        public static final PIDConfig RIGHT_CONFIG = new PIDConfig(0.12146, 0, 0, 0);
+        public static final PIDConfig LEFT_CONFIG = new PIDConfig(0.12146, 0, 0, 0);
+
 
         /**
          * Allowed offset from trajectory when path following.
@@ -274,13 +278,11 @@ public final class Constants {
     }
 
 
+    public static final class pathJson{
+        public static final String shoot2ball = "";
+        public static final String test = "paths\\PathWeaver\\pathweaver.json";
 
 
-
-
-
-
-
-    public static final String FEEDFORWARD_LEFT = null;
+    }
 
 }

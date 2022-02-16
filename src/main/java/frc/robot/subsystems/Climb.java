@@ -7,30 +7,41 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 
 public class Climb extends SubsystemBase {
 
-  private WPI_TalonFX m_climb;
+  private WPI_TalonFX m_climbRight;
+  private WPI_TalonFX m_climbleft;
+
+  private Compressor compressor;
+
   private Solenoid p_level2;
   private Solenoid p_level3;
+  
   private PrimoTab tab;
 
   /* 
-   TO-DO: we need to add 4 sensors for knowing when the claw is closed and
+   TO-DO: we need to add 6 sensors for knowing when the claw is closed and
     it is ok to move to the next level
     in addition, we need to handle the solenoids
   */
   
   public Climb() 
   {
-    this.m_climb = new WPI_TalonFX(0);
+    this.m_climbRight = new WPI_TalonFX(0);
+    this.m_climbleft = new WPI_TalonFX(0);
+
+    this.compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
+        
+    this.p_level2 = new Solenoid(0, PneumaticsModuleType.CTREPCM,1);
+    this.p_level3 = new Solenoid(0,PneumaticsModuleType.CTREPCM, 1);
+
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Climb");
-    // this.p_level2 = new Solenoid(0,PneumaticsModuleType.CTREPCM,1);
-    // this.p_level3 = new Solenoid(0,PneumaticsModuleType.CTREPCM, 1);
   }
 
   public void c_control(double Speed)
@@ -38,12 +49,17 @@ public class Climb extends SubsystemBase {
     /*
       Gets speed and set data to motor
     */
-    m_climb.set(Speed);
+    m_climbRight.set(Speed);
+    m_climbleft.set(-Speed);
   }
 
-  public double getSpeed()
+  public double getAbsoluteSpeed()
   {
-    return m_climb.get();
+    return Math.abs(m_climbRight.get());
+  }
+
+  public double getPressure(){
+    return compressor.getPressure();
   }
 
   public void setSolenoidLevel2State(boolean state)
