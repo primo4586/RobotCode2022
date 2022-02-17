@@ -3,12 +3,12 @@ package frc.robot.commands.ClimbCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climb;
 
-public class ManualMoveNextLevel extends CommandBase {
+public class ManualLockClaw extends CommandBase {
   private Climb climb;
   private boolean isOk;
-  private int numLevel; //the level the robot on 
+  private int numLevel; //the level the robot moving to 
   
-  public ManualMoveNextLevel(Climb climb, int numLevel) {
+  public ManualLockClaw(Climb climb, int numLevel) {
     this.climb = climb;
     this.numLevel = numLevel;
 
@@ -18,18 +18,26 @@ public class ManualMoveNextLevel extends CommandBase {
   @Override
   public void initialize() {
     if(numLevel ==2)
-      this.isOk = climb.islevel3Secure();
+      this.isOk = climb.isMot2or4In();
     else if(numLevel == 3) 
-      this.isOk = climb.islevel4Secure();
+      this.isOk = climb.isMot3In();
+    else if(numLevel == 4){
+      this.isOk = climb.isMot2or4In();
+    }
   }
 
   @Override
   public void execute() {
     if(isOk){
-        if(numLevel ==2)
-          climb.setSolenoidLevel2State(true);
-        else if(numLevel ==3)
+        if(numLevel == 2)
+            climb.setSolenoidLevel2or4State(true); 
+   
+        else if(numLevel == 3)
           climb.setSolenoidLevel3State(true);
+    
+        else if(numLevel == 4){
+          climb.setSolenoidLevel2or4State(true);
+        }
     }
     else{
       //shake controller

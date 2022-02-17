@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,6 +23,22 @@ public class Climb extends SubsystemBase {
 
   private Solenoid p_level2;
   private Solenoid p_level3;
+
+  /*
+  there will be 4 switch that return if the mot is in side the claw
+  and 4 piston sensors that return if the pinton is close or open
+  */
+  //switch:
+  private DigitalInput switch_rightA;
+  private DigitalInput switch_rightB;
+  private DigitalInput switch_leftA;
+  private DigitalInput switch_leftB;
+
+  //piston sensors:
+  private DigitalInput sPiston_rightA;
+  private DigitalInput sPiston_rightB; 
+  private DigitalInput sPiston_leftA; 
+  private DigitalInput sPiston_leftB; 
   
   private PrimoTab tab;
 
@@ -40,6 +57,16 @@ public class Climb extends SubsystemBase {
         
     this.p_level2 = new Solenoid(0, PneumaticsModuleType.CTREPCM,1);
     this.p_level3 = new Solenoid(0,PneumaticsModuleType.CTREPCM, 1);
+
+    this.switch_leftA = new DigitalInput(0);
+    this.switch_rightA = new DigitalInput(0);
+    this.switch_leftB = new DigitalInput(0);
+    this.switch_rightB = new DigitalInput(0);
+
+    this.sPiston_leftA = new DigitalInput(0);
+    this.sPiston_leftB = new DigitalInput(0);
+    this.sPiston_rightA = new DigitalInput(0);
+    this.sPiston_rightB = new DigitalInput(0);
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Climb");
   }
@@ -62,7 +89,7 @@ public class Climb extends SubsystemBase {
     return compressor.getPressure();
   }
 
-  public void setSolenoidLevel2State(boolean state)
+  public void setSolenoidLevel2or4State(boolean state)
   {
     /*
       sets the first to climb piston state 
@@ -93,20 +120,38 @@ public class Climb extends SubsystemBase {
   }
 
   /* TO-DO: explain logic in comments, why do you need three functions? */
+  
+  public boolean isMot2or4In(){
+    return this.switch_leftA.get() && this.switch_rightA.get();
+  }
+
+  public boolean isMot3In(){
+    return this.switch_leftB.get() && this.switch_rightB.get();
+  }
+
+  public boolean isClaw2or4close(){
+    return this.sPiston_leftA.get() && this.sPiston_rightA.get();
+  }
+
+  public boolean isClaw3close(){
+    return this.sPiston_leftB.get() && this.sPiston_rightB.get();
+  }
+
   public boolean islevel2Secure(){
-    //just for now untill we will know better
-    return true;
+    //return true if the claw close on the mot and its ok to move on
+    return isMot2or4In() && isClaw2or4close();
   }
 
   public boolean islevel3Secure(){
-    //just for now untill we will know better
-    return true;
+    //return true if the claw close on the mot and its ok to move on
+    return isMot3In() && isClaw3close();
   }
 
   public boolean islevel4Secure(){
-    //just for now untill we will know better
-    return true;
+    //return true if the claw close on the mot and its ok to move on
+    return isMot2or4In() && isClaw2or4close();
   }
+
 
   public boolean isHang(){
     return islevel2Secure() || islevel3Secure() ||islevel4Secure();
