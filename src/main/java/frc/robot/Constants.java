@@ -231,7 +231,7 @@ public final class Constants {
         public static final double DIAMETER = 0.1524; 
 
         //Converts encoder value to speed
-         public static final double METER_PER_TICK = (DIAMETER * Math.PI) / 4096;
+         public static final double METER_PER_TICK = (DIAMETER * 3.141592) / 2048;
 
          //the dictans between two wheels
         public static final double TRACKWIDTH = 0.57;
