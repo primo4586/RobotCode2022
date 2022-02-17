@@ -20,6 +20,7 @@ import autonomous.PrimoDifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.CameraHandler;
 import frc.robot.Constants;
 
 public class Driver extends SubsystemBase implements DifferentialDriveData{
@@ -83,7 +84,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     m_leftLeader.config_kP(0, Constants.AutoConstants.LEFT_CONFIG.getKp());
 
     primoOdometry = new PrimoDifferentialDriveOdometry(this, ()-> resetEncoders());
-  
   }
 
   public void d_control(double speed, double rotation){
@@ -108,7 +108,8 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   }
 
   public void changeDirection(){
-          this.isForward = !this.isForward;     
+    this.isForward = !this.isForward;  
+       
   }
 
   public boolean isDirectionForward(){
@@ -130,11 +131,11 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
   
   public double getLeftPositionInMeters() {
-    return this.m_leftLeader.getSelectedSensorPosition() * Constants.DriverConstants.METER_PER_TICK;
+    return this.m_leftLeader.getSelectedSensorPosition() * Constants.AutoConstants.METER_PER_TICK;
   }
 
   public double getRightPositionInMeters() {
-    return this.m_rightLeader.getSelectedSensorPosition() * Constants.DriverConstants.METER_PER_TICK;
+    return this.m_rightLeader.getSelectedSensorPosition() * Constants.AutoConstants.METER_PER_TICK;
   }
 
   public void resetEncoders(){
@@ -169,31 +170,26 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   //implement Dif-drive function:
   @Override
   public double getLeftVelocity() {
-    // TODO Auto-generated method stub
-    return (this.m_leftLeader.getSelectedSensorVelocity() * 0.1) / Constants.DriverConstants.METER_PER_TICK;
+    return (this.m_leftLeader.getSelectedSensorVelocity() * 0.1) / Constants.AutoConstants.METER_PER_TICK;
   }
 
   @Override
   public double getRightVelocity() {
-    // TODO Auto-generated method stub
-    return (this.m_rightLeader.getSelectedSensorVelocity() * 0.1) / Constants.DriverConstants.METER_PER_TICK;
+    return (this.m_rightLeader.getSelectedSensorVelocity() * 0.1) / Constants.AutoConstants.METER_PER_TICK;
   }
 
   @Override
   public double getHeading() {
-    // TODO Auto-generated method stub
     return -Math.toRadians(getYaw());
   }
 
   @Override
   public double getLeftDistance() {
-    // TODO Auto-generated method stub
     return getLeftPositionInMeters();
   }
 
   @Override
   public double getRightDistance() {
-    // TODO Auto-generated method stub
     return getRightPositionInMeters();
   }
 
@@ -208,6 +204,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
       This method will be called once per scheduler run
       Debug Info, general subsystem info we might need
     */
+    primoOdometry.update();
    
     tab.addEntry("Left Velocity").setNumber(getLeftVelocity());
     tab.addEntry("Left Pos. ").setNumber(getLeftPositionInMeters());

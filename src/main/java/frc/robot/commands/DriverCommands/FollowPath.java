@@ -100,7 +100,7 @@ public class FollowPath extends CommandBase implements Runnable{
     // Translates the speeds to left/right motor speeds
     this.wheelSpeeds = Constants.AutoConstants.KINEMATICS.toWheelSpeeds(speeds);
     
-    driver.driveVelocity(wheelSpeeds.rightMetersPerSecond, wheelSpeeds.leftMetersPerSecond);  
+    driver.driveVelocity(-wheelSpeeds.rightMetersPerSecond, wheelSpeeds.leftMetersPerSecond);  
   }
 
 
