@@ -25,13 +25,13 @@ import frc.robot.Constants;
 
 public class Driver extends SubsystemBase implements DifferentialDriveData{
     
-  // Motors
+    //Motors
     private WPI_TalonFX m_leftLeader;
     private WPI_TalonFX m_leftFollower;
     private WPI_TalonFX m_rightLeader;
     private WPI_TalonFX m_rightFollower;
     
-    // for the controllers to work togther:
+    //for the controllers to work togther:
     private MotorControllerGroup rightGroup;
     private MotorControllerGroup leftGroup;
     private DifferentialDrive diffDrive;
@@ -40,6 +40,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     private PigeonIMU gyro;
     private WPI_TalonSRX gyroTalon;
     
+    //TODO: extract tab logic to another command  
     //shufelboard insert and get - object
     private PrimoTab tab;
 
@@ -92,7 +93,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     */
     if(!isDirectionForward()){
       speed *= -1.0;
-      rotation *= 1.0;
     }
     this.diffDrive.arcadeDrive(speed, -rotation);
   }
@@ -148,10 +148,11 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   }
 
   public void driveVelocity(double rightMetersPerSecond, double leftMetersPerSecond) {
-
+    //TODO: understand the code and try to make it better
     double leftFFPercent = Constants.AutoConstants.FEEDFORWARD_LEFT.calculate(leftMetersPerSecond) / 12;
     double rightFFPercent = Constants.AutoConstants.FEEDFORWARD_RIGHT.calculate(rightMetersPerSecond) / 12;
 
+    // TODO: Configure followers in CTOR and remove the usage of groups (Use leaders only).
     this.m_leftFollower.follow(this.m_leftLeader,FollowerType.PercentOutput);
     this.m_rightFollower.follow(this.m_rightLeader,FollowerType.PercentOutput);
 

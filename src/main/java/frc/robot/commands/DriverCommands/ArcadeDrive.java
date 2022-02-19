@@ -40,6 +40,7 @@ public class ArcadeDrive extends CommandBase {
     this.speedAsDouble = this.speed.getAsDouble() * Constants.DriverConstants.SPEED_LIMITER;
     this.rotationAsDouble = this.rotation.getAsDouble() * Constants.DriverConstants.ROTATION_LIMITER;
     
+    // TODO: extract to function or to booleanSupplier
     if(Math.abs(slow.getAsDouble())>0.2)
       this.speedAsDouble *= Constants.DriverConstants.SLOW;
 

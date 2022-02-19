@@ -67,6 +67,7 @@ public class FollowPath extends CommandBase implements Runnable{
     // By how much the position can be off the target position
     rController.setTolerance(Constants.AutoConstants.OFFSET_TOLERANCE);
 
+    //TODO: add to constans or by the wpilib const
     runner.startPeriodic(0.005);
   }
 
@@ -78,6 +79,7 @@ public class FollowPath extends CommandBase implements Runnable{
   @Override
   public void end(boolean interrupted) {
     System.out.println("Finished");
+    //TODO: Kill the runner with runner.close() or runner.stop() (Or both?).
     rController.setEnabled(false);
     timer.stop();
   }
@@ -100,6 +102,8 @@ public class FollowPath extends CommandBase implements Runnable{
     // Translates the speeds to left/right motor speeds
     this.wheelSpeeds = Constants.AutoConstants.KINEMATICS.toWheelSpeeds(speeds);
     
+    
+    //TODO: add inverted to motors and delete the (-).
     driver.driveVelocity(-wheelSpeeds.rightMetersPerSecond, wheelSpeeds.leftMetersPerSecond);  
   }
 

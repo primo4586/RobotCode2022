@@ -23,6 +23,8 @@ public class AlignByVision extends CommandBase {
   private DoubleSupplier visionAngle;
 
   private double angleError;
+  
+  //TODO: add value
   private double tolerance;
   private double initalAngleOffset;
   
@@ -49,6 +51,8 @@ public class AlignByVision extends CommandBase {
   @Override
   public void execute() {
 
+    //TODO: Fix the logic - In initailize take limelight snapshot and reset gyro.
+    //    In execute, work according to gyro
     double output = pidController.calculate(driver.getYaw(), initalAngleOffset + visionAngle.getAsDouble());
     this.angleError = initalAngleOffset + visionAngle.getAsDouble() - driver.getYaw();
 

@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,8 +22,7 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     this.m_roller = new WPI_TalonSRX(Constants.IntakeConstants.rollerPort);
-    // this.p_joint = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0); //Commented
-    // because solenoids aren't installed yet
+    this.p_joint = new Solenoid(8, PneumaticsModuleType.CTREPCM, 5); //Commented
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Feeder");
   }
 
@@ -49,8 +49,7 @@ public class Intake extends SubsystemBase {
   public void periodic() {
 
     tab.addEntry("Roller Speed").setNumber(getRollerSpeed());
-    // Commented because solenoids aren't installed yet and it causes to crash the robot.
-    // tab.addEntry("Joint State").setBoolean(isJointOpen());
+    tab.addEntry("Joint State").setBoolean(isJointOpen());
     // This method will be called once per scheduler run
   }
 }

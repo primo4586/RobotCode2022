@@ -20,11 +20,11 @@ public class ManualJoint extends CommandBase {
   @Override
   public void initialize() {
     prevState = intake.isJointOpen();
+    this.intake.setJointState(!prevState);
   }
 
   @Override
   public void execute() {
-    this.intake.setJointState(!prevState);
   }
 
   @Override
@@ -32,6 +32,6 @@ public class ManualJoint extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

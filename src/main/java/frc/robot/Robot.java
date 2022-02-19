@@ -29,6 +29,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+
+    //TODO: add auto class
+    //TODO: load auto path
+    
     m_robotContainer = new RobotContainer();
     limelight = new Limelight();
   }
@@ -66,6 +70,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    //TODO: choose auto path
   }
 
   /** This function is called periodically during autonomous. */

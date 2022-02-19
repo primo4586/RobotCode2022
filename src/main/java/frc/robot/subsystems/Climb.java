@@ -24,10 +24,8 @@ public class Climb extends SubsystemBase {
   private Solenoid p_level2;
   private Solenoid p_level3;
 
-  /*
-  there will be 4 switch that return if the mot is in side the claw
-  and 4 piston sensors that return if the pinton is close or open
-  */
+  // TODO: switch the true and false value
+
   //switch:
   private DigitalInput switch_rightA;
   private DigitalInput switch_rightB;
@@ -41,12 +39,6 @@ public class Climb extends SubsystemBase {
   private DigitalInput sPiston_leftB; 
   
   private PrimoTab tab;
-
-  /* 
-   TO-DO: we need to add 6 sensors for knowing when the claw is closed and
-    it is ok to move to the next level
-    in addition, we need to handle the solenoids
-  */
   
   public Climb() 
   {
