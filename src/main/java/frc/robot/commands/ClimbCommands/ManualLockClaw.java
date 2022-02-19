@@ -29,7 +29,7 @@ public class ManualLockClaw extends CommandBase {
 
   @Override
   public void execute() {
-    if(isOk){
+    if(isOk && climb.isEnabled()){
         if(numLevel == 2)
             climb.setSolenoidLevel2or4State(ClimbConstants.PISTON_LOCKED); 
    

@@ -51,6 +51,7 @@ public class RobotContainer {
   // operator buttons:
   private JoystickButton B_Operator; // claw level 2;
   private JoystickButton X_Operator; // claw level 3;
+  private JoystickButton START_Operator; // Enable/Disable Climb Control
 
   // subsystem
   private Climb climb;
@@ -84,6 +85,7 @@ public class RobotContainer {
     this.A_Driver = new JoystickButton(d_joystick, XboxController.Button.kA.value);
     this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
     this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
+    this.START_Operator = new JoystickButton(o_joystick, XboxController.Button.kStart.value);
   }
 
   private void configureButtonBindings() {
@@ -112,6 +114,7 @@ public class RobotContainer {
      * climb.setDefaultCommand(new ManualRotateChain(climb, () ->
      * o_joystick.getRawAxis(XboxController.Axis.kRightX.value)));
      */
+    START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled()), climb));
   }
 
 

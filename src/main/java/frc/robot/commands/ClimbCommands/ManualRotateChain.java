@@ -31,7 +31,7 @@ public class ManualRotateChain extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(isOk){
+    if(isOk && climb.isEnabled()){
       this.climb.c_control(speed.getAsDouble() * 0.5);
     }
   }

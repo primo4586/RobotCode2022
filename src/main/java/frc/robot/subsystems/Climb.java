@@ -39,6 +39,7 @@ public class Climb extends SubsystemBase {
   private DigitalInput sPiston_leftB; 
   
   private PrimoTab tab;
+  private boolean isEnabled;
   
   public Climb() 
   {
@@ -61,6 +62,7 @@ public class Climb extends SubsystemBase {
     this.sPiston_rightB = new DigitalInput(0);
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Climb");
+    this.isEnabled = false;
   }
 
   public void c_control(double speed)
@@ -147,6 +149,14 @@ public class Climb extends SubsystemBase {
 
   public boolean isHang(){
     return islevel2Secure() || islevel3Secure() ||islevel4Secure();
+  }
+
+  public boolean isEnabled() {
+      return isEnabled;
+  }
+
+  public void setEnabled(boolean isEnabled) {
+      this.isEnabled = isEnabled;
   }
 
   @Override
