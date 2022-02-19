@@ -4,27 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class CameraHandler {
 
     private List<VideoSource> cameras;
     private VideoSink sink;
     private int index;
+    private boolean isUsingLimelight;
+    private HttpCamera limelightStream;
 
     public CameraHandler(VideoSource... cams) {
         sink = CameraServer.addSwitchedCamera("POV: You are Itzik");
         cameras = new ArrayList<>();
         index = 0;
+        isUsingLimelight = false;
 
         for (var cam : cams) {
             cameras.add(cam);
             cam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
         }
-
         setCamera(index);
     }
 
@@ -51,5 +56,17 @@ public class CameraHandler {
 
     public void switchCamera() {
         setCamera((index + 1) % cameras.size());
+    }
+
+    public void switchCameraToLimelight() {
+        if (!isUsingLimelight) {
+            NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
+            limelightStream = new HttpCamera("Limelight", "10.45.86.11:5800");
+            sink.setSource(limelightStream);
+        } else {
+            limelightStream.close();
+            NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
+            setCamera(0);
+        }
     }
 }
