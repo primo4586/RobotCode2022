@@ -59,22 +59,15 @@ public class RobotContainer {
   private Intake intake;
   private Driver driver;
 
-  // autonomous
   private PrimoTab tab;
-  private PathHandler pathHandler;
-  private CommandSelector selector;
-  private Command autoShoot2ball, test;
-  private Trajectory shoot2ballTrajectory;
 
   private UsbCamera forward;
   private UsbCamera backward;
   private CameraHandler camHandler;
 
-  public RobotContainer() {
+  public RobotContainer(Driver driver, Shooter shooter, Feeder feeder, Intake intake, Climb climb) {
     this.d_joystick = new Joystick(0);
     this.o_joystick = new Joystick(1);
-
-    buildSubsystems();
 
     buildButtons();
 
@@ -82,16 +75,9 @@ public class RobotContainer {
 
     buildCameras();
 
-    buildAutonomous();
   }
 
-  private void buildSubsystems() {
-    // this.climb = new Climb();
-    this.intake = new Intake();
-    this.shooter = new Shooter();
-    this.feeder = new Feeder();
-    this.driver = new Driver();
-  }
+  
 
   private void buildButtons() {
     this.RB_Driver = new JoystickButton(d_joystick, XboxController.Button.kRightBumper.value);
@@ -104,8 +90,8 @@ public class RobotContainer {
     // driver:
     driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(XboxController.Axis.kLeftY.value),
         () -> d_joystick.getRawAxis(XboxController.Axis.kRightX.value),
-        () -> d_joystick.getRawAxis(XboxController.Axis.kLeftTrigger.value),
-        () -> d_joystick.getRawAxis(XboxController.Axis.kRightTrigger.value)));
+        () -> d_joystick.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0.2,
+        () -> d_joystick.getRawAxis(XboxController.Axis.kRightTrigger.value) > 0.2));
 
     this.LB_Driver.whenPressed(new InstantCommand(() -> {
       driver.changeDirection();
@@ -128,16 +114,6 @@ public class RobotContainer {
      */
   }
 
-  private void buildAutonomous() {
-    this.pathHandler = new PathHandler();
-    this.tab = new PrimoTab("Competition Dashboard");
-
-    this.shoot2ballTrajectory = pathHandler.loadPath(Constants.pathJson.shoot2ball);
-
-    this.test = new InstantCommand(() -> System.out.println("!!!!!!!!!!!AUTOOOOOO!!!!!!!!!!!!"));
-
-    this.selector = new CommandSelector(Map.ofEntries(Map.entry("Trench To Mid", test)), tab.getTab());
-  }
 
   private void buildCameras() {
 
@@ -147,14 +123,4 @@ public class RobotContainer {
     this.camHandler = new CameraHandler(forward, backward);
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return selector.getCommand();
-
-  }
 }

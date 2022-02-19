@@ -1,6 +1,7 @@
 package frc.robot.commands.ClimbCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.Climb;
 
 public class ManualLockClaw extends CommandBase {
@@ -30,13 +31,13 @@ public class ManualLockClaw extends CommandBase {
   public void execute() {
     if(isOk){
         if(numLevel == 2)
-            climb.setSolenoidLevel2or4State(true); 
+            climb.setSolenoidLevel2or4State(ClimbConstants.PISTON_LOCKED); 
    
         else if(numLevel == 3)
-          climb.setSolenoidLevel3State(true);
+          climb.setSolenoidLevel3State(ClimbConstants.PISTON_LOCKED);
     
         else if(numLevel == 4){
-          climb.setSolenoidLevel2or4State(true);
+          climb.setSolenoidLevel2or4State(ClimbConstants.PISTON_LOCKED);
         }
     }
     else{

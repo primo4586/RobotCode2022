@@ -11,6 +11,7 @@ import PrimoLib.PrimoTab;
 import autonomous.PIDConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.Driver;
 
 public class AlignByVision extends CommandBase {
@@ -23,16 +24,12 @@ public class AlignByVision extends CommandBase {
   private DoubleSupplier visionAngle;
 
   private double angleError;
-  
-  //TODO: add value
-  private double tolerance;
-  private double initalAngleOffset;
+  private double initalSetpointAngle;
   
   /** Creates a new AlignByVision. */
   public AlignByVision(Driver driver, DoubleSupplier visionAngle, double tolerance) {
     addRequirements(driver);
 
-    this.angleError = visionAngle.getAsDouble();
     this.visionAngle = visionAngle;
     this.driver = driver;
     this.pidController = config.getController();
@@ -44,22 +41,20 @@ public class AlignByVision extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.initalAngleOffset = driver.getYaw();
+    this.initalSetpointAngle = driver.getYaw() + visionAngle.getAsDouble();
+    this.angleError = visionAngle.getAsDouble();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    //TODO: Fix the logic - In initailize take limelight snapshot and reset gyro.
-    //    In execute, work according to gyro
-    double output = pidController.calculate(driver.getYaw(), initalAngleOffset + visionAngle.getAsDouble());
-    this.angleError = initalAngleOffset + visionAngle.getAsDouble() - driver.getYaw();
+    this.angleError = initalSetpointAngle - driver.getYaw();
+    double output = pidController.calculate(driver.getYaw(), initalSetpointAngle);
 
     tab.addEntry("PID Output").setNumber(output);
     tab.addEntry("Angle Error").setNumber(angleError);
     tab.addEntry("Limelight Angle").setNumber(visionAngle.getAsDouble());
-    driver.driveVelocity(-output, output);
+    driver.driveVelocity(output, output);
   }
 
   // Called once the command ends or is interrupted.
@@ -71,6 +66,6 @@ public class AlignByVision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.angleError <= tolerance;
+    return this.angleError <= VisionConstants.alignByVisionTolerance;
   }
 }

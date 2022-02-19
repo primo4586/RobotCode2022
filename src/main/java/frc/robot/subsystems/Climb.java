@@ -24,7 +24,6 @@ public class Climb extends SubsystemBase {
   private Solenoid p_level2;
   private Solenoid p_level3;
 
-  // TODO: switch the true and false value
 
   //switch:
   private DigitalInput switch_rightA;
@@ -63,13 +62,13 @@ public class Climb extends SubsystemBase {
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Climb");
   }
 
-  public void c_control(double Speed)
+  public void c_control(double speed)
   {
     /*
       Gets speed and set data to motor
     */
-    m_climbRight.set(Speed);
-    m_climbleft.set(-Speed);
+    m_climbRight.set(speed);
+    m_climbleft.set(-speed);
   }
 
   public double getAbsoluteSpeed()

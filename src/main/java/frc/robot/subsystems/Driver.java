@@ -32,16 +32,12 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     private WPI_TalonFX m_rightFollower;
     
     //for the controllers to work togther:
-    private MotorControllerGroup rightGroup;
-    private MotorControllerGroup leftGroup;
     private DifferentialDrive diffDrive;
 
     //sensors
     private PigeonIMU gyro;
     private WPI_TalonSRX gyroTalon;
     
-    //TODO: extract tab logic to another command  
-    //shufelboard insert and get - object
     private PrimoTab tab;
 
     private boolean isForward; 
@@ -59,19 +55,25 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     this.m_rightLeader = new WPI_TalonFX(Constants.DriverConstants.rightLeaderPort);
     this.m_rightFollower = new WPI_TalonFX(Constants.DriverConstants.rightFollowerPort);
    
+    // Setup followers
+    this.m_rightFollower.follow(m_rightLeader, FollowerType.PercentOutput);
+    this.m_leftFollower.follow(m_leftLeader, FollowerType.PercentOutput);
+
+    // Setup Brake
     this.m_leftLeader.setNeutralMode(NeutralMode.Brake);
     this.m_rightLeader.setNeutralMode(NeutralMode.Brake);
     this.m_rightFollower.setNeutralMode(NeutralMode.Brake);
     this.m_leftFollower.setNeutralMode(NeutralMode.Brake);
 
-    this.leftGroup = new MotorControllerGroup(m_leftLeader, m_leftFollower);
-    this.rightGroup = new MotorControllerGroup(m_rightLeader, m_rightFollower);
+    // Setup PID
+    this.m_rightLeader.config_kP(0, Constants.AutoConstants.RIGHT_CONFIG.getKp());
+    this.m_leftLeader.config_kP(0, Constants.AutoConstants.LEFT_CONFIG.getKp());
+    
+    // Setup Inverted
+    this.m_leftFollower.setInverted(true);
+    this.m_leftLeader.setInverted(true);
 
-
-    this.leftGroup.setInverted(true);
-    this.rightGroup.setInverted(false);
-   
-    this.diffDrive = new DifferentialDrive(leftGroup, rightGroup);
+    this.diffDrive = new DifferentialDrive(m_leftLeader, m_rightLeader);
 
     this.isForward = true;
 
@@ -80,9 +82,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     this.gyro.configFactoryDefault();
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Driver");
-
-    m_rightLeader.config_kP(0, Constants.AutoConstants.RIGHT_CONFIG.getKp());
-    m_leftLeader.config_kP(0, Constants.AutoConstants.LEFT_CONFIG.getKp());
 
     primoOdometry = new PrimoDifferentialDriveOdometry(this, ()-> resetEncoders());
   }
@@ -148,22 +147,17 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   }
 
   public void driveVelocity(double rightMetersPerSecond, double leftMetersPerSecond) {
-    //TODO: understand the code and try to make it better
-    double leftFFPercent = Constants.AutoConstants.FEEDFORWARD_LEFT.calculate(leftMetersPerSecond) / 12;
-    double rightFFPercent = Constants.AutoConstants.FEEDFORWARD_RIGHT.calculate(rightMetersPerSecond) / 12;
-
-    // TODO: Configure followers in CTOR and remove the usage of groups (Use leaders only).
-    this.m_leftFollower.follow(this.m_leftLeader,FollowerType.PercentOutput);
-    this.m_rightFollower.follow(this.m_rightLeader,FollowerType.PercentOutput);
+    // Feedforward calculates the amount of voltage we need to stay at the speeds we want
+    double leftFF = Constants.AutoConstants.FEEDFORWARD_LEFT.calculate(leftMetersPerSecond) / 12;
+    double rightFF = Constants.AutoConstants.FEEDFORWARD_RIGHT.calculate(rightMetersPerSecond) / 12;
 
     // Tranlsates the speeds to be per 100ms (The motors update at a rate of 100hz)
     double leftSpeedsIn100ms = leftMetersPerSecond / 10;
     double rightSpeedsIn100ms = rightMetersPerSecond / 10;
 
-
-    // Sets the motor's velocity setpoint to the velocity given, and uses the FeedForward voltages to make it more accurate
-    this.m_leftLeader.set(ControlMode.Velocity, leftSpeedsIn100ms / Constants.AutoConstants.METER_PER_TICK, DemandType.ArbitraryFeedForward, leftFFPercent);
-    this.m_rightLeader.set(ControlMode.Velocity, rightSpeedsIn100ms / Constants.AutoConstants.METER_PER_TICK, DemandType.ArbitraryFeedForward, rightFFPercent);
+    // Sets the motor's velocity setpoint to the velocity given, and uses the FeedForward values to stabilize its velocity and be able to stay on it for a while
+    this.m_leftLeader.set(ControlMode.Velocity, leftSpeedsIn100ms / Constants.AutoConstants.METER_PER_TICK, DemandType.ArbitraryFeedForward, leftFF);
+    this.m_rightLeader.set(ControlMode.Velocity, rightSpeedsIn100ms / Constants.AutoConstants.METER_PER_TICK, DemandType.ArbitraryFeedForward, rightFF);
     diffDrive.feed();
   }
 
@@ -195,10 +189,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   }
 
 
-
-
-
-
   @Override
   public void periodic() {
     /*
@@ -213,8 +203,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     tab.addEntry("Right Pos. ").setNumber(getRightPositionInMeters());
     tab.addEntry("Gyro angle").setNumber(getYaw());
     tab.addEntry("Is forward").setBoolean(isDirectionForward());
-
-    
   }
 
   

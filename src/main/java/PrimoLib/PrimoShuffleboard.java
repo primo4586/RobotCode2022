@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 public class PrimoShuffleboard {
 
-    //TODO: add wrappr class for this year shuffleBoard
     private Map<String, PrimoTab> tabs;
     private static PrimoShuffleboard instance;
 

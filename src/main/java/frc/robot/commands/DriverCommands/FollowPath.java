@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -67,8 +68,7 @@ public class FollowPath extends CommandBase implements Runnable{
     // By how much the position can be off the target position
     rController.setTolerance(Constants.AutoConstants.OFFSET_TOLERANCE);
 
-    //TODO: add to constans or by the wpilib const
-    runner.startPeriodic(0.005);
+    runner.startPeriodic(Units.millisecondsToSeconds(200));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -79,7 +79,8 @@ public class FollowPath extends CommandBase implements Runnable{
   @Override
   public void end(boolean interrupted) {
     System.out.println("Finished");
-    //TODO: Kill the runner with runner.close() or runner.stop() (Or both?).
+    runner.stop();
+    runner.close();
     rController.setEnabled(false);
     timer.stop();
   }
@@ -103,8 +104,7 @@ public class FollowPath extends CommandBase implements Runnable{
     this.wheelSpeeds = Constants.AutoConstants.KINEMATICS.toWheelSpeeds(speeds);
     
     
-    //TODO: add inverted to motors and delete the (-).
-    driver.driveVelocity(-wheelSpeeds.rightMetersPerSecond, wheelSpeeds.leftMetersPerSecond);  
+    driver.driveVelocity(wheelSpeeds.rightMetersPerSecond, wheelSpeeds.leftMetersPerSecond);  
   }
 
 

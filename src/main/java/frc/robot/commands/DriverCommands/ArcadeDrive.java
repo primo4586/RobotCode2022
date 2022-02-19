@@ -4,6 +4,7 @@
 
 package frc.robot.commands.DriverCommands;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -13,15 +14,16 @@ import frc.robot.subsystems.Driver;
 public class ArcadeDrive extends CommandBase {
   /** Creates a new ArcadeDrive. */
   private Driver driver;
-  private DoubleSupplier speed, rotation, slow, boost;
+  private DoubleSupplier speed, rotation;
+  private BooleanSupplier isSlowing, isBoosting;
   private double speedAsDouble, rotationAsDouble;
 
-  public ArcadeDrive(Driver driver, DoubleSupplier speed, DoubleSupplier rotation, DoubleSupplier slow, DoubleSupplier boost) {
+  public ArcadeDrive(Driver driver, DoubleSupplier speed, DoubleSupplier rotation, BooleanSupplier isSlowing, BooleanSupplier isBoosting) {
     this.driver = driver;
     this.speed = speed;
     this.rotation = rotation;
-    this.slow = slow;
-    this.boost = boost;
+    this.isSlowing = isSlowing;
+    this.isBoosting = isBoosting;
 
     addRequirements(driver);
   }
@@ -40,11 +42,9 @@ public class ArcadeDrive extends CommandBase {
     this.speedAsDouble = this.speed.getAsDouble() * Constants.DriverConstants.SPEED_LIMITER;
     this.rotationAsDouble = this.rotation.getAsDouble() * Constants.DriverConstants.ROTATION_LIMITER;
     
-    // TODO: extract to function or to booleanSupplier
-    if(Math.abs(slow.getAsDouble())>0.2)
+    if(isSlowing.getAsBoolean())
       this.speedAsDouble *= Constants.DriverConstants.SLOW;
-
-    else if(Math.abs(boost.getAsDouble())>0.2)
+    else if(isBoosting.getAsBoolean())
       this.speedAsDouble *= Constants.DriverConstants.BOOST;
     
     driver.d_control(speedAsDouble, rotationAsDouble);

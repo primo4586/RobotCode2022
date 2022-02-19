@@ -5,6 +5,7 @@
 package frc.robot.commands.ClimbCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.Climb;
 
 public class ManualReleaseClaw extends CommandBase {
@@ -34,10 +35,10 @@ public class ManualReleaseClaw extends CommandBase {
   public void execute() {
     if(this.isOk){
       if(numLevel==2)
-        climb.setSolenoidLevel2or4State(false);
+        climb.setSolenoidLevel2or4State(ClimbConstants.PISTON_RELEASE);
 
       else if(numLevel == 3)
-        climb.setSolenoidLevel3State(false);
+        climb.setSolenoidLevel3State(ClimbConstants.PISTON_RELEASE);
       
     }
   }

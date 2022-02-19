@@ -7,6 +7,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Driver;
+import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import vision.Limelight;
 
 /**
@@ -18,8 +23,19 @@ import vision.Limelight;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  // Containers
+  private RobotContainer robotContainer;
+  private AutonomousContainer autoContainer;
+  
+  // Vision
   private Limelight limelight;
+
+  // Subsystems
+  private Intake intake;
+  private Shooter shooter;
+  private Feeder feeder;
+  private Driver driver;
+  private Climb climb;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -30,10 +46,14 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
 
-    //TODO: add auto class
-    //TODO: load auto path
-    
-    m_robotContainer = new RobotContainer();
+    this.intake = new Intake();
+    this.shooter = new Shooter();
+    this.feeder = new Feeder();
+    this.driver = new Driver();
+    this.climb = new Climb();
+
+    robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb);
+    autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb);
     limelight = new Limelight();
   }
 
@@ -64,14 +84,12 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = autoContainer.getSelectedCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-
-    //TODO: choose auto path
   }
 
   /** This function is called periodically during autonomous. */
