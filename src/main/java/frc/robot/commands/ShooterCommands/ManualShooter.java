@@ -26,13 +26,13 @@ public class ManualShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.s_control(shooterSpeed);
+    shooter.s_PIDControl(shooterSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.s_control(0);
+    shooter.s_PIDControl(0);
   }
 
   // Returns true when the command should end.

@@ -30,6 +30,9 @@ public final class Constants {
         public static final int FeederPort = 6;
         public static final double FeederSpeed = 0.5;
         public static final double ShooterSpeed = 0.5;
+
+        public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(1, 0, 0, 0);
+        public static final double READY_SPEED_TOLERANCE = 200;
     }
 
     public static final class DriverConstants {
@@ -62,6 +65,10 @@ public final class Constants {
         public static final boolean PISTON_LOCKED = false;
         // Piston OPEN - (Claw is unlocked, not attaching to the bar)
         public static final boolean PISTON_RELEASE = true;
+
+        // Limit is in TICKS.
+        public static final int FORWARD_LIMIT = 0;
+        public static final int BACKWARD_LIMIT = 0;
     }
 
     public static final class IntakeConstants {
