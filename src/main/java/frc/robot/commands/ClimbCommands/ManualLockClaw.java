@@ -18,27 +18,19 @@ public class ManualLockClaw extends CommandBase {
 
   @Override
   public void initialize() {
-    if(numLevel ==2)
-      this.isOk = climb.isMot2or4In();
+    if(numLevel ==2 || numLevel == 4)
+      this.isOk = climb.isMotInSideA();
     else if(numLevel == 3) 
-      this.isOk = climb.isMot3In();
-    else if(numLevel == 4){
-      this.isOk = climb.isMot2or4In();
-    }
+      this.isOk = climb.isMotInSideB();
   }
 
   @Override
   public void execute() {
     if(isOk && climb.isEnabled()){
-        if(numLevel == 2)
-            climb.setSolenoidLevel2or4State(ClimbConstants.PISTON_LOCKED); 
-   
+        if(numLevel == 2 || numLevel == 4)
+            climb.setSolenoidSideA(ClimbConstants.PISTON_LOCKED); 
         else if(numLevel == 3)
-          climb.setSolenoidLevel3State(ClimbConstants.PISTON_LOCKED);
-    
-        else if(numLevel == 4){
-          climb.setSolenoidLevel2or4State(ClimbConstants.PISTON_LOCKED);
-        }
+          climb.setSolenoidSideB(ClimbConstants.PISTON_LOCKED);
     }
     else{
       //shake controller

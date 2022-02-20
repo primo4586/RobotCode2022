@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ClimbConstants;
 
 
 public class Climb extends SubsystemBase {
@@ -22,21 +21,17 @@ public class Climb extends SubsystemBase {
 
   private Compressor compressor;
 
-  private Solenoid p_level2;
-  private Solenoid p_level3;
+  private Solenoid solenoidA; // Side A
+  private Solenoid solenoidB; // Side B
 
 
   //switch:
-  private DigitalInput switch_rightA;
-  private DigitalInput switch_rightB;
-  private DigitalInput switch_leftA;
-  private DigitalInput switch_leftB;
+  private DigitalInput switchA;
+  private DigitalInput switchB;
 
   //piston sensors:
-  private DigitalInput sPiston_rightA;
-  private DigitalInput sPiston_rightB; 
-  private DigitalInput sPiston_leftA; 
-  private DigitalInput sPiston_leftB; 
+  private DigitalInput sPistonA; // Right A
+  private DigitalInput sPistonB; // Left B
   
   private PrimoTab tab;
   private boolean isEnabled;
@@ -48,18 +43,14 @@ public class Climb extends SubsystemBase {
 
     this.compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
         
-    this.p_level2 = new Solenoid(0, PneumaticsModuleType.CTREPCM,1);
-    this.p_level3 = new Solenoid(0,PneumaticsModuleType.CTREPCM, 1);
+    this.solenoidA = new Solenoid(0, PneumaticsModuleType.CTREPCM,1);
+    this.solenoidB = new Solenoid(0,PneumaticsModuleType.CTREPCM, 1);
 
-    this.switch_leftA = new DigitalInput(0);
-    this.switch_rightA = new DigitalInput(0);
-    this.switch_leftB = new DigitalInput(0);
-    this.switch_rightB = new DigitalInput(0);
+    this.switchA = new DigitalInput(0);
+    this.switchB = new DigitalInput(0);
 
-    this.sPiston_leftA = new DigitalInput(0);
-    this.sPiston_leftB = new DigitalInput(0);
-    this.sPiston_rightA = new DigitalInput(0);
-    this.sPiston_rightB = new DigitalInput(0);
+    this.sPistonA = new DigitalInput(0);
+    this.sPistonB = new DigitalInput(0);
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Climb");
     this.isEnabled = false;
@@ -83,67 +74,67 @@ public class Climb extends SubsystemBase {
     return compressor.getPressure();
   }
 
-  public void setSolenoidLevel2or4State(boolean state)
+  public void setSolenoidSideA(boolean state)
   {
     /*
       sets the first to climb piston state 
     */
-    this.p_level2.set(state);
+    this.solenoidA.set(state);
   }
 
-  public void setSolenoidLevel3State(boolean state)
+  public void setSolenoidSideB(boolean state)
   {
     /*
       sets the second to climb piston state 
     */
-    this.p_level3.set(state);
+    this.solenoidB.set(state);
   }
 
-  public boolean isSolenoidLevel2Open(){
+  public boolean isSideAOpen(){
     /*
       gets the first to climb piston state 
     */
-    return this.p_level2.get();
+    return this.solenoidA.get();
   }
   
-  public boolean isSolenoidLevel3Open(){
+  public boolean isSideBOpen(){
     /*
       gets the first to climb piston state 
     */
-    return this.p_level3.get();
+    return this.solenoidB.get();
   }
 
   /* TO-DO: explain logic in comments, why do you need three functions? */
   
-  public boolean isMot2or4In(){
-    return this.switch_leftA.get() && this.switch_rightA.get();
+  public boolean isMotInSideA(){
+    return this.switchA.get();
   }
 
-  public boolean isMot3In(){
-    return this.switch_leftB.get() && this.switch_rightB.get();
+  public boolean isMotInSideB(){
+    return this.switchB.get();
   }
 
-  public boolean isClaw2or4close(){
-    return this.sPiston_leftA.get() && this.sPiston_rightA.get();
+  public boolean isClawInSideA(){
+    return this.sPistonA.get();
   }
 
-  public boolean isClaw3close(){
-    return this.sPiston_leftB.get() && this.sPiston_rightB.get();
+  public boolean isClawInSideB(){
+    return this.sPistonB.get();
   }
 
   public boolean islevel2Secure(){
     //return true if the claw close on the mot and its ok to move on
-    return isMot2or4In() && isClaw2or4close();
+    return isMotInSideA() && isClawInSideA();
   }
 
   public boolean islevel3Secure(){
     //return true if the claw close on the mot and its ok to move on
-    return isMot3In() && isClaw3close();
+    return isMotInSideB() && isClawInSideB();
   }
 
   public boolean islevel4Secure(){
     //return true if the claw close on the mot and its ok to move on
-    return isMot2or4In() && isClaw2or4close();
+    return isMotInSideA() && isClawInSideA();
   }
 
 
