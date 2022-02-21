@@ -3,9 +3,14 @@ package frc.robot;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opencv.core.Mat;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.MjpegServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.cscore.VideoMode.PixelFormat;
@@ -30,7 +35,9 @@ public class CameraHandler {
             cameras.add(cam);
             cam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
         }
-        setCamera(index);
+
+        
+        setCamera(0);
     }
 
     public void addCameras(VideoSource... cameras) {

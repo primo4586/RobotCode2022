@@ -18,11 +18,8 @@ public class Climb extends SubsystemBase {
   private WPI_TalonFX m_climbRight;
   private WPI_TalonFX m_climbleft;
 
-  private Compressor compressor;
-
   private Solenoid solenoidA; // Side A
   private Solenoid solenoidB; // Side B
-
 
   //switch:
   private DigitalInput switchA;

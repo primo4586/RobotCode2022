@@ -9,6 +9,7 @@ import java.util.Map;
 import PrimoLib.PrimoTab;
 import autonomous.CommandSelector;
 import autonomous.PathHandler;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Joystick;
@@ -73,12 +74,21 @@ public class RobotContainer {
     this.d_joystick = new Joystick(0);
     this.o_joystick = new Joystick(1);
 
+<<<<<<< HEAD
 
     this.driver = driver;
     this.climb = climb;
     this.shooter = shooter;
     this.feeder = feeder;
     this.intake = intake;
+=======
+    this.driver = driver;
+    this.shooter = shooter;
+    this.feeder = feeder;
+    this.intake = intake;
+    this.climb = climb;
+
+>>>>>>> 964834a6d6f15b1bb3d1803fa1b826dc1cb62a5f
     buildButtons();
 
     configureButtonBindings();
@@ -132,10 +142,10 @@ public class RobotContainer {
 
   private void buildCameras() {
 
-    this.forward = new UsbCamera("Forward Camera", 0);
-    this.backward = new UsbCamera("Backward Camera", 0);
+    this.forward = CameraServer.startAutomaticCapture("Forward", 0);
+    this.backward = CameraServer.startAutomaticCapture("Backward", 1);
 
-    this.camHandler = new CameraHandler(forward, backward);
+    this.camHandler = new CameraHandler(forward,backward);
   }
 
 }
