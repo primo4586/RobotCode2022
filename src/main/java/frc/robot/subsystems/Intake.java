@@ -38,6 +38,7 @@ public class Intake extends SubsystemBase {
   }
   
   public boolean isJointOpen() {
+    // return true; 
     return this.p_joint.get();
   }
 
