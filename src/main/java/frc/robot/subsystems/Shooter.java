@@ -54,4 +54,5 @@ public class Shooter extends SubsystemBase {
     tab.addEntry("Shooter Velocity").setNumber(m_shooter.getSelectedSensorVelocity());
     tab.addEntry("Reached target velocity").setBoolean(isReadyToShoot(pidSetpoint));
   }
+  
 }

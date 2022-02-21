@@ -25,6 +25,13 @@ import frc.robot.commands.DriverCommands.FollowPath;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+    public static final class Pneumatics{
+        public static final int pcmPort = 8;
+        public static final int intakeJointPort = 5;
+        public static final int climbSolenoidA = 6;
+        public static final int climbSolenoidB = 7;
+    }
     public static final class ShooterConstants {
         public static final int ShooterPort = 15;
         public static final int FeederPort = 6;
@@ -58,17 +65,20 @@ public final class Constants {
     }
 
     public static final class ClimbConstants {
-        public static final int climbPort = 0;
-        public static final double motorSpeed = 0;
+        public static final int rightMotorPort = 10;
+        public static final int leftMotorPort = 9;
 
         // Piston CLOSED - (Claw is locked onto the Bar)
-        public static final boolean PISTON_LOCKED = false;
+        public static final boolean PISTON_LOCKED = true;
         // Piston OPEN - (Claw is unlocked, not attaching to the bar)
-        public static final boolean PISTON_RELEASE = true;
+        public static final boolean PISTON_RELEASE = false;
+
+        
 
         // Limit is in TICKS.
         public static final int FORWARD_LIMIT = 0;
         public static final int BACKWARD_LIMIT = 0;
+        public static final double chainSpeed = 0.7;
     }
 
     public static final class IntakeConstants {

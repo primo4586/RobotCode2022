@@ -22,7 +22,7 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     this.m_roller = new WPI_TalonSRX(Constants.IntakeConstants.rollerPort);
-    this.p_joint = new Solenoid(8, PneumaticsModuleType.CTREPCM, 5); //Commented
+    this.p_joint = new Solenoid(Constants.Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, Constants.Pneumatics.intakeJointPort);
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Feeder");
   }
 

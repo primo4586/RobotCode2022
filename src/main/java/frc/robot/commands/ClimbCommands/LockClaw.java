@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.Climb;
 
-public class ManualLockClaw extends CommandBase {
+public class LockClaw extends CommandBase {
   private Climb climb;
   private boolean isOk;
   private int numLevel; //the level the robot moving to 
   
-  public ManualLockClaw(Climb climb, int numLevel) {
+  public LockClaw(Climb climb, int numLevel) {
     this.climb = climb;
     this.numLevel = numLevel;
 
@@ -19,18 +19,18 @@ public class ManualLockClaw extends CommandBase {
   @Override
   public void initialize() {
     if(numLevel ==2 || numLevel == 4)
-      this.isOk = climb.isMotInSideA();
+      this.isOk = climb.isMot2or4In();
     else if(numLevel == 3) 
-      this.isOk = climb.isMotInSideB();
+      this.isOk = climb.isMot3In();
   }
 
   @Override
   public void execute() {
     if(isOk && climb.isEnabled()){
         if(numLevel == 2 || numLevel == 4)
-            climb.setSolenoidSideA(ClimbConstants.PISTON_LOCKED); 
+            climb.setSolenoidLevel2or4(ClimbConstants.PISTON_LOCKED); 
         else if(numLevel == 3)
-          climb.setSolenoidSideB(ClimbConstants.PISTON_LOCKED);
+          climb.setSolenoidLevel3(ClimbConstants.PISTON_LOCKED);
     }
     else{
       //shake controller

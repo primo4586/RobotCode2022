@@ -38,14 +38,14 @@ public class AutonomousContainer {
 
         // Loading the autonomous trajectories
         // TODO: Change to an actual auto path we create in the future
-        Trajectory oneBallPath = PathHandler.getInstance().loadPath("output/oneballAuto.wpilib.json"); 
+        // Trajectory oneBallPath = PathHandler.getInstance().loadPath("output/oneballAuto.wpilib.json"); 
         
         // Creating & adding the commands to the selector
         InstantCommand testCmd = new InstantCommand(() -> System.out.println("Test Auto"));
-        FollowPath oneBallAuto = new FollowPath(driver, oneBallPath, true);
+        // FollowPath oneBallAuto = new FollowPath(driver, oneBallPath, true);
 
         autoPaths.put("Test", testCmd);
-        autoPaths.put("One Ball Auto", oneBallAuto);
+        // autoPaths.put("One Ball Auto", oneBallAuto);
 
         this.autoSelector = new CommandSelector(autoPaths, competitionTab.getTab());
     }
@@ -55,3 +55,4 @@ public class AutonomousContainer {
     }
 
 }
+

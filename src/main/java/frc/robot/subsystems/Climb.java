@@ -12,8 +12,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-
+import frc.robot.Constants;
 public class Climb extends SubsystemBase {
 
   private WPI_TalonFX m_climbRight;
@@ -38,14 +37,16 @@ public class Climb extends SubsystemBase {
   
   public Climb() 
   {
-    this.m_climbRight = new WPI_TalonFX(0);
-    this.m_climbleft = new WPI_TalonFX(0);
+    this.m_climbRight = new WPI_TalonFX(Constants.ClimbConstants.rightMotorPort);
+    this.m_climbleft = new WPI_TalonFX(Constants.ClimbConstants.leftMotorPort);
 
-    this.compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
+    this.m_climbleft.setInverted(true);
+
+    //this.compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
         
-    this.solenoidA = new Solenoid(0, PneumaticsModuleType.CTREPCM,1);
-    this.solenoidB = new Solenoid(0,PneumaticsModuleType.CTREPCM, 1);
-
+    this.solenoidA = new Solenoid(Constants.Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, Constants.Pneumatics.climbSolenoidA);
+    this.solenoidB = new Solenoid(Constants.Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, Constants.Pneumatics.climbSolenoidB);
+    
     this.switchA = new DigitalInput(0);
     this.switchB = new DigitalInput(0);
 
@@ -53,7 +54,10 @@ public class Climb extends SubsystemBase {
     this.sPistonB = new DigitalInput(0);
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Climb");
-    this.isEnabled = false;
+    
+    //this.isEnabled = false;
+    
+    
   }
 
   public void c_control(double speed)
@@ -61,8 +65,9 @@ public class Climb extends SubsystemBase {
     /*
       Gets speed and set data to motor
     */
+    speed *= 0.7;
     m_climbRight.set(speed);
-    m_climbleft.set(-speed);
+    m_climbleft.set(speed);
   }
 
   public double getAbsoluteSpeed()
@@ -70,11 +75,7 @@ public class Climb extends SubsystemBase {
     return Math.abs(m_climbRight.get());
   }
 
-  public double getPressure(){
-    return compressor.getPressure();
-  }
-
-  public void setSolenoidSideA(boolean state)
+  public void setSolenoidLevel2or4(boolean state)
   {
     /*
       sets the first to climb piston state 
@@ -82,7 +83,7 @@ public class Climb extends SubsystemBase {
     this.solenoidA.set(state);
   }
 
-  public void setSolenoidSideB(boolean state)
+  public void setSolenoidLevel3(boolean state)
   {
     /*
       sets the second to climb piston state 
@@ -90,60 +91,42 @@ public class Climb extends SubsystemBase {
     this.solenoidB.set(state);
   }
 
-  public boolean isSideAOpen(){
-    /*
-      gets the first to climb piston state 
-    */
-    return this.solenoidA.get();
-  }
   
-  public boolean isSideBOpen(){
-    /*
-      gets the first to climb piston state 
-    */
-    return this.solenoidB.get();
-  }
-
   /* TO-DO: explain logic in comments, why do you need three functions? */
   
-  public boolean isMotInSideA(){
+  public boolean isMot2or4In(){
     return this.switchA.get();
   }
 
-  public boolean isMotInSideB(){
+  public boolean isMot3In(){
     return this.switchB.get();
   }
 
-  public boolean isClawInSideA(){
+  public boolean isClawLockOn2or4(){
     return this.sPistonA.get();
   }
 
-  public boolean isClawInSideB(){
+  public boolean isClawLockOn3(){
     return this.sPistonB.get();
   }
 
-  public boolean islevel2Secure(){
+  public boolean islevel2or4Secure(){
     //return true if the claw close on the mot and its ok to move on
-    return isMotInSideA() && isClawInSideA();
+    return isMot2or4In() && isClawLockOn2or4();
   }
 
   public boolean islevel3Secure(){
     //return true if the claw close on the mot and its ok to move on
-    return isMotInSideB() && isClawInSideB();
-  }
-
-  public boolean islevel4Secure(){
-    //return true if the claw close on the mot and its ok to move on
-    return isMotInSideA() && isClawInSideA();
+    return isMot3In() && isClawLockOn3();
   }
 
 
   public boolean isHang(){
-    return islevel2Secure() || islevel3Secure() ||islevel4Secure();
+    return islevel2or4Secure() || islevel3Secure();
   }
 
   public boolean isEnabled() {
-      return isEnabled;
+      return true;
   }
 
   public void setEnabled(boolean isEnabled) {

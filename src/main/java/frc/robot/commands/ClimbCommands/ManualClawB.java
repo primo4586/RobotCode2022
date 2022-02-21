@@ -2,18 +2,18 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.ClimbCommands.sideB;
+package frc.robot.commands.ClimbCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.Climb;
 
-public class ManualReleaseClawB extends CommandBase {
+public class ManualClawB extends CommandBase {
 
   private Climb climb;
+  private boolean state;
 
   /** Creates a new ManualLockClawA. */
-  public ManualReleaseClawB(Climb climb) {
+  public ManualClawB(Climb climb) {
     addRequirements(climb);
     this.climb = climb;
 
@@ -23,7 +23,8 @@ public class ManualReleaseClawB extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climb.setSolenoidSideB(ClimbConstants.PISTON_RELEASE); 
+    state = !state;
+    climb.setSolenoidLevel3(state); 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
