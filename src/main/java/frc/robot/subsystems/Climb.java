@@ -1,18 +1,14 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ClimbConstants;
 public class Climb extends SubsystemBase {
 
   private WPI_TalonFX m_climbRight;
@@ -34,8 +30,8 @@ public class Climb extends SubsystemBase {
   
   public Climb() 
   {
-    this.m_climbRight = new WPI_TalonFX(Constants.ClimbConstants.rightMotorPort);
-    this.m_climbleft = new WPI_TalonFX(Constants.ClimbConstants.leftMotorPort);
+    this.m_climbRight = new WPI_TalonFX(ClimbConstants.rightMotorPort);
+    this.m_climbleft = new WPI_TalonFX(ClimbConstants.leftMotorPort);
 
     this.m_climbleft.setInverted(true);
 
@@ -44,11 +40,11 @@ public class Climb extends SubsystemBase {
     this.solenoidA = new Solenoid(Constants.Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, Constants.Pneumatics.climbSolenoidA);
     this.solenoidB = new Solenoid(Constants.Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, Constants.Pneumatics.climbSolenoidB);
     
-    this.switchA = new DigitalInput(0);
-    this.switchB = new DigitalInput(0);
+    this.switchA = new DigitalInput(ClimbConstants.switchAport);
+    this.switchB = new DigitalInput(ClimbConstants.switchBport);
 
-    this.sPistonA = new DigitalInput(0);
-    this.sPistonB = new DigitalInput(0);
+    this.sPistonA = new DigitalInput(ClimbConstants.sPistonAport);
+    this.sPistonB = new DigitalInput(ClimbConstants.sPistonBport);
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Climb");
     

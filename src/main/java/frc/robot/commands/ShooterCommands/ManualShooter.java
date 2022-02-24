@@ -1,41 +1,52 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands.ShooterCommands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import PrimoLib.PrimoCommandBase;
+import autonomous.PIDConfig;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 
-public class ManualShooter extends CommandBase {
-  /** Creates a new ManualShooter. */
-  private Shooter shooter;
-  private double shooterSpeed;
-  
-  public ManualShooter(Shooter shooter, Double shooterSpeed) {
-    // Use addRequirements() here to declare subsystem dependencies.
+import java.util.function.DoubleSupplier;
+
+
+public class ManualShooter extends PrimoCommandBase {
+  Shooter shooter;
+  NetworkTableEntry Kp, Ki, Kd, Kf, setPoint, speed;
+
+  public ManualShooter(Shooter shooter) {
     this.shooter = shooter;
-    this.shooterSpeed = shooterSpeed;
     addRequirements(shooter);
+
+    System.out.println("CONSTRUCTOR");
+    speed = this.shooter.getTab().addEntry("Speed");
+    Kp = this.shooter.getTab().addEntry("Kp");
+    Ki = this.shooter.getTab().addEntry("Ki");
+    Kd = this.shooter.getTab().addEntry("Kd");
+    Kf = this.shooter.getTab().addEntry("Kf");
+
+    setPoint = this.shooter.getTab().addEntry("setPoint");
+
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    SmartDashboard.putNumber("shooter", 0);
+  }
+  
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.s_PIDControl(shooterSpeed);
+    shooter.setConfig(new PIDConfig(Kp.getDouble(0), Ki.getDouble(0), Kd.getDouble(0), Kf.getDouble(0)));
+    this.shooter.setVelocity(speed.getDouble(0));
+    
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.s_PIDControl(0);
+    shooter.s_control(0);
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

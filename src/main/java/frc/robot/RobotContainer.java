@@ -4,25 +4,21 @@
 
 package frc.robot;
 
-import java.util.Map;
-
 import PrimoLib.PrimoTab;
-import autonomous.CommandSelector;
-import autonomous.PathHandler;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.ClimbCommands.LockClaw;
 import frc.robot.commands.ClimbCommands.ManualClawA;
 import frc.robot.commands.ClimbCommands.ManualClawB;
 import frc.robot.commands.ClimbCommands.ManualRotateChain;
+import frc.robot.commands.ClimbCommands.ReleaseClaw;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
 import frc.robot.commands.IntakeCommands.JointAndRoller;
-import frc.robot.commands.IntakeCommands.ManualRoller;
 import frc.robot.commands.ShooterCommands.ManualFeeder;
 import frc.robot.commands.ShooterCommands.ManualShooter;
 import frc.robot.subsystems.Climb;
@@ -66,6 +62,7 @@ public class RobotContainer {
 
   private PrimoTab tab;
 
+  private Command climbSequent;
   private UsbCamera forward;
   private UsbCamera backward;
   private CameraHandler camHandler;
@@ -74,21 +71,12 @@ public class RobotContainer {
     this.d_joystick = new Joystick(0);
     this.o_joystick = new Joystick(1);
 
-<<<<<<< HEAD
-
     this.driver = driver;
     this.climb = climb;
     this.shooter = shooter;
     this.feeder = feeder;
     this.intake = intake;
-=======
-    this.driver = driver;
-    this.shooter = shooter;
-    this.feeder = feeder;
-    this.intake = intake;
-    this.climb = climb;
-
->>>>>>> 964834a6d6f15b1bb3d1803fa1b826dc1cb62a5f
+    
     buildButtons();
 
     configureButtonBindings();
@@ -96,8 +84,6 @@ public class RobotContainer {
     buildCameras();
 
   }
-
-  
 
   private void buildButtons() {
     this.RB_Driver = new JoystickButton(d_joystick, XboxController.Button.kRightBumper.value);
@@ -124,17 +110,33 @@ public class RobotContainer {
 
     // shooter:
     this.A_Driver.whileHeld(new ManualFeeder(feeder, Constants.ShooterConstants.FeederSpeed));
-    this.B_Driver.whileHeld(new ManualShooter(shooter, Constants.ShooterConstants.ShooterSpeed));
+    this.B_Driver.whileHeld(new ManualShooter(shooter));
 
     // intake
     RB_Driver.whileHeld(new JointAndRoller(intake));
 
     // climb:
+
+    //for testing and operating without sensors
+    /*
      A_Operator.whenPressed(new ManualClawA(climb));
      B_Operator.whenPressed(new ManualClawB(climb));
+     */
+
+     A_Operator.whenPressed(new LockClaw(climb, 2));// close level 2 or 4
+     B_Operator.whenPressed(new LockClaw(climb, 3)); //close level 3
+    //  X_Operator.whenPressed(new ReleaseClaw(climb, 2)); //open level 2 or
+    //  Y_Operator.whenPressed(new ReleaseClaw(climb, 3)); //open level 3
+
      
     climb.setDefaultCommand(new ManualRotateChain(climb, () ->
-     o_joystick.getRawAxis(XboxController.Axis.kRightX.value)));
+     o_joystick.getRawAxis(XboxController.Axis.kRightX.value),true,false));
+
+    //
+
+    
+
+    
      
     //START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled()), climb));
   }

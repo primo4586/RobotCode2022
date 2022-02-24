@@ -21,10 +21,15 @@ public class Shooter extends SubsystemBase {
   private PrimoTab tab;
   private PIDController shooterPidController;
   private double pidSetpoint;
+  private PIDConfig config;
+
   
   public Shooter() {
     this.m_shooter = new WPI_TalonFX(Constants.ShooterConstants.ShooterPort);
     this.m_shooter.setInverted(true);
+
+    this.config = new PIDConfig(2, 0.0001, 0, 0.43);
+
     
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
     shooterPidController = ShooterConstants.SHOOTER_CONFIG.getController();
@@ -36,15 +41,26 @@ public class Shooter extends SubsystemBase {
     m_shooter.set(shooterSpeed);
   }
 
-  public void s_PIDControl(double setpointSpeed) {
-    this.pidSetpoint = setpointSpeed;
-
-    double outputSpeed = shooterPidController.calculate(m_shooter.getSelectedSensorVelocity(), setpointSpeed);
-
-    m_shooter.set(ControlMode.Velocity, outputSpeed);
+  public void setConfig(PIDConfig config) {
+    this.m_shooter.config_kP(0, config.getKp());
+    this.m_shooter.config_kI(0, config.getKi());
+    this.m_shooter.config_kD(0, config.getKd());
+    this.m_shooter.config_kF(0, config.getKf());
   }
 
-  public boolean isReadyToShoot(double pidSetpoint) {
+  public void setVelocity(double velocity) {
+    // this.leader.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward,
+    //     ShooterConstants.SHOOTER_FEEDFORWARD_NEW.calculate((velocity) * 10 / 192) / 12);
+    this.pidSetpoint = velocity;
+    this.m_shooter.set(ControlMode.Velocity, velocity);
+
+  }  
+
+  public PrimoTab getTab() {
+      return tab;
+  }
+
+  public boolean isReadyToShoot() {
     return pidSetpoint != 0 && pidSetpoint - m_shooter.getSelectedSensorVelocity() <= ShooterConstants.READY_SPEED_TOLERANCE;
   }
   
@@ -52,7 +68,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     tab.addEntry("Shooter Velocity").setNumber(m_shooter.getSelectedSensorVelocity());
-    tab.addEntry("Reached target velocity").setBoolean(isReadyToShoot(pidSetpoint));
+    tab.addEntry("Reached target velocity").setBoolean(isReadyToShoot());
   }
   
 }
