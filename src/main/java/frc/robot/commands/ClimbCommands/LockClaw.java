@@ -18,6 +18,9 @@ public class LockClaw extends CommandBase {
 
   @Override
   public void initialize() {
+    System.out.println("IN LOCK CLAW");
+    System.out.println("IS MOT 3 IN" + climb.isMot3In());
+
     if(numLevel ==2 || numLevel == 4)
       this.isOk = climb.isMot2or4In();
     else if(numLevel == 3) 
@@ -26,9 +29,11 @@ public class LockClaw extends CommandBase {
 
   @Override
   public void execute() {
-    if(isOk && climb.isEnabled()){
-        if(numLevel == 2 || numLevel == 4)
+    if(isOk){
+        if(numLevel == 2 || numLevel == 4){
             climb.setSolenoidLevel2or4(ClimbConstants.PISTON_LOCKED); 
+            System.out.println("LEVEL 2 LOCK CLAW");
+        }
         else if(numLevel == 3)
           climb.setSolenoidLevel3(ClimbConstants.PISTON_LOCKED);
     }

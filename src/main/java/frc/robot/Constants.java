@@ -31,11 +31,12 @@ public final class Constants {
         public static final int intakeJointPort = 5;
         public static final int climbSolenoidA = 6;
         public static final int climbSolenoidB = 7;
+        public static int feederPort = 4;
     }
     public static final class ShooterConstants {
         public static final int ShooterPort = 15;
         public static final int FeederPort = 6;
-        public static final double FeederSpeed = 0.9;
+        public static final double FeederSpeed = 0.85;
         public static final double ShooterSpeed = 0.7;
 
         public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(1, 0, 0, 0);
@@ -69,9 +70,9 @@ public final class Constants {
         public static final int leftMotorPort = 9;
 
         // Piston CLOSED - (Claw is locked onto the Bar)
-        public static final boolean PISTON_LOCKED = true;
+        public static final boolean PISTON_LOCKED = false;
         // Piston OPEN - (Claw is unlocked, not attaching to the bar)
-        public static final boolean PISTON_RELEASE = false;
+        public static final boolean PISTON_RELEASE = true;
 
         
 

@@ -24,6 +24,11 @@ public class Climb extends SubsystemBase {
   //piston sensors:
   private DigitalInput sPistonA; // Right A
   private DigitalInput sPistonB; // Left B
+
+  private int level; //the level the robot move to
+  private boolean isMotIn;
+  private boolean canSearch = true;
+
   
   private PrimoTab tab;
   private boolean isEnabled;
@@ -46,6 +51,10 @@ public class Climb extends SubsystemBase {
     this.sPistonA = new DigitalInput(ClimbConstants.sPistonAport);
     this.sPistonB = new DigitalInput(ClimbConstants.sPistonBport);
 
+    this.level = 2;
+    this.isMotIn = false;
+
+
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Climb");
     
     //this.isEnabled = false;
@@ -63,6 +72,13 @@ public class Climb extends SubsystemBase {
     m_climbleft.set(speed);
   }
 
+  public int getLevel(){
+    return this.level;
+  }
+
+  public void setLevel(int level){
+    this.level = level;
+  }
   public double getAbsoluteSpeed()
   {
     return Math.abs(m_climbRight.get());
@@ -88,15 +104,16 @@ public class Climb extends SubsystemBase {
   /* TO-DO: explain logic in comments, why do you need three functions? */
   
   public boolean isMot2or4In(){
-    return this.switchA.get();
+    this.isMotIn = !this.switchA.get();
+    return this.isMotIn;
   }
 
   public boolean isMot3In(){
-    return this.switchB.get();
+    return !this.switchB.get();
   }
 
   public boolean isClawLockOn2or4(){
-    return this.sPistonA.get();
+    return !this.sPistonA.get();
   }
 
   public boolean isClawLockOn3(){
@@ -105,12 +122,31 @@ public class Climb extends SubsystemBase {
 
   public boolean islevel2or4Secure(){
     //return true if the claw close on the mot and its ok to move on
+    System.out.println("is mot 2 or 4 in:"+ isMot2or4In());
+    System.out.println("is claw lock "+ isClawLockOn2or4());
     return isMot2or4In() && isClawLockOn2or4();
   }
 
   public boolean islevel3Secure(){
     //return true if the claw close on the mot and its ok to move on
+    System.out.println("Level 3 Mot: " + isMot3In());
+    System.out.println("Level 3 Claw: " + isClawLockOn3());
     return isMot3In() && isClawLockOn3();
+  }
+
+  
+  public boolean canSearch() {
+    boolean current = !this.switchA.get();
+    
+    if(current != this.isMotIn && this.isMotIn == false){
+      this.canSearch = false;
+    }
+    
+    if(current != this.isMotIn && this.isMotIn == true){
+      this.canSearch = true;
+    }
+
+    return canSearch;
   }
 
 
@@ -128,17 +164,17 @@ public class Climb extends SubsystemBase {
 
   @Override
   public void periodic() {
-
+/*
     // TODO: Commented because this crashes the robot because solenoids aren't installed yet
-    // tab.addEntry("Is Hang").setBoolean(isHang());
-    // tab.addEntry("Level 2 Secure").setBoolean(islevel2Secure());
-    // tab.addEntry("Level 3 Secure").setBoolean(islevel3Secure());
-    // tab.addEntry("Level 4 Secure").setBoolean(islevel4Secure());
+    tab.addEntry("Level 2 or 4 Secure").setBoolean(islevel2or4Secure());
+    tab.addEntry("Level 3 Secure").setBoolean(islevel3Secure());
     // tab.addEntry("Climb Speed").setNumber(getSpeed());
-    // tab.addEntry("Solenoid Lv2").setBoolean(isSolenoidLevel2Open());
-    // tab.addEntry("Solenoid Lv3").setBoolean(isSolenoidLevel3Open());
-    
+    tab.addEntry("is mot 2 or 4 in").setBoolean(isMot2or4In());
+    tab.addEntry("is mot 3 in").setBoolean(isMot3In());
+    */
+    // System.out.println("claw 3" + islevel3Secure());
 
     // This method will be called once per scheduler run
   }
+
 }

@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -17,6 +18,7 @@ public class Intake extends SubsystemBase {
   
   private WPI_TalonSRX m_roller;
   private Solenoid p_joint;
+  private Servo servoFeeder;
   
   private PrimoTab tab;
 
@@ -24,6 +26,7 @@ public class Intake extends SubsystemBase {
     this.m_roller = new WPI_TalonSRX(Constants.IntakeConstants.rollerPort);
     this.p_joint = new Solenoid(Constants.Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, Constants.Pneumatics.intakeJointPort);
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Feeder");
+    this.servoFeeder = new Servo(0);
   }
 
   public double getRollerSpeed() {
@@ -35,6 +38,10 @@ public class Intake extends SubsystemBase {
       Gets speed and set data to motor
     */
     this.m_roller.set(m_rollerSpeed); 
+  }
+
+  public void controllServo(){
+    this.servoFeeder.set(0.0);
   }
   
   public boolean isJointOpen() {

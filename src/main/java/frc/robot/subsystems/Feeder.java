@@ -8,8 +8,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Pneumatics;
 
 public class Feeder extends SubsystemBase {
   // create the feeder motor
@@ -18,6 +22,7 @@ public class Feeder extends SubsystemBase {
 
   public Feeder() {
     this.m_feeder = new WPI_TalonSRX(Constants.ShooterConstants.FeederPort);
+
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Feeder");
   }
 
@@ -26,6 +31,7 @@ public class Feeder extends SubsystemBase {
      m_feeder.set(feederSpeed);
   }
 
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

@@ -12,6 +12,7 @@ import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Driver;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.PistonForFeeder;
 import frc.robot.subsystems.Shooter;
 import vision.Limelight;
 
@@ -37,6 +38,7 @@ public class Robot extends TimedRobot {
   private Feeder feeder;
   private Driver driver;
   private Climb climb;
+  private PistonForFeeder pistonForFeeder;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -52,8 +54,9 @@ public class Robot extends TimedRobot {
     this.feeder = new Feeder();
     this.driver = new Driver();
     this.climb = new Climb();
+    this.pistonForFeeder = new PistonForFeeder();
 
-    robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb);
+    robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder);
     autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb);
     limelight = new Limelight();
   }
