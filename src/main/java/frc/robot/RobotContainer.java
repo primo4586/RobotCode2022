@@ -19,7 +19,6 @@ import frc.robot.commands.ClimbCommands.ManualRotateChain;
 import frc.robot.commands.ClimbCommands.ReleaseClaw;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
 import frc.robot.commands.IntakeCommands.JointAndRoller;
-import frc.robot.commands.IntakeCommands.ManualJoint;
 import frc.robot.commands.ShooterCommands.ManualFeeder;
 import frc.robot.commands.ShooterCommands.ManualShooter;
 import frc.robot.subsystems.Climb;
@@ -134,8 +133,8 @@ public class RobotContainer {
     this.A_Driver.whileHeld(new ManualFeeder(feeder));
 
     // intake
-    // RB_Driver.whileHeld(new JointAndRoller(intake));
-    RB_Driver.whenPressed(new ManualJoint(intake));
+    RB_Driver.whileHeld(new JointAndRoller(intake));
+
     // climb:
 
     //for testing and operating without sensors
