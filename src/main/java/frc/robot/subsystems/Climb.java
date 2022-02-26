@@ -27,7 +27,9 @@ public class Climb extends SubsystemBase {
 
   private int level; //the level the robot move to
   private boolean isMotIn;
-  private boolean canSearch = true;
+  private boolean canSearch3 = true;
+  private boolean canSearch2or4 = true;
+
 
   
   private PrimoTab tab;
@@ -72,13 +74,24 @@ public class Climb extends SubsystemBase {
     m_climbleft.set(speed);
   }
 
-  public int getLevel(){
-    return this.level;
+  public boolean getCanSearch3(){
+    return this.canSearch3;
   }
 
-  public void setLevel(int level){
-    this.level = level;
+  public void setCanSearch3(boolean can){
+    this.canSearch3 = can;
   }
+
+  public boolean getCanSearch2or4(){
+    return this.canSearch2or4;
+  }
+
+  public void setCanSearch2or4(boolean can){
+    this.canSearch2or4 = can;
+  }
+
+
+
   public double getAbsoluteSpeed()
   {
     return Math.abs(m_climbRight.get());
@@ -132,21 +145,6 @@ public class Climb extends SubsystemBase {
     System.out.println("Level 3 Mot: " + isMot3In());
     System.out.println("Level 3 Claw: " + isClawLockOn3());
     return isMot3In() && isClawLockOn3();
-  }
-
-  
-  public boolean canSearch() {
-    boolean current = !this.switchA.get();
-    
-    if(current != this.isMotIn && this.isMotIn == false){
-      this.canSearch = false;
-    }
-    
-    if(current != this.isMotIn && this.isMotIn == true){
-      this.canSearch = true;
-    }
-
-    return canSearch;
   }
 
 
