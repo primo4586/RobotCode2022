@@ -4,10 +4,12 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
+import autonomous.PIDConfig;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -24,14 +26,34 @@ public class Feeder extends SubsystemBase {
     this.m_feeder = new WPI_TalonSRX(Constants.ShooterConstants.FeederPort);
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Feeder");
+
+    tab.addEntry("Feeder P");
+    tab.addEntry("Feeder I");
+    tab.addEntry("Feeder D");
+    tab.addEntry("Feeder F");
+    tab.addEntry("setPoint");
   }
 
-  public void f_control (double feederSpeed){
-    //give m_feeder speed
-     m_feeder.set(feederSpeed);
+  public void f_control(double feederSpeed) {
+    // give m_feeder speed
+    m_feeder.set(feederSpeed);
   }
 
-  
+  public void setConfig(PIDConfig config) {
+    m_feeder.config_kP(0, config.getKp());
+    m_feeder.config_kI(0, config.getKi());
+    m_feeder.config_kD(0, config.getKd());
+    m_feeder.config_kF(0, config.getKf());
+  }
+
+  public void pidControl(double setpoint) {
+    m_feeder.set(ControlMode.Velocity, setpoint);
+  }
+
+  public PrimoTab getTab() {
+      return tab;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

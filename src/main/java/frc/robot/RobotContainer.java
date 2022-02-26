@@ -128,7 +128,7 @@ public class RobotContainer {
     // shooter:
     this.X_Driver.whenPressed(new InstantCommand(()-> pistonForFeeder.solenoidControll() , feeder));
     this.B_Driver.whileHeld(new ManualShooter(shooter));
-    this.A_Driver.whileHeld(new ManualFeeder(feeder, Constants.ShooterConstants.FeederSpeed));
+    this.A_Driver.whileHeld(new ManualFeeder(feeder));
 
     // intake
     RB_Driver.whileHeld(new JointAndRoller(intake));

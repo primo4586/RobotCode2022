@@ -26,19 +26,21 @@ import frc.robot.commands.DriverCommands.FollowPath;
  */
 public final class Constants {
 
-    public static final class Pneumatics{
+    public static final class Pneumatics {
         public static final int pcmPort = 8;
         public static final int intakeJointPort = 5;
         public static final int climbSolenoidA = 6;
         public static final int climbSolenoidB = 7;
-        public static int feederPort = 4;
+        public static final int feederPort = 4;
     }
+
     public static final class ShooterConstants {
         public static final int ShooterPort = 15;
         public static final int FeederPort = 6;
         public static final double FeederSpeed = 0.85;
         public static final double ShooterSpeed = 0.7;
 
+        public static final PIDConfig FEEDER_CONFIG = new PIDConfig(1, 0, 0, 0);
         public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(1, 0, 0, 0);
         public static final double READY_SPEED_TOLERANCE = 2000;
     }
@@ -74,8 +76,6 @@ public final class Constants {
         // Piston OPEN - (Claw is unlocked, not attaching to the bar)
         public static final boolean PISTON_RELEASE = true;
 
-        
-
         // Limit is in TICKS.
         public static final int FORWARD_LIMIT = 0;
         public static final int BACKWARD_LIMIT = 0;
@@ -90,6 +90,7 @@ public final class Constants {
         public static final double rollerSpeed = 0.7;
         public static final int rollerPort = 5;
     }
+
     public static final class AutoConstants {
 
         // Koter in meters.
@@ -152,7 +153,6 @@ public final class Constants {
     public class VisionConstants {
         public static final double alignByVisionTolerance = 1;
     }
-
 
     public static final class pathJson {
         public static final String shoot2ball = "";
