@@ -149,7 +149,7 @@ public class RobotContainer {
 
      
     climb.setDefaultCommand(new ManualRotateChain(climb, () ->
-     o_joystick.getRawAxis(XboxController.Axis.kRightY.value),true,false));
+     o_joystick.getRawAxis(XboxController.Axis.kRightY.value),true));
 
     //
 

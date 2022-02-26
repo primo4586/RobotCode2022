@@ -37,6 +37,7 @@ public class ManualShooter extends PrimoCommandBase {
 
   @Override
   public void execute() {
+    
     shooter.setConfig(new PIDConfig(Kp.getDouble(0), Ki.getDouble(0), Kd.getDouble(0), Kf.getDouble(0)));
     this.shooter.setVelocity(speed.getDouble(0));
     

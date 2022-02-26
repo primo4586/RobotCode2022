@@ -3,30 +3,34 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.ShooterCommands;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Feeder;
 
 public class ManualFeeder extends CommandBase {
   /** Creates a new ManualFeeder. */
   private Feeder feeder;
-  private double feederSpeed;
+  private NetworkTableEntry feederSpeed;
   
   public ManualFeeder(Feeder feeder, double feederSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.feeder = feeder;
-    this.feederSpeed = feederSpeed;
+    this.feederSpeed = this.feeder.getTab().addEntry("Feeder Speed");
     addRequirements(feeder);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    //SmartDashboard.putNumber("Feeder Speed", 0);
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.feeder.f_control(this.feederSpeed);
+    this.feeder.f_control(this.feederSpeed.getDouble(0));
   }
 
   // Called once the command ends or is interrupted.

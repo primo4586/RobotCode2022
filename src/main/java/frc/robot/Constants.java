@@ -36,7 +36,7 @@ public final class Constants {
     public static final class ShooterConstants {
         public static final int ShooterPort = 15;
         public static final int FeederPort = 6;
-        public static final double FeederSpeed = 0.85;
+        public static final double FeederSpeed = 0.75;
         public static final double ShooterSpeed = 0.7;
 
         public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(1, 0, 0, 0);

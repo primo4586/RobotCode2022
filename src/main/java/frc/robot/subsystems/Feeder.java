@@ -31,6 +31,9 @@ public class Feeder extends SubsystemBase {
      m_feeder.set(feederSpeed);
   }
 
+  public PrimoTab getTab() {
+    return tab;
+}
   
   @Override
   public void periodic() {
