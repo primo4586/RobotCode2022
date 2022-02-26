@@ -3,7 +3,9 @@ package PrimoLib;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.CameraHandler;
 
 public class PrimoShuffleboard {
 
@@ -35,6 +37,21 @@ public class PrimoShuffleboard {
     public void selectTab(String tabName) {
         if (tabs.containsKey(tabName))
             Shuffleboard.selectTab(tabName);
+    }
+
+    public void buildCompetitionTab() {
+
+        PrimoTab tab = PrimoShuffleboard.getInstance().getPrimoTab("Competition Dashboard");
+
+        // tab.addEntry("Time").setNumber(Timer.getMatchTime());
+        // tab.addEntry("Feeder Piston");
+        // tab.addEntry("Pressure");
+        // tab.addEntry("Climb 2 & 4 Secure");
+        // tab.addEntry("Climb 3 Secure");
+    }
+
+    public PrimoTab getCompetitonBoard() {
+        return PrimoShuffleboard.getInstance().getPrimoTab("Competition Dashboard");
     }
 
 }

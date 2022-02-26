@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -18,6 +19,7 @@ import frc.robot.commands.ClimbCommands.ManualRotateChain;
 import frc.robot.commands.ClimbCommands.ReleaseClaw;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
 import frc.robot.commands.IntakeCommands.JointAndRoller;
+import frc.robot.commands.IntakeCommands.ManualJoint;
 import frc.robot.commands.ShooterCommands.ManualFeeder;
 import frc.robot.commands.ShooterCommands.ManualShooter;
 import frc.robot.subsystems.Climb;
@@ -93,6 +95,7 @@ public class RobotContainer {
 
     buildCameras();
 
+    PrimoShuffleboard.getInstance().buildCompetitionTab();
   }
 
   private void buildButtons() {
@@ -131,8 +134,8 @@ public class RobotContainer {
     this.A_Driver.whileHeld(new ManualFeeder(feeder));
 
     // intake
-    RB_Driver.whileHeld(new JointAndRoller(intake));
-
+    // RB_Driver.whileHeld(new JointAndRoller(intake));
+    RB_Driver.whenPressed(new ManualJoint(intake));
     // climb:
 
     //for testing and operating without sensors
@@ -145,8 +148,8 @@ public class RobotContainer {
     //  B_Operator.whenPressed(new LockClaw(climb, 3)); //close level 3
      
     A_Operator.whenPressed(new ReleaseClaw(climb, 2)); //open level 2 or
-     B_Operator.whenPressed(new ReleaseClaw(climb, 3)); //open level 3
-
+    B_Operator.whenPressed(new ReleaseClaw(climb, 3)); //open level 3
+    START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled())));
      
     climb.setDefaultCommand(new ManualRotateChain(climb, () ->
      o_joystick.getRawAxis(XboxController.Axis.kRightY.value),true));

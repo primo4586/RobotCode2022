@@ -39,7 +39,7 @@ public class ManualRotateChain extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(isOk){
+    if(isOk && climb.isEnabled()){
       if(Math.abs(speed.getAsDouble()) > 0.3) {
         if(!climb.islevel3Secure())
           this.climb.c_control(ClimbConstants.chainSpeed);
@@ -50,8 +50,8 @@ public class ManualRotateChain extends CommandBase {
         this.climb.c_control(0);
 
       // System.out.println("CAN YOU SEARCH A MOT? " + climb.canSearch());
-      System.out.println("the level is: " + this.level);
-      System.out.println("is mot 2 or 4 in? " + climb.isMot2or4In());
+      // System.out.println("the level is: " + this.level);
+      // System.out.println("is mot 2 or 4 in? " + climb.isMot2or4In());
       
       if(climb.isMot2or4In()){
         if(climb.getCanSearch2or4()){

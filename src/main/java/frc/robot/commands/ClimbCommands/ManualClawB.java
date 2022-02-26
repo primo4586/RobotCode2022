@@ -24,7 +24,8 @@ public class ManualClawB extends CommandBase {
   @Override
   public void initialize() {
     state = !state;
-    climb.setSolenoidLevel3(state); 
+    if(climb.isEnabled())
+      climb.setSolenoidLevel3(state); 
   }
 
   // Called every time the scheduler runs while the command is scheduled.

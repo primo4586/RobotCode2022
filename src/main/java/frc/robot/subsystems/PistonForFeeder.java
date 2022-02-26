@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import PrimoLib.PrimoShuffleboard;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,6 +29,7 @@ public class PistonForFeeder extends SubsystemBase {
 
   @Override
   public void periodic() {
+    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Feeder Piston").forceSetBoolean(state);
     // This method will be called once per scheduler run
   }
 }

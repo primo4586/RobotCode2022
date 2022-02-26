@@ -34,7 +34,7 @@ public class ReleaseClaw extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(this.isOk){
+    if(this.isOk && climb.isEnabled()){
       if(numLevel==2)
         climb.setSolenoidLevel2or4(ClimbConstants.PISTON_RELEASE);
       else if(numLevel == 3)

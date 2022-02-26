@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.opencv.core.Mat;
 
+import PrimoLib.PrimoShuffleboard;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
@@ -21,12 +22,14 @@ public class CameraHandler {
 
     private List<VideoSource> cameras;
     private VideoSink sink;
+    private VideoSink limelightSink;
     private int index;
     private boolean isUsingLimelight;
     private HttpCamera limelightStream;
 
     public CameraHandler(VideoSource... cams) {
         sink = CameraServer.addSwitchedCamera("POV: You are Itzik");
+        limelightSink = CameraServer.addServer("Limelight");
         cameras = new ArrayList<>();
         index = 0;
         isUsingLimelight = false;
@@ -36,8 +39,13 @@ public class CameraHandler {
             cam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
         }
 
-        
         setCamera(0);
+        enableLimelightStream();
+
+        PrimoShuffleboard.getInstance().getCompetitonBoard().getTab().add("POV: You are Itzik", sink.getSource());
+        PrimoShuffleboard.getInstance().getCompetitonBoard().getTab().add("POV: You are Limelight",
+                limelightSink.getSource());
+
     }
 
     public void addCameras(VideoSource... cameras) {
@@ -65,15 +73,16 @@ public class CameraHandler {
         setCamera((index + 1) % cameras.size());
     }
 
-    public void switchCameraToLimelight() {
-        if (!isUsingLimelight) {
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
-            limelightStream = new HttpCamera("Limelight", "10.45.86.11:5800");
-            sink.setSource(limelightStream);
-        } else {
-            limelightStream.close();
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
-            setCamera(0);
-        }
+    public VideoSource getCamera(int index) {
+        return cameras.get(index);
     }
+
+    public void enableLimelightStream() {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+        limelightStream = new HttpCamera("Limelight", "http://10.45.86.11:5800");
+        limelightStream.setVideoMode(PixelFormat.kYUYV, 160, 120, 30);
+        limelightSink.setSource(limelightStream);
+    }
+
 }

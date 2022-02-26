@@ -25,6 +25,7 @@ public class ManualClawA extends CommandBase {
   @Override
   public void initialize() {
     state = !state;
+    if(climb.isEnabled())
     climb.setSolenoidLevel2or4(state); 
   }
 

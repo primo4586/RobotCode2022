@@ -29,7 +29,7 @@ public class LockClaw extends CommandBase {
 
   @Override
   public void execute() {
-    if(isOk){
+    if(isOk && climb.isEnabled()){
         if(numLevel == 2 || numLevel == 4){
             climb.setSolenoidLevel2or4(ClimbConstants.PISTON_LOCKED); 
             System.out.println("LEVEL 2 LOCK CLAW");
@@ -47,6 +47,6 @@ public class LockClaw extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
