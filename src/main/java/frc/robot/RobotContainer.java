@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.ClimbCommands.ManualClawA;
 import frc.robot.commands.ClimbCommands.ManualClawB;
 import frc.robot.commands.ClimbCommands.ManualRotateChain;
@@ -129,7 +130,7 @@ public class RobotContainer {
 
     // shooter:
     this.X_Driver.whenPressed(new InstantCommand(()-> pistonForFeeder.solenoidControll() , feeder));
-    this.B_Driver.whileHeld(new ManualShooter(shooter));
+    this.B_Driver.whileHeld(new ManualShooter(shooter, ShooterConstants.ShooterSpeed));
     this.A_Driver.whileHeld(new ManualFeeder(feeder));
 
     // intake

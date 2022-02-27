@@ -4,6 +4,8 @@
 
 package frc.robot.commands.DriverCommands;
 
+import PrimoLib.PrimoShuffleboard;
+import PrimoLib.PrimoTab;
 import autonomous.PathHandler;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -26,7 +28,7 @@ public class FollowPath extends CommandBase implements Runnable{
   private Trajectory.State goal;
   private ChassisSpeeds speeds;
   private DifferentialDriveWheelSpeeds wheelSpeeds;
-  
+  private PrimoTab tab;
 
   /**
    * Moves the robot to follow a specified path.
@@ -46,8 +48,9 @@ public class FollowPath extends CommandBase implements Runnable{
     
     this.runner = new Notifier(this);
 
+
     addRequirements(driver);
-    
+    tab = PrimoShuffleboard.getInstance().getPrimoTab("Driver");
   }
 
 
@@ -102,9 +105,12 @@ public class FollowPath extends CommandBase implements Runnable{
 
     // Translates the speeds to left/right motor speeds
     this.wheelSpeeds = Constants.AutoConstants.KINEMATICS.toWheelSpeeds(speeds);
+    tab.addEntry("FollowPath Right Setpoint").setNumber(wheelSpeeds.rightMetersPerSecond);
+    tab.addEntry("FollowPath Left Setpoint").setNumber(wheelSpeeds.leftMetersPerSecond);
     
-    
-    driver.driveVelocity(wheelSpeeds.rightMetersPerSecond, wheelSpeeds.leftMetersPerSecond);  
+    // TODO: Find out the reason for this and fix it properly, for some reason it follows paths backwards?
+    driver.driveVelocity(-wheelSpeeds.rightMetersPerSecond, -wheelSpeeds.leftMetersPerSecond);  
+
   }
 
 

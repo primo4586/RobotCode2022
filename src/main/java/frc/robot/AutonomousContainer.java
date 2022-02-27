@@ -15,11 +15,13 @@ import autonomous.PathHandler;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.AutoCommands.OneBallAuto;
 import frc.robot.commands.DriverCommands.FollowPath;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Driver;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.PistonForFeeder;
 import frc.robot.subsystems.Shooter;
 
 /** Add your docs here. */
@@ -32,21 +34,23 @@ public class AutonomousContainer {
     // Paths/Commands for autos
     private Map<String, Command> autoPaths;
 
-    public AutonomousContainer(Driver driver,Shooter shooter, Feeder feeder, Intake intake, Climb climb) {
+    public AutonomousContainer(Driver driver,Shooter shooter, Feeder feeder, Intake intake, Climb climb, PistonForFeeder piston) {
         this.competitionTab = PrimoShuffleboard.getInstance().getPrimoTab("Competition Dashboard");
         this.autoPaths = new HashMap<String,Command>();
 
         // Loading the autonomous trajectories
-        // TODO: Change to an actual auto path we create in the future
-        // Trajectory oneBallPath = PathHandler.getInstance().loadPath("output/oneballAuto.wpilib.json"); 
-        
+        Trajectory oneBallPath = PathHandler.getInstance().loadPath("output/oneBallAuto.wpilib.json"); 
+        Trajectory oneMeter = PathHandler.getInstance().loadPath("output/oneMeter.wpilib.json");
+
+
         // Creating & adding the commands to the selector
         InstantCommand testCmd = new InstantCommand(() -> System.out.println("Test Auto"));
-        // FollowPath oneBallAuto = new FollowPath(driver, oneBallPath, true);
+        OneBallAuto oneBallAuto = new OneBallAuto(driver, shooter, piston,feeder,oneBallPath);
 
         autoPaths.put("Test", testCmd);
-        // autoPaths.put("One Ball Auto", oneBallAuto);
-
+        autoPaths.put("One Ball Auto", oneBallAuto);
+        autoPaths.put("Test Follow", new FollowPath(driver, oneBallPath, true));
+        autoPaths.put("Test Curved", new FollowPath(driver, oneMeter, true));
         this.autoSelector = new CommandSelector(autoPaths, competitionTab.getTab());
     }
 
