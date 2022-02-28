@@ -11,11 +11,13 @@ import frc.robot.subsystems.Intake;
 public class ManualRoller extends CommandBase {
   /** Creates a new ManualRoller. */
   private Intake intake;
+  private double speed;
  
  
-  public ManualRoller(Intake intake) {
+  public ManualRoller(Intake intake, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
+    this.speed = speed;
 
     addRequirements(intake);
   }
@@ -27,7 +29,7 @@ public class ManualRoller extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.intake.r_control(Constants.IntakeConstants.rollerSpeed);
+    this.intake.r_control(speed);
   }
 
   // Called once the command ends or is interrupted.

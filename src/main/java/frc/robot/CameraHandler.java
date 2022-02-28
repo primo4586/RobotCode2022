@@ -78,10 +78,10 @@ public class CameraHandler {
     }
 
     public void enableLimelightStream() {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
+        // NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
         limelightStream = new HttpCamera("Limelight", "http://10.45.86.11:5800");
-        limelightStream.setVideoMode(PixelFormat.kYUYV, 160, 120, 30);
+        // limelightStream.setVideoMode(PixelFormat.kYUYV, 160, 120, 30);
         limelightSink.setSource(limelightStream);
     }
 

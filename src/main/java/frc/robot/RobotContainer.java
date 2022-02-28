@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.ClimbCommands.ManualClawA;
@@ -20,6 +21,7 @@ import frc.robot.commands.ClimbCommands.ManualRotateChain;
 import frc.robot.commands.ClimbCommands.ReleaseClaw;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
 import frc.robot.commands.IntakeCommands.JointAndRoller;
+import frc.robot.commands.IntakeCommands.ManualRoller;
 import frc.robot.commands.ShooterCommands.ManualFeeder;
 import frc.robot.commands.ShooterCommands.ManualShooter;
 import frc.robot.subsystems.Climb;
@@ -45,23 +47,21 @@ public class RobotContainer {
   private Joystick o_joystick;
 
   // driver buttons:
-  private JoystickButton RB_Driver; // rolling while pressed;
-  private JoystickButton A_Driver; // open and close feeder piston
-  private JoystickButton X_Driver;
-  private JoystickButton B_Driver; // shooter
+  private JoystickButton RB_Driver; // change direction
+  private JoystickButton Y_Driver; // spin rollers backwards
+  private JoystickButton B_Driver; // open feeder piston
+  private JoystickButton LB_Driver; // rolling while pressed;
 
-  private JoystickButton LB_Driver; // change direction
+  // operator buttons (numbers represent the button number on the joystick itself):
+  private JoystickButton Button4_Operator; // claw A;
+  private JoystickButton Button3_Operator; // claw B;
+  private JoystickButton Button8_Operator; // Enable/Disable Climb Control
+  private JoystickButton Trigger_Operator; // Feeder & Shooter
 
-  // operator buttons:
-  private JoystickButton B_Operator; // claw A;
-  private JoystickButton A_Operator; // claw B;
-  private JoystickButton X_Operator; // claw B;
-  private JoystickButton Y_Operator; // claw B;
-  private JoystickButton RB_Operator;
-  private JoystickButton LB_Operator;
+  private JoystickButton Button7_Operator; // Manual Shooter - debug
+  private JoystickButton Button9_Operator; // Manual Feeder - debug
 
 
-  private JoystickButton START_Operator; // Enable/Disable Climb Control
 
   // subsystem
   private Climb climb;
@@ -73,7 +73,6 @@ public class RobotContainer {
 
   private PrimoTab tab;
 
-  private Command climbSequent;
   private UsbCamera forward;
   private UsbCamera backward;
   private CameraHandler camHandler;
@@ -100,19 +99,16 @@ public class RobotContainer {
 
   private void buildButtons() {
     this.RB_Driver = new JoystickButton(d_joystick, XboxController.Button.kRightBumper.value);
-    this.A_Driver = new JoystickButton(d_joystick, XboxController.Button.kA.value);
-    this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
-    this.X_Driver = new JoystickButton(d_joystick, XboxController.Button.kX.value);
-
     this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
-    this.START_Operator = new JoystickButton(o_joystick, XboxController.Button.kStart.value);
-    this.A_Operator = new JoystickButton(o_joystick, XboxController.Button.kA.value);
-    this.B_Operator = new JoystickButton(o_joystick, XboxController.Button.kB.value);
-    this.X_Operator = new JoystickButton(o_joystick, XboxController.Button.kX.value);
-    this.Y_Operator = new JoystickButton(o_joystick, XboxController.Button.kY.value);
-    this.RB_Operator= new JoystickButton(o_joystick, XboxController.Button.kRightBumper.value);
-    this.LB_Operator = new JoystickButton(o_joystick, XboxController.Button.kLeftBumper.value);
+    this.Y_Driver = new JoystickButton(d_joystick, XboxController.Button.kY.value);
+    this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
 
+    this.Button3_Operator = new JoystickButton(o_joystick, 3);
+    this.Button4_Operator = new JoystickButton(o_joystick, 4);
+    this.Button8_Operator = new JoystickButton(o_joystick, 8);
+    this.Button7_Operator = new JoystickButton(o_joystick, 7);
+    this.Button9_Operator = new JoystickButton(o_joystick, 9);
+    this.Trigger_Operator = new JoystickButton(o_joystick, 1);
     
   }
 
@@ -123,33 +119,38 @@ public class RobotContainer {
         () -> d_joystick.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0.2,
         () -> d_joystick.getRawAxis(XboxController.Axis.kRightTrigger.value) > 0.2));
 
-    this.LB_Driver.whenPressed(new InstantCommand(() -> {
+    this.RB_Driver.whenPressed(new InstantCommand(() -> {
       driver.changeDirection();
       camHandler.switchCamera();
     }));
 
-    // shooter:
-    this.X_Driver.whenPressed(new InstantCommand(()-> pistonForFeeder.solenoidControll() , feeder));
-    this.B_Driver.whileHeld(new ManualShooter(shooter, ShooterConstants.ShooterSpeed));
-    this.A_Driver.whileHeld(new ManualFeeder(feeder));
+    // shooter:(
+    this.B_Driver.whenPressed(new InstantCommand(()-> {
+      if(shooter.isReadyToShoot()) 
+          pistonForFeeder.solenoidControll(); 
+    }, feeder));
+    this.Trigger_Operator.whenPressed(new ParallelCommandGroup(new ManualFeeder(feeder), new ManualShooter(shooter, ShooterConstants.ShooterSpeed)));
+    // this.B_Driver.whileHeld(new ManualShooter(shooter, ShooterConstants.ShooterSpeed));
+    // this.A_Driver.whileHeld(new ManualFeeder(feeder));
 
     // intake
-    RB_Driver.whileHeld(new JointAndRoller(intake));
+    LB_Driver.whileHeld(new JointAndRoller(intake));
+    Y_Driver.whileHeld(new ManualRoller(intake, -Constants.IntakeConstants.rollerSpeed));
 
+    Button9_Operator.whileHeld(new ManualFeeder(feeder));
+    Button7_Operator.whileHeld(new ManualShooter(shooter, ShooterConstants.ShooterSpeed));
+    
     // climb:
+    Button4_Operator.whenPressed(new ReleaseClaw(climb, 2)); //open level 2 or4
+    Button3_Operator.whenPressed(new ReleaseClaw(climb, 3)); //open level 3
+    Button8_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled())));
 
     //for testing and operating without sensors
     
-     RB_Operator.whenPressed(new ManualClawA(climb));
-     LB_Operator.whenPressed(new ManualClawB(climb));
-     
-
     //  A_Operator.whenPressed(new LockClaw(climb, 2));// close level 2 or 4
     //  B_Operator.whenPressed(new LockClaw(climb, 3)); //close level 3
      
-    A_Operator.whenPressed(new ReleaseClaw(climb, 2)); //open level 2 or
-    B_Operator.whenPressed(new ReleaseClaw(climb, 3)); //open level 3
-    START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled())));
+   
      
     climb.setDefaultCommand(new ManualRotateChain(climb, () ->
      o_joystick.getRawAxis(XboxController.Axis.kRightY.value),true));
@@ -160,7 +161,6 @@ public class RobotContainer {
 
     
      
-    //START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled()), climb));
   }
 
 

@@ -85,7 +85,7 @@ public class Robot extends TimedRobot {
     Shuffleboard.update();
     limelight.update();
     LEDs.getInstance().update();
-    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Time").setNumber(Timer.getMatchTime());
+    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Time").forceSetNumber(Timer.getMatchTime());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
