@@ -18,9 +18,7 @@ import autonomous.DifferentialDriveData;
 import autonomous.PIDConfig;
 import autonomous.PrimoDifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.CameraHandler;
 import frc.robot.Constants;
 
 public class Driver extends SubsystemBase implements DifferentialDriveData{
@@ -82,6 +80,8 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     this.gyro.configFactoryDefault();
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Driver");
+    tab.addEntry("FollowPath Right Setpoint");
+    tab.addEntry("FollowPath Left Setpoint");
 
     primoOdometry = new PrimoDifferentialDriveOdometry(this, ()-> resetEncoders());
   }
@@ -130,17 +130,18 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
   
   public double getLeftPositionInMeters() {
-    return this.m_leftLeader.getSelectedSensorPosition() * Constants.AutoConstants.METER_PER_TICK;
+    return this.m_leftLeader.getSelectedSensorPosition() * Constants.AutoConstants.METER_PER_TICK ; 
   }
 
   public double getRightPositionInMeters() {
-    return this.m_rightLeader.getSelectedSensorPosition() * Constants.AutoConstants.METER_PER_TICK;
+    return this.m_rightLeader.getSelectedSensorPosition() * Constants.AutoConstants.METER_PER_TICK ; 
   }
 
   public void resetEncoders(){
     this.m_rightLeader.setSelectedSensorPosition(0,0,10);
     this.m_leftLeader.setSelectedSensorPosition(0,0,10);
-  }
+    this.gyro.setYaw(0);
+    }
 
   public PrimoDifferentialDriveOdometry getPrimoOdometry(){
     return primoOdometry;
@@ -188,7 +189,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     return getRightPositionInMeters();
   }
 
-
   @Override
   public void periodic() {
     /*
@@ -201,6 +201,8 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     tab.addEntry("Left Pos. ").setNumber(getLeftPositionInMeters());
     tab.addEntry("Right Velocity").setNumber(getRightVelocity());
     tab.addEntry("Right Pos. ").setNumber(getRightPositionInMeters());
+    tab.addEntry("Odometry X").setNumber(primoOdometry.getPose().getX());
+    tab.addEntry("Odometry Y").setNumber(primoOdometry.getPose().getY());
     tab.addEntry("Gyro angle").setNumber(getYaw());
     tab.addEntry("Is forward").setBoolean(isDirectionForward());
   }

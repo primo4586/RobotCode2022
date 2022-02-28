@@ -19,20 +19,16 @@ public class Shooter extends SubsystemBase {
   //create the shooter motor
   private WPI_TalonFX m_shooter;
   private PrimoTab tab;
-  private PIDController shooterPidController;
   private double pidSetpoint;
-  private PIDConfig config;
 
   
   public Shooter() {
     this.m_shooter = new WPI_TalonFX(Constants.ShooterConstants.ShooterPort);
+
     this.m_shooter.setInverted(true);
+    this.setConfig(ShooterConstants.SHOOTER_CONFIG);
 
-    this.config = new PIDConfig(2, 0.0001, 0, 0.43);
-
-    
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
-    shooterPidController = ShooterConstants.SHOOTER_CONFIG.getController();
     this.pidSetpoint = 0;
   }
 
@@ -49,8 +45,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setVelocity(double velocity) {
-    // this.leader.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward,
-    //     ShooterConstants.SHOOTER_FEEDFORWARD_NEW.calculate((velocity) * 10 / 192) / 12);
     this.pidSetpoint = velocity;
     this.m_shooter.set(ControlMode.Velocity, velocity);
 

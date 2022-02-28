@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.util.Units;
 import frc.robot.commands.DriverCommands.FollowPath;
 
 /**
@@ -42,7 +43,7 @@ public final class Constants {
 
         public static final PIDConfig FEEDER_CONFIG = new PIDConfig(1, 0, 0, 0);
         public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(0.02, 0, 0, 0.052);
-        public static final double READY_SPEED_TOLERANCE = 2000;
+        public static final double READY_SPEED_TOLERANCE = 300;
     }
 
     public static final class DriverConstants {
@@ -61,7 +62,7 @@ public final class Constants {
         public static final int gyroPorts = 7;
 
         // Limiter for arcade drive.
-        public static final double SPEED_LIMITER = 0.6;
+        public static final double SPEED_LIMITER = 0.5;
         public static final double ROTATION_LIMITER = 0.5;
         public static final double SLOW = 0.7;
         public static final double BOOST = 1.2;
@@ -94,7 +95,7 @@ public final class Constants {
     public static final class AutoConstants {
 
         // Koter in meters.
-        public static final double DIAMETER = 0.1524;
+        public static final double DIAMETER = Units.inchesToMeters(6);
 
         // Encoder ticks (Integrated TalonFX encoders have 2048 ticks)
         public static final double TICKS = 2048;
@@ -103,7 +104,7 @@ public final class Constants {
         public static final double GEAR_RATIO = 7.5;
 
         // Converts encoder value to speed
-        public static final double METER_PER_TICK = (DIAMETER * Math.PI) / TICKS * GEAR_RATIO;
+        public static final double METER_PER_TICK = (DIAMETER * Math.PI) / (TICKS * GEAR_RATIO);
 
         // the dictans between two wheels
         public static final double TRACKWIDTH = 0.57;

@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
     this.pistonForFeeder = new PistonForFeeder();
 
     robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder);
-    autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb);
+    autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder);
     limelight = new Limelight();
   }
 
