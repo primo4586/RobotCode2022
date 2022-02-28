@@ -43,11 +43,7 @@ public class PrimoShuffleboard {
 
         PrimoTab tab = PrimoShuffleboard.getInstance().getPrimoTab("Competition Dashboard");
 
-        // tab.addEntry("Time").setNumber(Timer.getMatchTime());
-        // tab.addEntry("Feeder Piston");
-        // tab.addEntry("Pressure");
-        // tab.addEntry("Climb 2 & 4 Secure");
-        // tab.addEntry("Climb 3 Secure");
+        tab.addEntry("Time").setNumber(Timer.getMatchTime());
     }
 
     public PrimoTab getCompetitonBoard() {

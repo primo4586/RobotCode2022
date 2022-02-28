@@ -1,6 +1,10 @@
 package frc.robot.commands.ShooterCommands;
 
 import PrimoLib.PrimoCommandBase;
+import PrimoLib.leds.LEDColor;
+import PrimoLib.leds.LEDs;
+import PrimoLib.leds.LEDEffects.GradientEffect;
+import PrimoLib.leds.LEDEffects.StaticColor;
 import autonomous.PIDConfig;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,6 +36,7 @@ public class ManualShooter extends PrimoCommandBase {
   @Override
   public void initialize() {
     SmartDashboard.putNumber("shooter", 0);
+    LEDs.getInstance().setEffect(new GradientEffect(LEDColor.FLAME_ORANGE,LEDColor.RED));
   }
   
 
@@ -40,12 +45,12 @@ public class ManualShooter extends PrimoCommandBase {
     
     shooter.setConfig(new PIDConfig(Kp.getDouble(0), Ki.getDouble(0), Kd.getDouble(0), Kf.getDouble(0)));
     this.shooter.setVelocity(speed.getDouble(0));
-    
   }
 
   @Override
   public void end(boolean interrupted) {
     shooter.s_control(0);
+    LEDs.getInstance().setEffect(new StaticColor(LEDColor.PRIMO_BLUE));
   }
 
   @Override
