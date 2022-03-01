@@ -51,7 +51,7 @@ public class Climb extends SubsystemBase {
     this.solenoidB = new Solenoid(Constants.Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM,
         Constants.Pneumatics.climbSolenoidB);
 
-    this.brakeSolenoid = new Solenoid(Pneumatics.pcmPort,PneumaticsModuleType.CTREPCM, 0);
+    this.brakeSolenoid = new Solenoid(Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, 0);
 
     this.switchA = new DigitalInput(ClimbConstants.switchAport);
     this.switchB = new DigitalInput(ClimbConstants.switchBport);
@@ -99,6 +99,14 @@ public class Climb extends SubsystemBase {
 
   public double getAbsoluteSpeed() {
     return Math.abs(m_climbRight.get());
+  }
+
+  public void enableClimb() {
+    this.setSolenoidLevel2or4(ClimbConstants.PISTON_RELEASE);
+    this.setSolenoidLevel3(ClimbConstants.PISTON_RELEASE);
+
+    PrimoShuffleboard.getInstance().selectTab("Climb");
+    this.isEnabled = true;
   }
 
   public void setSolenoidLevel2or4(boolean state) {
@@ -161,11 +169,11 @@ public class Climb extends SubsystemBase {
   }
 
   public int getLevel() {
-      return level;
+    return level;
   }
 
   public void setLevel(int level) {
-      this.level = level;
+    this.level = level;
   }
 
   @Override
@@ -180,11 +188,20 @@ public class Climb extends SubsystemBase {
      * tab.addEntry("is mot 3 in").setBoolean(isMot3In());
      */
     // System.out.println("claw 3" + islevel3Secure());
+    tab.addEntry("2&4 Secure").forceSetBoolean(islevel2or4Secure());
+    tab.addEntry("2&4 Mot").forceSetBoolean(isMot2or4In());
+    tab.addEntry("2&4 Piston").forceSetBoolean(isClawLockOn2or4());
 
+    tab.addEntry("3 Secure").forceSetBoolean(islevel3Secure());
+    tab.addEntry("3 Mot").forceSetBoolean(isMot3In());
+    tab.addEntry("3 Piston").forceSetBoolean(isClawLockOn3());
     // This method will be called once per scheduler run
-    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Enabled").forceSetBoolean(isEnabled());
-    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb 2 & 4 Secure").forceSetBoolean(islevel2or4Secure());
-    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb 3 Secure").forceSetBoolean(islevel3Secure());
+    // PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb
+    // Enabled").forceSetBoolean(isEnabled());
+    // PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb 2 & 4
+    // Secure").forceSetBoolean(islevel2or4Secure());
+    // PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb 3
+    // Secure").forceSetBoolean(islevel3Secure());
   }
 
 }

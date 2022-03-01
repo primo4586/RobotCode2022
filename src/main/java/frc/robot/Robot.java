@@ -71,14 +71,14 @@ public class Robot extends TimedRobot {
     this.led = new AddressableLED(6);
 
 
-    ledBuffer = new AddressableLEDBuffer(40);
-    // led.setLength(ledBuffer.getLength());
+    ledBuffer = new AddressableLEDBuffer(44);
+    led.setLength(ledBuffer.getLength());
 
     for (var i = 0; i < ledBuffer.getLength(); i++) {
       ledBuffer.setRGB(i, 255, 0, 0);
    }
-   led.setLength(ledBuffer.getLength());
-   led.setData(ledBuffer);
+  //  led.setLength(ledBuffer.getLength());
+    led.setData(ledBuffer);
     led.start();
 
     robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder);
@@ -103,10 +103,10 @@ public class Robot extends TimedRobot {
     Shuffleboard.update();
     limelight.update();
     // LEDs.getInstance().update();
-  //   for (var i = 0; i < ledBuffer.getLength(); i++) {
-  //     // Sets the specified LED to the RGB values for red
-  //     ledBuffer.setRGB(i, 255, 0, 0);
-  //  }
+    for (var i = 0; i < ledBuffer.getLength(); i++) {
+      // Sets the specified LED to the RGB values for red
+      ledBuffer.setRGB(i, 255, 0, 0);
+   }
   // ledBuffer.setRGB(0, 255, 0, 0);
   
    

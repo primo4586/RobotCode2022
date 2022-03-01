@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.DriverCommands.DriveByTime;
 import frc.robot.commands.DriverCommands.FollowPath;
-import frc.robot.commands.IntakeCommands.TogglePiston;
+import frc.robot.commands.IntakeCommands.TogglePistonAndRoller;
 import frc.robot.commands.ShooterCommands.ManualFeeder;
 import frc.robot.commands.ShooterCommands.ManualShooter;
 import frc.robot.subsystems.Driver;
@@ -31,7 +31,7 @@ public class OneBallAuto extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
 
     ParallelCommandGroup shooting = new ParallelCommandGroup(new ManualShooter(shooter, ShooterConstants.ShooterSpeed).withTimeout(7), new ManualFeeder(feeder).withTimeout(7));
-    SequentialCommandGroup pistonDelay = new SequentialCommandGroup(new WaitCommand(4), new TogglePiston(piston),new WaitCommand(2));
+    SequentialCommandGroup pistonDelay = new SequentialCommandGroup(new WaitCommand(4), new InstantCommand(() -> piston.solenoidControll(),piston),new WaitCommand(2));
 
     ParallelCommandGroup beforeBackwardsPath = new ParallelCommandGroup(shooting,pistonDelay);
     addCommands(beforeBackwardsPath);

@@ -23,6 +23,7 @@ import frc.robot.commands.ClimbCommands.ReleaseClaw;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
 import frc.robot.commands.IntakeCommands.JointAndRoller;
 import frc.robot.commands.IntakeCommands.ManualRoller;
+import frc.robot.commands.IntakeCommands.TogglePistonAndRoller;
 import frc.robot.commands.ShooterCommands.ManualFeeder;
 import frc.robot.commands.ShooterCommands.ManualShooter;
 import frc.robot.subsystems.Climb;
@@ -164,7 +165,7 @@ public class RobotContainer {
     () -> d_joystick.getRawAxis(XboxController.Axis.kRightTrigger.value) > 0));
 
 // shooter:
-  this.B_Driver.whenPressed(new InstantCommand(()-> pistonForFeeder.solenoidControll() , pistonForFeeder));
+  this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder,intake));
   Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, ShooterConstants.ShooterSpeed),
   new ManualFeeder(feeder)));
 // intake
