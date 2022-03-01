@@ -27,6 +27,11 @@ public class PistonForFeeder extends SubsystemBase {
     this.p_feeder.set(this.state);
   }
 
+  public void setSolenoid(boolean state) {
+    this.state = state;
+    this.p_feeder.set(state);
+  }
+
 
   @Override
   public void periodic() {

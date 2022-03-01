@@ -34,6 +34,7 @@ public class Climb extends SubsystemBase {
   private boolean isMotIn;
   private boolean canSearch3 = true;
   private boolean canSearch2or4 = true;
+  private boolean brake = false;
 
   private PrimoTab tab;
   private boolean isEnabled;
@@ -66,6 +67,7 @@ public class Climb extends SubsystemBase {
 
     this.isEnabled = false;
 
+    this.brake = brakeSolenoid.get();
   }
 
   public void c_control(double speed) {
@@ -77,8 +79,14 @@ public class Climb extends SubsystemBase {
     m_climbleft.set(speed);
   }
 
-  public void setBrake(boolean open) {
-    brakeSolenoid.set(open);
+  // TRUE means that the chain is locked!!
+  public void setBrake(boolean locked) {
+    brakeSolenoid.set(locked);
+    this.brake = locked;
+  }
+
+  public boolean isBrake() {
+      return brake;
   }
 
   public boolean getCanSearch3() {
@@ -166,6 +174,8 @@ public class Climb extends SubsystemBase {
 
   public void setEnabled(boolean isEnabled) {
     this.isEnabled = isEnabled;
+    if(isEnabled())
+      enableClimb();
   }
 
   public int getLevel() {
@@ -191,10 +201,12 @@ public class Climb extends SubsystemBase {
     tab.addEntry("2&4 Secure").forceSetBoolean(islevel2or4Secure());
     tab.addEntry("2&4 Mot").forceSetBoolean(isMot2or4In());
     tab.addEntry("2&4 Piston").forceSetBoolean(isClawLockOn2or4());
+    tab.addEntry("Climb Enabled").forceSetBoolean(isEnabled());
 
     tab.addEntry("3 Secure").forceSetBoolean(islevel3Secure());
     tab.addEntry("3 Mot").forceSetBoolean(isMot3In());
     tab.addEntry("3 Piston").forceSetBoolean(isClawLockOn3());
+    tab.addEntry("Brake State").forceSetBoolean(isBrake());
     // This method will be called once per scheduler run
     // PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb
     // Enabled").forceSetBoolean(isEnabled());

@@ -22,6 +22,7 @@ import frc.robot.commands.ClimbCommands.ManualRotateChain;
 import frc.robot.commands.ClimbCommands.ReleaseClaw;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
 import frc.robot.commands.IntakeCommands.JointAndRoller;
+import frc.robot.commands.IntakeCommands.ManualJoint;
 import frc.robot.commands.IntakeCommands.ManualRoller;
 import frc.robot.commands.IntakeCommands.TogglePistonAndRoller;
 import frc.robot.commands.ShooterCommands.ManualFeeder;
@@ -151,7 +152,9 @@ public class RobotContainer {
     }));
 
     // // intake
-    LB_Driver.whileHeld(new JointAndRoller(intake));
+
+    // LB_Driver.whileHeld(new JointAndRoller(intake));
+    LB_Driver.whileHeld(new ManualRoller(intake, Constants.IntakeConstants.rollerSpeed));
     Y_Driver.whileHeld(new ManualRoller(intake, -Constants.IntakeConstants.rollerSpeed));
     //for testing and operating without sensors
      
@@ -176,9 +179,11 @@ public class RobotContainer {
  
  RB_Operator.whenPressed(new ManualClawA(climb));
  LB_Operator.whenPressed(new ManualClawB(climb));
-  B_Operator.whenPressed(new ReleaseClaw(climb, 2)); //open level 2 or
+  B_Operator.whenPressed(
+    new ReleaseClaw(climb, 2)); //open level 2 or
   X_Operator.whenPressed(new ReleaseClaw(climb, 3)); //open level 3
-  A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(false), climb));
+  // A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
+  A_Operator.whenPressed(new ManualJoint(intake));
   START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled())));
   }
 

@@ -43,7 +43,10 @@ public class ArcadeDrive extends CommandBase {
     this.rotationAsDouble = this.rotation.getAsDouble() * Constants.DriverConstants.ROTATION_LIMITER;
     
     if(isSlowing.getAsBoolean())
+    {
       this.speedAsDouble *= Constants.DriverConstants.SLOW;
+      this.rotationAsDouble *= Constants.DriverConstants.SLOW;
+    } 
     else if(isBoosting.getAsBoolean())
       this.speedAsDouble *= Constants.DriverConstants.BOOST;
     

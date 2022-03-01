@@ -42,7 +42,7 @@ public final class Constants {
         public static final double ShooterSpeed = 14000;
 
         public static final PIDConfig FEEDER_CONFIG = new PIDConfig(1, 0, 0, 0);
-        public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(0.02, 0, 0, 0.052);
+        public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(0.02, 0, 0, 0.058);
         public static final double READY_SPEED_TOLERANCE = 200;
     }
 
