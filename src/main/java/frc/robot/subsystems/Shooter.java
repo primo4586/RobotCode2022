@@ -55,14 +55,15 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isReadyToShoot() {
-    return pidSetpoint != 0 && pidSetpoint - m_shooter.getSelectedSensorVelocity() <= ShooterConstants.READY_SPEED_TOLERANCE;
+    return pidSetpoint != 0 && Math.abs(m_shooter.getSelectedSensorVelocity() - pidSetpoint) <= ShooterConstants.READY_SPEED_TOLERANCE;
   }
   
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     tab.addEntry("Shooter Velocity").setNumber(m_shooter.getSelectedSensorVelocity());
-    tab.addEntry("Reached target velocity").setBoolean(isReadyToShoot());
-  }
+    tab.addEntry("Reached target velocity").forceSetBoolean(isReadyToShoot());
+    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Reached Shooter Speed").forceSetBoolean(isReadyToShoot());
+    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Shooter Vel").setNumber(m_shooter.getSelectedSensorVelocity());  }
   
 }

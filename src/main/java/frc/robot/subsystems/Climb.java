@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ClimbConstants;
+import frc.robot.Constants.Pneumatics;
 
 public class Climb extends SubsystemBase {
 
@@ -18,6 +19,8 @@ public class Climb extends SubsystemBase {
 
   private Solenoid solenoidA; // Side A
   private Solenoid solenoidB; // Side B
+
+  private Solenoid brakeSolenoid;
 
   // switch:
   private DigitalInput switchA;
@@ -48,13 +51,15 @@ public class Climb extends SubsystemBase {
     this.solenoidB = new Solenoid(Constants.Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM,
         Constants.Pneumatics.climbSolenoidB);
 
+    this.brakeSolenoid = new Solenoid(Pneumatics.pcmPort,PneumaticsModuleType.CTREPCM, 0);
+
     this.switchA = new DigitalInput(ClimbConstants.switchAport);
     this.switchB = new DigitalInput(ClimbConstants.switchBport);
 
     this.sPistonA = new DigitalInput(ClimbConstants.sPistonAport);
     this.sPistonB = new DigitalInput(ClimbConstants.sPistonBport);
 
-    this.level = 2;
+    this.level = 1;
     this.isMotIn = false;
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Climb");
@@ -70,6 +75,10 @@ public class Climb extends SubsystemBase {
     speed *= 0.7;
     m_climbRight.set(speed);
     m_climbleft.set(speed);
+  }
+
+  public void setBrake(boolean open) {
+    brakeSolenoid.set(open);
   }
 
   public boolean getCanSearch3() {
@@ -149,6 +158,14 @@ public class Climb extends SubsystemBase {
 
   public void setEnabled(boolean isEnabled) {
     this.isEnabled = isEnabled;
+  }
+
+  public int getLevel() {
+      return level;
+  }
+
+  public void setLevel(int level) {
+      this.level = level;
   }
 
   @Override

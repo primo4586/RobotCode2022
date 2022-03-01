@@ -22,6 +22,7 @@ public class ManualRotateChain extends CommandBase {
     this.climb = climb;
     this.speed= speed;
     this.isStart = isStars;
+    
 
     addRequirements(climb);
   }
@@ -40,23 +41,20 @@ public class ManualRotateChain extends CommandBase {
   @Override
   public void execute() {
     if(isOk && climb.isEnabled()){
-      if(Math.abs(speed.getAsDouble()) > 0.3) {
-        if(!climb.islevel3Secure())
-          this.climb.c_control(ClimbConstants.chainSpeed);
-        else
-          this.climb.c_control(-ClimbConstants.chainSpeed);
+      // System.out.println("Climb moment");
+      if(speed.getAsDouble() > 0.3) {
+       this.climb.c_control(ClimbConstants.chainSpeed);
       }
+      else if(speed.getAsDouble() < -0.3)
+        this.climb.c_control(-ClimbConstants.chainSpeed);
       else 
         this.climb.c_control(0);
-
-      // System.out.println("CAN YOU SEARCH A MOT? " + climb.canSearch());
-      // System.out.println("the level is: " + this.level);
-      // System.out.println("is mot 2 or 4 in? " + climb.isMot2or4In());
       
       if(climb.isMot2or4In()){
         if(climb.getCanSearch2or4()){
-        climb.setSolenoidLevel2or4(ClimbConstants.PISTON_LOCKED);
-        climb.setCanSearch2or4(false);
+          climb.setSolenoidLevel2or4(ClimbConstants.PISTON_LOCKED);
+          climb.setCanSearch2or4(false);
+          climb.setLevel(climb.getLevel() + 1);
         }
       }
       else
@@ -65,8 +63,9 @@ public class ManualRotateChain extends CommandBase {
 
       if(climb.isMot3In()){
         if(climb.getCanSearch3()){
-        climb.setSolenoidLevel3(ClimbConstants.PISTON_LOCKED);
-        climb.setCanSearch3(false);
+          climb.setSolenoidLevel3(ClimbConstants.PISTON_LOCKED);
+          climb.setCanSearch3(false);
+          climb.setLevel(climb.getLevel() + 1);
         }
       }
       else

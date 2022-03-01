@@ -19,7 +19,7 @@ public class PistonForFeeder extends SubsystemBase {
 
   public PistonForFeeder() {
     this.p_feeder = new Solenoid(Pneumatics.pcmPort,  PneumaticsModuleType.CTREPCM, Constants.Pneumatics.feederPort);
-    this.state = true;
+    this.state = false;
   }
   
   public void solenoidControll(){
@@ -29,7 +29,7 @@ public class PistonForFeeder extends SubsystemBase {
 
   @Override
   public void periodic() {
-    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Feeder Piston").forceSetBoolean(state);
+    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Feeder Piston").forceSetBoolean(!state);
     // This method will be called once per scheduler run
   }
 }

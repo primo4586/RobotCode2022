@@ -16,6 +16,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.AutoCommands.OneBallAuto;
+import frc.robot.commands.DriverCommands.DriveByTime;
 import frc.robot.commands.DriverCommands.FollowPath;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Driver;
@@ -45,10 +46,13 @@ public class AutonomousContainer {
 
         // Creating & adding the commands to the selector
         InstantCommand testCmd = new InstantCommand(() -> System.out.println("Test Auto"));
-        OneBallAuto oneBallAuto = new OneBallAuto(driver, shooter, piston,feeder,oneBallPath);
+        OneBallAuto oneBallAuto = new OneBallAuto(driver, shooter, piston,feeder);
+
+        DriveByTime time = new DriveByTime(driver,5);
 
         autoPaths.put("Test", testCmd);
         autoPaths.put("One Ball Auto", oneBallAuto);
+        autoPaths.put("Time drive", time);
         autoPaths.put("Test Follow", new FollowPath(driver, oneBallPath, true));
         autoPaths.put("Test Curved", new FollowPath(driver, oneMeter, true));
         this.autoSelector = new CommandSelector(autoPaths, competitionTab.getTab());

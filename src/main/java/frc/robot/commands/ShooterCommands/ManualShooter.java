@@ -37,7 +37,7 @@ public class ManualShooter extends PrimoCommandBase {
 
   @Override
   public void initialize() {
-    LEDs.getInstance().setEffect(new GradientEffect(LEDColor.FLAME_ORANGE,LEDColor.RED));
+    // LEDs.getInstance().setClimbBarsEffect(new GradientEffect(LEDColor.FLAME_ORANGE,LEDColor.RED));
   }
   
 
@@ -51,7 +51,7 @@ public class ManualShooter extends PrimoCommandBase {
   @Override
   public void end(boolean interrupted) {
     shooter.s_control(0);
-    LEDs.getInstance().setEffect(new StaticColor(LEDColor.PRIMO_BLUE));
+    // LEDs.getInstance().setClimbBarsEffect(new StaticColor(LEDColor.PRIMO_BLUE));
   }
 
   @Override

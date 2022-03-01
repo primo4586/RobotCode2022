@@ -40,6 +40,7 @@ public class ReleaseClaw extends CommandBase {
       else if(numLevel == 3)
         climb.setSolenoidLevel3(ClimbConstants.PISTON_RELEASE);
     }
+    // climb.setLevel(climb.getLevel() + 1);
   }
 
   // Called once the command ends or is interrupted.

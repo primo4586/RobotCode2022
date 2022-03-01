@@ -162,6 +162,9 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     diffDrive.feed();
   }
 
+  public void feed() {
+    diffDrive.feed();
+  }
   
   //implement Dif-drive function:
   @Override
