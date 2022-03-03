@@ -37,7 +37,7 @@ public class ManualFeeder extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.feeder.f_control(0.4);
+    this.feeder.f_control(0.43);
   }
 
   // Called once the command ends or is interrupted.

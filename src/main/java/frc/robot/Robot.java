@@ -4,16 +4,10 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.CANifier.LEDChannel;
-
 import PrimoLib.PrimoShuffleboard;
-import PrimoLib.leds.LEDColor;
 import PrimoLib.leds.LEDs;
-import PrimoLib.leds.LEDEffects.FlashColor;
-import PrimoLib.leds.LEDEffects.StaticColor;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -50,8 +44,9 @@ public class Robot extends TimedRobot {
   private Driver driver;
   private Climb climb;
   private PistonForFeeder pistonForFeeder;
-  private AddressableLED led;
-  private AddressableLEDBuffer ledBuffer;
+  
+  private boolean compFlash = false;
+  private Timer flashTimer;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -68,18 +63,8 @@ public class Robot extends TimedRobot {
     this.driver = new Driver();
     this.climb = new Climb();
     this.pistonForFeeder = new PistonForFeeder();
-    this.led = new AddressableLED(6);
 
-
-    ledBuffer = new AddressableLEDBuffer(44);
-    led.setLength(ledBuffer.getLength());
-
-    for (var i = 0; i < ledBuffer.getLength(); i++) {
-      ledBuffer.setRGB(i, 255, 0, 0);
-   }
-  //  led.setLength(ledBuffer.getLength());
-    led.setData(ledBuffer);
-    led.start();
+    this.flashTimer = new Timer();
 
     robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder);
     autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder);
@@ -95,6 +80,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -103,20 +89,8 @@ public class Robot extends TimedRobot {
     Shuffleboard.update();
     limelight.update();
     // LEDs.getInstance().update();
-    for (var i = 0; i < ledBuffer.getLength(); i++) {
-      // Sets the specified LED to the RGB values for red
-      ledBuffer.setRGB(i, 255, 0, 0);
-   }
-  // ledBuffer.setRGB(0, 255, 0, 0);
-  
-   
-    led.setData(ledBuffer);
-    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Time").forceSetNumber(Timer.getMatchTime());
   }
 
-  /** This function is called once each time the robot enters Disabled mode. */
-  @Override
-  public void disabledInit() {}
 
   @Override
   public void disabledPeriodic() {}
@@ -144,6 +118,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    flashTimer.start();
+    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert").forceSetBoolean(true);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -152,7 +128,17 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    // if(Timer.getMatchTime() == 30)
+    if(Timer.getMatchTime() < 45 && Timer.getMatchTime() > 33) {
+      if(flashTimer.hasElapsed(0.5)) {
+        PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert").forceSetBoolean(compFlash);
+        compFlash = !compFlash;
+        flashTimer.reset();
+      }
+    } 
+    else if(Timer.getMatchTime() <= 33)
+       {
+        PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert").forceSetBoolean(false);
+       } 
         // LEDs.getInstance().setClimbBarsEffect(new FlashColor(LEDColor.FLAME_ORANGE,0.5));
   }
 

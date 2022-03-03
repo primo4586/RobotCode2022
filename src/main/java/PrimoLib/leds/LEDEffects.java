@@ -44,7 +44,7 @@ public class LEDEffects {
 
     public FlashColor(LEDColor color, double frequency) {
       this.timer = new Timer();
-      this.duration = duration;
+      // this.duration = duration;
       this.frequency = frequency;
       this.color = color;
     }
@@ -98,6 +98,7 @@ public class LEDEffects {
       int blue = startColor.getBlue() + percent * (startColor.getBlue()- endColor.getBlue());
 
       LEDColor newColor = new LEDColor(red, green, blue);
+      for(int j = 0; j < buffers.length; j++)
       for (int i = 0; i < buffers[0].getLength(); i++) {
         buffers[0].setRGB(i, newColor.getRed(), newColor.getGreen(), newColor.getBlue());
       }

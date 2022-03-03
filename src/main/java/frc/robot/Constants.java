@@ -42,7 +42,7 @@ public final class Constants {
         public static final double ShooterSpeed = 14000;
 
         public static final PIDConfig FEEDER_CONFIG = new PIDConfig(1, 0, 0, 0);
-        public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(0.02, 0, 0, 0.058);
+        public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(0.04, 0, 0, 0.0585);
         public static final double READY_SPEED_TOLERANCE = 200;
     }
 
@@ -63,9 +63,9 @@ public final class Constants {
 
         // Limiter for arcade drive.
         public static final double SPEED_LIMITER = 0.5;
-        public static final double ROTATION_LIMITER = 0.5;
+        public static final double ROTATION_LIMITER = 0.6;
         public static final double SLOW = 0.7;
-        public static final double BOOST = 1.2;
+        public static final double BOOST = 1.5;
     }
 
     public static final class ClimbConstants {
@@ -88,7 +88,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final double rollerSpeed = 0.7;
+        public static final double rollerSpeed = 0.6;
         public static final int rollerPort = 5;
     }
 

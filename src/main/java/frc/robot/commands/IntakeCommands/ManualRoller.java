@@ -29,7 +29,10 @@ public class ManualRoller extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.intake.r_control(speed);
+    if(intake.isJointOpen())
+        this.intake.r_control(speed);
+    else
+        this.intake.r_control(0);    
   }
 
   // Called once the command ends or is interrupted.

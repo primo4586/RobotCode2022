@@ -19,6 +19,7 @@ public class Intake extends SubsystemBase {
   private WPI_TalonSRX m_roller;
   private Solenoid p_joint;
   private Servo servoFeeder;
+  private boolean stateOfJoint;
   
   private PrimoTab tab;
 
@@ -27,6 +28,15 @@ public class Intake extends SubsystemBase {
     this.p_joint = new Solenoid(Constants.Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, Constants.Pneumatics.intakeJointPort);
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Feeder");
     // this.servoFeeder = new Servo(0);
+    this.stateOfJoint = true;
+  }
+
+  public boolean getStateOfJoint(){
+    return this.stateOfJoint;
+  }
+
+  public void changeStateOfJoint(){
+    this.stateOfJoint = !this.stateOfJoint;
   }
 
   public double getRollerSpeed() {
@@ -49,7 +59,7 @@ public class Intake extends SubsystemBase {
     return this.p_joint.get();
   }
 
-  public void setJointState(boolean open) {
+  public void setJoint(boolean open) {
     this.p_joint.set(open);
   }
 

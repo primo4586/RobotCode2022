@@ -35,6 +35,6 @@ public class OneBallAuto extends SequentialCommandGroup {
 
     ParallelCommandGroup beforeBackwardsPath = new ParallelCommandGroup(shooting,pistonDelay);
     addCommands(beforeBackwardsPath);
-    addCommands(new DriveByTime(driver, 6));
+    addCommands(new ParallelCommandGroup(new InstantCommand(() -> piston.setSolenoid(false)),new DriveByTime(driver, 6)));
   }
 }

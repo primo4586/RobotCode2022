@@ -147,7 +147,7 @@ public class Climb extends SubsystemBase {
   }
 
   public boolean isClawLockOn3() {
-    return this.sPistonB.get();
+    return !this.sPistonB.get();
   }
 
   public boolean islevel2or4Secure() {

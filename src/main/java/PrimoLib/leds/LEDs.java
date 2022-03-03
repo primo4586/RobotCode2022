@@ -1,7 +1,10 @@
 package PrimoLib.leds;
 
+import java.awt.Color;
+
 import javax.sound.midi.Soundbank;
 
+import PrimoLib.leds.LEDEffects.FlashColor;
 import PrimoLib.leds.LEDEffects.LEDEffect;
 import PrimoLib.leds.LEDEffects.StaticColor;
 import edu.wpi.first.wpilibj.AddressableLED;
@@ -10,59 +13,41 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 public class LEDs {
 
     private LEDEffect currentClimbBarsEffect;
-    private LEDEffect currentShooterSideEffect;
+    private AddressableLED climbLEDs; 
+    private AddressableLEDBuffer[] climbBuffers;
+    private AddressableLEDBuffer mainBuffer;
 
-    private AddressableLED[] climbLEDs; // PORTS: 
-    private AddressableLED[] shooterLEDs;
-
-
-    private AddressableLEDBuffer climbBuffer;
-    private AddressableLEDBuffer shooterBuffer;
+    public static final int LENGTH = 180;
+    public static final int PORT = 7;
 
     public static LEDs instance;
 
     public LEDs() {
-        currentClimbBarsEffect = new StaticColor(LEDColor.PRIMO_BLUE);
-        // currentShooterSideEffect = new StaticColor(LEDColor.PRIMO_ORANGE);
-        this.climbLEDs = new AddressableLED[4];
+        currentClimbBarsEffect = new StaticColor(LEDColor.PRIMO_ORANGE);
+        climbLEDs = new AddressableLED(PORT);
+        climbLEDs.setLength(LENGTH);
+        climbLEDs.start();
 
-        climbLEDs[0] = new AddressableLED(5);
-        climbLEDs[0].setLength(40);
-        // int port = 5;
-        // for(int i = 0; i < 4; i++) {
-        //     climbLEDs[i] = new AddressableLED(port);
-        //     climbLEDs[i].setLength(40);
-        //     port++;
-        // }
-        // for(int i = 0; i < 2; i++) {
-        //     shooterLEDs[i] = new AddressableLED(port);
-        //     port++;
-        // }
+        this.climbBuffers = new AddressableLEDBuffer[4];
+        this.mainBuffer = new AddressableLEDBuffer(LENGTH);
 
-        climbLEDs[0].start();
-        this.climbBuffer = new AddressableLEDBuffer(40);
-        // this.shooterBuffer = new AddressableLEDBuffer(20);
     }
 
     public static LEDs getInstance() {
         if (instance == null) {
             instance = new LEDs();
         }
-        return instance;
-    }
+        return instance;   
+     }
 
     public void update() {
-        // currentShooterSideEffect.run(shooterBuffer);
-        // currentClimbBarsEffect.run(climbBuffer);
-        // System.out.println("test");
-        for (int i = 0; i < climbBuffer.getLength(); i++) {
-            climbBuffer.setRGB(i, 255, 0, 0);
-        }
-        climbLEDs[0].setData(climbBuffer);
+        
+        currentClimbBarsEffect.run(climbBuffers);
 
-        // for(int i = 0; i < 4; i++) {
-        //     climbLEDs[0].setData(climbBuffer);
-        // }
+        
+        
+        // switchLEDs(0);
+        
     
 
         // for(int i = 0; i < 2; i++) {
@@ -70,12 +55,10 @@ public class LEDs {
         // }
     }
 
+
     public void setClimbBarsEffect(LEDEffect effect) {
         this.currentClimbBarsEffect = effect;
     }
 
-    public void setShooterSideEffect(LEDEffect effect) {
-        this.currentShooterSideEffect = effect;
-    }
 
 }

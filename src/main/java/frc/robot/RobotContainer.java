@@ -49,33 +49,18 @@ public class RobotContainer {
   private Joystick d_joystick;
   private Joystick o_joystick;
 
-  // // driver buttons:
-  // private JoystickButton RB_Driver; // change direction
+  // driver buttons:
+  private JoystickButton B_Driver; // open and close feeder piston 
   private JoystickButton Y_Driver; // spin rollers backwards
-  // private JoystickButton B_Driver; // open feeder piston
-  // private JoystickButton LB_Driver; // rolling while pressed;
-
-  // // operator buttons (numbers represent the button number on the joystick itself):
-  // private JoystickButton Button4_Operator; // claw A;
-  // private JoystickButton Button3_Operator; // claw B;
-  // private JoystickButton Button8_Operator; // Enable/Disable Climb Control
-  // private JoystickButton Trigger_Operator; // Feeder & Shooter
-
-  // private JoystickButton Button7_Operator; // Manual Shooter - debug
-  // private JoystickButton Button9_Operator; // Manual Feeder - debug
-
-  private JoystickButton RB_Driver; // rolling while pressed;
-  private JoystickButton A_Driver; // open and close feeder piston
-  private JoystickButton X_Driver;
-  private JoystickButton B_Driver; // shooter
-
-  private JoystickButton LB_Driver; // change direction
+  private JoystickButton X_Driver; //change state of intake joint
+  private JoystickButton RB_Driver; // change direction
+  private JoystickButton LB_Driver; //open and roolig roller
 
   // operator buttons:
-  private JoystickButton B_Operator; // claw A;
-  private JoystickButton A_Operator; // claw B;
-  private JoystickButton X_Operator; // claw B;
-  private JoystickButton Y_Operator; // claw B;
+  private JoystickButton A_Operator;
+  private JoystickButton B_Operator; 
+  private JoystickButton X_Operator; 
+  private JoystickButton Y_Operator; 
   private JoystickButton RB_Operator;
   private JoystickButton LB_Operator;
 
@@ -110,27 +95,19 @@ public class RobotContainer {
     
     buildButtons();
 
-    configureButtonBindings();
-
     buildCameras();
+
+    configureButtonBindings();
 
     PrimoShuffleboard.getInstance().buildCompetitionTab();
   }
 
   private void buildButtons() {
-    // this.RB_Driver = new JoystickButton(d_joystick, XboxController.Button.kRightBumper.value);
-    // this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
+    
+    this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
     this.Y_Driver = new JoystickButton(d_joystick, XboxController.Button.kY.value);
-    // this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
-
-    // this.Button3_Operator = new JoystickButton(o_joystick, 3);
-    // this.Button4_Operator = new JoystickButton(o_joystick, 4);
-    // this.Button8_Operator = new JoystickButton(o_joystick, 8);
-    // this.Button7_Operator = new JoystickButton(o_joystick, 7);
-    // this.Button9_Operator = new JoystickButton(o_joystick, 9);
-    // this.Trigger_Operator = new JoystickButton(o_joystick, 1);
     this.RB_Driver = new JoystickButton(d_joystick, XboxController.Button.kRightBumper.value);
-    this.A_Driver = new JoystickButton(d_joystick, XboxController.Button.kA.value);
+    // this.A_Driver = new JoystickButton(d_joystick, XboxController.Button.kA.value);
     this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
     this.X_Driver = new JoystickButton(d_joystick, XboxController.Button.kX.value);
 
@@ -153,9 +130,13 @@ public class RobotContainer {
 
     // // intake
 
+
     // LB_Driver.whileHeld(new JointAndRoller(intake));
-    LB_Driver.whileHeld(new ManualRoller(intake, Constants.IntakeConstants.rollerSpeed));
-    Y_Driver.whileHeld(new ManualRoller(intake, -Constants.IntakeConstants.rollerSpeed));
+    LB_Driver.whenPressed(new ManualJoint(intake));
+    this.intake.setDefaultCommand(new ManualRoller(intake, Constants.IntakeConstants.rollerSpeed));
+    Y_Driver.whileHeld(new ManualRoller(intake, -Constants.IntakeConstants.rollerSpeed)); //plita
+    // this.X_Driver.whenPressed(new ManualJoint(intake));
+
     //for testing and operating without sensors
      
     climb.setDefaultCommand(new ManualRotateChain(climb, () ->
@@ -168,7 +149,7 @@ public class RobotContainer {
     () -> d_joystick.getRawAxis(XboxController.Axis.kRightTrigger.value) > 0));
 
 // shooter:
-  this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder,intake));
+  this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder,intake,camHandler));
   Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, ShooterConstants.ShooterSpeed),
   new ManualFeeder(feeder)));
 // intake
@@ -179,11 +160,12 @@ public class RobotContainer {
  
  RB_Operator.whenPressed(new ManualClawA(climb));
  LB_Operator.whenPressed(new ManualClawB(climb));
-  B_Operator.whenPressed(
+  
+ B_Operator.whenPressed(
     new ReleaseClaw(climb, 2)); //open level 2 or
   X_Operator.whenPressed(new ReleaseClaw(climb, 3)); //open level 3
-  // A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
-  A_Operator.whenPressed(new ManualJoint(intake));
+  A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
+  //A_Operator.whenPressed(new ManualJoint(intake));
   START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled())));
   }
 
