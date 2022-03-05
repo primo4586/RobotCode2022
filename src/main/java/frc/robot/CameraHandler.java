@@ -59,21 +59,27 @@ public class CameraHandler {
         return index;
     }
 
+    public VideoSource getActiveSource() {
+        return sink.getSource();
+    }
+
     public VideoSource getCurrentSource() {
         return cameras.get(index);
     }
 
     public void setCamera(int index) {
         this.index = index;
-        var currCam = sink.getSource();
-        var putCam = cameras.get(index);
+        // var currCam = sink.getSource();
+        // var putCam = cameras.get(index);
         // Make sure only one camera has "good" quality
         // currCam.setVideoMode(PixelFormat.kGray, 4, 3, 1);
+        VideoSource putCam = cameras.get(index);
         putCam.setVideoMode(PixelFormat.kYUYV, 160, 120, 30);
         sink.setSource(putCam);
     }
 
     public void switchCamera() {
+        System.out.println("Current camera: " + index);
         if(index == 0)
             setCamera(1);
         else

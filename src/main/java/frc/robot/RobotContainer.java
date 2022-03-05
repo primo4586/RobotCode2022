@@ -8,8 +8,10 @@ import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -93,6 +95,7 @@ public class RobotContainer {
     this.intake = intake;
     this.pistonForFeeder = pistonForFeeder;
     
+
     buildButtons();
 
     buildCameras();

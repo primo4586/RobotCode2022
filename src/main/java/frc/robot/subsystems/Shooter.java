@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import PrimoLib.PrimoShuffleboard;
@@ -45,7 +46,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setVelocity(double velocity) {
+
+    // double shooterFF = ShooterConstants.SHOOTER_FEEDFORWARD.calculate(velocity);
+
     this.pidSetpoint = velocity;
+    // this.m_shooter.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, shooterFF);
     this.m_shooter.set(ControlMode.Velocity, velocity);
 
   }  

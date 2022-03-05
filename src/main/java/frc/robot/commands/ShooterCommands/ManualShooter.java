@@ -9,6 +9,7 @@ import autonomous.PIDConfig;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Shooter;
 
 import java.util.function.DoubleSupplier;
@@ -20,9 +21,9 @@ public class ManualShooter extends PrimoCommandBase {
 
   private double speed;
 
-  public ManualShooter(Shooter shooter, double speed) {
+  public ManualShooter(Shooter shooter, double shooterSpeed) {
     this.shooter = shooter;
-    this.speed = speed;
+    this.speed = shooterSpeed;
     addRequirements(shooter);
 
     // speed = this.shooter.getTab().addEntry("Speed");
@@ -43,9 +44,9 @@ public class ManualShooter extends PrimoCommandBase {
 
   @Override
   public void execute() {
-    
     // shooter.setConfig(new PIDConfig(Kp.getDouble(0), Ki.getDouble(0), Kd.getDouble(0), Kf.getDouble(0)));
-    this.shooter.setVelocity(speed);    
+    this.shooter.setVelocity(speed);
+    // this.shooter.setVelocity(speed.getDouble(0));    
   }
 
   @Override

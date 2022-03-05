@@ -48,6 +48,9 @@ public class Robot extends TimedRobot {
   private boolean compFlash = false;
   private Timer flashTimer;
 
+  // private AddressableLED leds;
+  // private AddressableLEDBuffer ledBuffer;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -69,6 +72,19 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder);
     autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder);
     limelight = new Limelight();
+
+    // leds = new AddressableLED(0);
+    // ledBuffer = new AddressableLEDBuffer(10);
+    // leds.setLength(ledBuffer.getLength());
+    // for(int i = 0; i < ledBuffer.getLength(); i++) {
+    //   ledBuffer.setRGB(i, 255, 0, 0);
+    // }
+    // leds.setData(ledBuffer);
+    // leds.setData(ledBuffer);
+    
+    // leds.start();
+    
+ 
   }
 
   /**
@@ -88,6 +104,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     Shuffleboard.update();
     limelight.update();
+ 
     // LEDs.getInstance().update();
   }
 
@@ -128,14 +145,14 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if(Timer.getMatchTime() < 45 && Timer.getMatchTime() > 33) {
+    if(Timer.getMatchTime() <= 40 && Timer.getMatchTime() > 30) {
       if(flashTimer.hasElapsed(0.5)) {
         PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert").forceSetBoolean(compFlash);
         compFlash = !compFlash;
         flashTimer.reset();
       }
     } 
-    else if(Timer.getMatchTime() <= 33)
+    else if(Timer.getMatchTime() <= 30)
        {
         PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert").forceSetBoolean(false);
        } 

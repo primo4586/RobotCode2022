@@ -17,8 +17,8 @@ public class LEDs {
     private AddressableLEDBuffer[] climbBuffers;
     private AddressableLEDBuffer mainBuffer;
 
-    public static final int LENGTH = 180;
-    public static final int PORT = 7;
+    public static final int LENGTH = 160;
+    public static final int PORT = 8;
 
     public static LEDs instance;
 
@@ -29,6 +29,9 @@ public class LEDs {
         climbLEDs.start();
 
         this.climbBuffers = new AddressableLEDBuffer[4];
+        for(int i = 0; i < climbBuffers.length; i++)
+            climbBuffers[i] = new AddressableLEDBuffer(40);
+
         this.mainBuffer = new AddressableLEDBuffer(LENGTH);
 
     }
@@ -44,15 +47,19 @@ public class LEDs {
         
         currentClimbBarsEffect.run(climbBuffers);
 
-        
-        
-        // switchLEDs(0);
-        
-    
+        boolean flipped = false;
+        int index = 0;
+        for(int i = 0; i < climbBuffers.length; i++) {
+            for(int j = 0; j < climbBuffers[i].getLength(); j++)
+                if(flipped)
+                    mainBuffer.setLED(index + j, LEDColor.FLAME_ORANGE.getAsWPIColor());
+                else
+                    mainBuffer.setLED(index + j, LEDColor.FLAME_ORANGE.getAsWPIColor());
+            index += 10;
+            flipped = !flipped;
+        } 
 
-        // for(int i = 0; i < 2; i++) {
-        //     shooterLEDs[i].setData(shooterBuffer);
-        // }
+        climbLEDs.setData(mainBuffer);        
     }
 
 

@@ -3,8 +3,17 @@
 // the WPILib BSD license file in the root directory of this project.
 package PrimoLib.leds;
 
+import java.util.Random;
+
+import javax.lang.model.util.ElementScanner6;
+
+import com.ctre.phoenix.led.ColorFlowAnimation;
+
+import org.opencv.video.DISOpticalFlow;
+
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.util.Color;
 
 /** Add your docs here. */
 public class LEDEffects {
@@ -28,8 +37,9 @@ public class LEDEffects {
 
     @Override
     public void run(AddressableLEDBuffer... buffers) {
-      for (int i = 0; i < buffers[0].getLength(); i++) {
-        buffers[0].setRGB(i, color.getRed(), color.getGreen(), color.getBlue());
+      for(int j = 0; j < buffers.length; j++)
+      for (int i = 0; i < buffers[j].getLength(); i++) {
+        buffers[j].setRGB(i, color.getRed(), color.getGreen(), color.getBlue());
       }
     }
   }
@@ -40,6 +50,7 @@ public class LEDEffects {
     private double duration;
     private double frequency;
     private Timer timer;
+    private boolean flash = false;
     private boolean timerStart = false;
 
     public FlashColor(LEDColor color, double frequency) {
@@ -55,16 +66,20 @@ public class LEDEffects {
         timer.start();
         timerStart = true;
       }
+      if(timer.advanceIfElapsed(frequency))
+          flash = !flash;
 
-      if (timer.get() % frequency == 0) {
-        for (int i = 0; i < buffers[0].getLength(); i++) {
-          buffers[0].setRGB(i, color.getRed(), color.getGreen(), color.getBlue());
-        }
+      if (flash) {
+        for(int j = 0; j < buffers.length; j++)
+          for (int i = 0; i < buffers[j].getLength(); i++) {
+            buffers[j].setRGB(i, color.getRed(), color.getGreen(), color.getBlue());
+          }
       } else {
-        for (int i = 0; i < buffers[0].getLength(); i++) {
-          buffers[0].setRGB(i, 0, 0, 0);
-        }
-      }
+        for(int j = 0; j < buffers.length; j++)
+          for (int i = 0; i < buffers[j].getLength(); i++) {
+            buffers[j].setRGB(i, 0, 0, 0);
+          }
+      } 
     }
 
     // @Override
@@ -99,9 +114,9 @@ public class LEDEffects {
 
       LEDColor newColor = new LEDColor(red, green, blue);
       for(int j = 0; j < buffers.length; j++)
-      for (int i = 0; i < buffers[0].getLength(); i++) {
-        buffers[0].setRGB(i, newColor.getRed(), newColor.getGreen(), newColor.getBlue());
-      }
+        for (int i = 0; i < buffers[j].getLength(); i++) {
+          buffers[j].setRGB(i, newColor.getRed(), newColor.getGreen(), newColor.getBlue());
+        }
       
       if(percent < 0)
       {
@@ -114,9 +129,70 @@ public class LEDEffects {
       }
       percent += increasing ? 5 : -5;     
     }
+  }
 
-    
+  public static final class FlameEffect implements LEDEffect  {
 
+    private LEDColor startFlame = LEDColor.FLAME_YELLOW;
+    private LEDColor middleFlame = LEDColor.FLAME_ORANGE;
+    private LEDColor endFlame = LEDColor.FLAME_RED;
+
+    private int startLength = 10;
+    private int middleLength= 15;
+    private int endLength = 15;
+    private Random random = new Random();
+
+
+
+    @Override
+    public void run(AddressableLEDBuffer... buffers) {
+      
+      int flameHeight = random.nextInt(endLength) + 1;
+
+      for(int i = 0; i < buffers.length; i++) {
+        for(int j = 0; j < buffers[i].getLength(); j++)
+        {
+          Color color;
+          if(j <= startLength)
+              color = startFlame.getAsWPIColor();
+          else if(j >= (startLength + middleLength) && j < (45 - flameHeight)) {
+              color = middleFlame.getAsWPIColor();
+          }  
+          else if(j >= (45 - flameHeight)) {
+            color = endFlame.getAsWPIColor();
+          } 
+          else 
+            color = new Color(0,0,0);
+          
+          buffers[i].setLED(j, color);  
+        }
+      }
+
+    }
+  }
+
+  public static final class DiscoEffect implements LEDEffect {
+
+    private LEDColor[] colors;
+    private Random random = new Random();
+
+    public DiscoEffect() {
+      colors = LEDColor.DISCO_COLORS;
+    }
+
+    @Override
+    public void run(AddressableLEDBuffer... buffers) {
+        for(int i = 0; i < buffers.length; i++) {
+        for(int j = 0; j < buffers[i].getLength(); j++) {
+          int color = random.nextInt(colors.length);
+          buffers[i].setLED(j, getColor(color));
+        }
+      }
+    }
+
+    public Color getColor(int color) {
+      return colors[color].getAsWPIColor();
+    }
 
   }
 }
