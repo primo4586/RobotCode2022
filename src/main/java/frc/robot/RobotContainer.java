@@ -8,12 +8,8 @@ import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -23,7 +19,6 @@ import frc.robot.commands.ClimbCommands.ManualClawB;
 import frc.robot.commands.ClimbCommands.ManualRotateChain;
 import frc.robot.commands.ClimbCommands.ReleaseClaw;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
-import frc.robot.commands.IntakeCommands.JointAndRoller;
 import frc.robot.commands.IntakeCommands.ManualJoint;
 import frc.robot.commands.IntakeCommands.ManualRoller;
 import frc.robot.commands.IntakeCommands.TogglePistonAndRoller;
@@ -54,20 +49,17 @@ public class RobotContainer {
   // driver buttons:
   private JoystickButton B_Driver; // open and close feeder piston 
   private JoystickButton Y_Driver; // spin rollers backwards
-  private JoystickButton X_Driver; //change state of intake joint
   private JoystickButton RB_Driver; // change direction
   private JoystickButton LB_Driver; //open and roolig roller
 
   // operator buttons:
-  private JoystickButton A_Operator;
-  private JoystickButton B_Operator; 
-  private JoystickButton X_Operator; 
-  private JoystickButton Y_Operator; 
-  private JoystickButton RB_Operator;
-  private JoystickButton LB_Operator;
-
-
   private JoystickButton START_Operator; // Enable/Disable Climb Control
+  private JoystickButton B_Operator; // realse level 2
+  private JoystickButton X_Operator; // realse level 3
+  private JoystickButton RB_Operator; // manual A (2&4)
+  private JoystickButton LB_Operator; // manual B (3)
+  private JoystickButton A_Operator; // level 4 braker
+  private JoystickButton Y_Operator; // shooter
 
 
   // subsystem
@@ -77,8 +69,6 @@ public class RobotContainer {
   private Intake intake;
   private Driver driver;
   private PistonForFeeder pistonForFeeder;
-
-  private PrimoTab tab;
 
   private UsbCamera forward;
   private UsbCamera backward;
@@ -106,13 +96,10 @@ public class RobotContainer {
   }
 
   private void buildButtons() {
-    
     this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
     this.Y_Driver = new JoystickButton(d_joystick, XboxController.Button.kY.value);
     this.RB_Driver = new JoystickButton(d_joystick, XboxController.Button.kRightBumper.value);
-    // this.A_Driver = new JoystickButton(d_joystick, XboxController.Button.kA.value);
     this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
-    this.X_Driver = new JoystickButton(d_joystick, XboxController.Button.kX.value);
 
     this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
     this.START_Operator = new JoystickButton(o_joystick, XboxController.Button.kStart.value);
@@ -125,56 +112,45 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
+    //driver:
+    driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(XboxController.Axis.kLeftY.value),
+    () -> d_joystick.getRawAxis(XboxController.Axis.kRightX.value),
+    () -> d_joystick.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0,
+    () -> d_joystick.getRawAxis(XboxController.Axis.kRightTrigger.value) > 0));
 
     this.RB_Driver.whenPressed(new InstantCommand(() -> {
       driver.changeDirection();
       camHandler.switchCamera();
     }));
 
-    // // intake
+    // shooter:
+    this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder,intake,camHandler));
+    Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, ShooterConstants.ShooterSpeed),
+    new ManualFeeder(feeder)));
 
-
-    // LB_Driver.whileHeld(new JointAndRoller(intake));
+    // intake:
     LB_Driver.whenPressed(new ManualJoint(intake));
     this.intake.setDefaultCommand(new ManualRoller(intake, Constants.IntakeConstants.rollerSpeed));
     Y_Driver.whileHeld(new ManualRoller(intake, -Constants.IntakeConstants.rollerSpeed)); //plita
-    // this.X_Driver.whenPressed(new ManualJoint(intake));
+    
+    // climb:
+    START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled())));
 
-    //for testing and operating without sensors
-     
     climb.setDefaultCommand(new ManualRotateChain(climb, () ->
      o_joystick.getRawAxis(XboxController.Axis.kRightY.value),true));
 
-    //
-    driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(XboxController.Axis.kLeftY.value),
-    () -> d_joystick.getRawAxis(XboxController.Axis.kRightX.value),
-    () -> d_joystick.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0,
-    () -> d_joystick.getRawAxis(XboxController.Axis.kRightTrigger.value) > 0));
-
-// shooter:
-  this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder,intake,camHandler));
-  Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, ShooterConstants.ShooterSpeed),
-  new ManualFeeder(feeder)));
-// intake
-
-// climb:
-
-//for testing and operating without sensors
- 
- RB_Operator.whenPressed(new ManualClawA(climb));
- LB_Operator.whenPressed(new ManualClawB(climb));
+    RB_Operator.whenPressed(new ManualClawA(climb));
+    LB_Operator.whenPressed(new ManualClawB(climb));
   
- B_Operator.whenPressed(
-    new ReleaseClaw(climb, 2)); //open level 2 or
-  X_Operator.whenPressed(new ReleaseClaw(climb, 3)); //open level 3
-  A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
-  //A_Operator.whenPressed(new ManualJoint(intake));
-  START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled())));
-  }
+    B_Operator.whenPressed(new ReleaseClaw(climb, 2)); //open level 2
+    X_Operator.whenPressed(new ReleaseClaw(climb, 3)); //open level 3
+  
+    A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
+  
+} 
 
 
   private void buildCameras() {
-
     this.forward = CameraServer.startAutomaticCapture("Forward", 0);
     this.backward = CameraServer.startAutomaticCapture("Backward", 1);
 

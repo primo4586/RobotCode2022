@@ -65,10 +65,10 @@ public final class Constants {
         public static final int gyroPorts = 7;
 
         // Limiter for arcade drive.
-        public static final double SPEED_LIMITER = 0.5;
+        public static final double SPEED_LIMITER = 0.6;
         public static final double ROTATION_LIMITER = 0.6;
         public static final double SLOW = 0.7;
-        public static final double BOOST = 1.5;
+        public static final double BOOST = 1.2;
     }
 
     public static final class ClimbConstants {
