@@ -30,12 +30,17 @@ public class Shooter extends SubsystemBase {
     this.setConfig(ShooterConstants.SHOOTER_CONFIG);
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
+    tab.addEntry("Speed");
     this.pidSetpoint = 0;
   }
 
   public void s_control (double shooterSpeed){
     // give m_shooter speed
     m_shooter.set(shooterSpeed);
+  }
+
+  public double getVelocity() {
+    return m_shooter.getSelectedSensorVelocity();
   }
 
   public void setConfig(PIDConfig config) {

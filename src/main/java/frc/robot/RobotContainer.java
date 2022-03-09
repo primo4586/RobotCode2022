@@ -127,6 +127,7 @@ public class RobotContainer {
     this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder,intake,camHandler));
     Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, ShooterConstants.ShooterSpeed),
     new ManualFeeder(feeder)));
+    // Y_Operator.whileHeld(new ManualFeeder(feeder));
 
     // intake:
     LB_Driver.whenPressed(new ManualJoint(intake));

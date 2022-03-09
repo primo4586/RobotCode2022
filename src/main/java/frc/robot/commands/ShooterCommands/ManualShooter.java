@@ -18,15 +18,18 @@ import java.util.function.DoubleSupplier;
 public class ManualShooter extends PrimoCommandBase {
   Shooter shooter;
   // NetworkTableEntry Kp, Ki, Kd, Kf, setPoint, speed;
+  NetworkTableEntry speed;
 
-  private double speed;
+  private boolean reached = false;
+
+  // private double speed;
 
   public ManualShooter(Shooter shooter, double shooterSpeed) {
     this.shooter = shooter;
-    this.speed = shooterSpeed;
+    // this.speed = shooterSpeed;
     addRequirements(shooter);
 
-    // speed = this.shooter.getTab().addEntry("Speed");
+    speed = this.shooter.getTab().addEntry("Speed");
     // Kp = this.shooter.getTab().addEntry("Kp");
     // Ki = this.shooter.getTab().addEntry("Ki");
     // Kd = this.shooter.getTab().addEntry("Kd");
@@ -45,7 +48,17 @@ public class ManualShooter extends PrimoCommandBase {
   @Override
   public void execute() {
     // shooter.setConfig(new PIDConfig(Kp.getDouble(0), Ki.getDouble(0), Kd.getDouble(0), Kf.getDouble(0)));
-    this.shooter.setVelocity(speed);
+    this.shooter.setVelocity(ShooterConstants.ShooterSpeed);
+    // System.out.println("Shooter Velocity: " + shooter.getVelocity());
+    
+
+    // if(!reached && shooter.isReadyToShoot()) {
+    // System.out.println("Current speed: " + shooter.getVelocity());
+    // reached = true;
+    // } else if(reached && !shooter.isReadyToShoot())
+    //     reached = !reached;
+    // System.out.println("Reached speed: " + shooter.isReadyToShoot());
+    
     // this.shooter.setVelocity(speed.getDouble(0));    
   }
 

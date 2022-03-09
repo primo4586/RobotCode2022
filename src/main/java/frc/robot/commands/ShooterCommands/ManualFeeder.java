@@ -6,6 +6,7 @@ package frc.robot.commands.ShooterCommands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Feeder;
 
 public class ManualFeeder extends CommandBase {
@@ -16,7 +17,7 @@ public class ManualFeeder extends CommandBase {
   public ManualFeeder(Feeder feeder) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.feeder = feeder;
-    this.feederSpeed = this.feeder.getTab().addEntry("Feeder Speed");
+    // this.feederSpeed = this.feeder.getTab().addEntry("Feeder Speed");
     addRequirements(feeder);
 
     // Kp = this.feeder.getTab().addEntry("Feeder P");
@@ -37,7 +38,11 @@ public class ManualFeeder extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.feeder.f_control(0.43);
+    // this.feeder.f_control(feeder.getTab().addEntry("setPoint").getDouble(0));
+    // this.feeder.f_control(ShooterConstants.FeederSpeed);
+    // this.feeder.setVoltage(feeder.getTab().addEntry("Voltage").getDouble(0));
+    this.feeder.setVoltage(ShooterConstants.FeederVoltage);
+    // System.out.println("Feeder Speed: " + ShooterConstants.FeederSpeed);
   }
 
   // Called once the command ends or is interrupted.

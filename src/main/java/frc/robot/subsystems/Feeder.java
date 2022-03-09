@@ -27,16 +27,17 @@ public class Feeder extends SubsystemBase {
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Feeder");
 
-    tab.addEntry("Feeder P");
-    tab.addEntry("Feeder I");
-    tab.addEntry("Feeder D");
-    tab.addEntry("Feeder F");
-    tab.addEntry("setPoint");
+    tab.addEntry("setPoint").setNumber(0);
+    tab.addEntry("Voltage").setNumber(0);
   }
 
   public void f_control(double feederSpeed) {
     // give m_feeder speed
     m_feeder.set(feederSpeed);
+  }
+
+  public void setVoltage(double voltage) {
+    m_feeder.setVoltage(voltage);
   }
 
   public void setConfig(PIDConfig config) {

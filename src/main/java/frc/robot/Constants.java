@@ -38,13 +38,14 @@ public final class Constants {
     public static final class ShooterConstants {
         public static final int ShooterPort = 15;
         public static final int FeederPort = 6;
-        public static final double FeederSpeed = 0.75;
-        public static final double ShooterSpeed = 14700;
+        public static final double FeederVoltage = 6.5;
+        public static final double FeederSpeed = 0.8;
+        public static final double ShooterSpeed = 12500; // 13500
 
-        public static final PIDConfig FEEDER_CONFIG = new PIDConfig(1, 0, 0, 0);
+        // public static final PIDConfig FEEDER_CONFIG = new PIDConfig(1, 0, 0, 0);
         public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(0.2, 0, 0.2, 0.05);
         // public static final SimpleMotorFeedforward SHOOTER_FEEDFORWARD = new SimpleMotorFeedforward(0.779,0.11182,0.0095677);
-        public static final SimpleMotorFeedforward SHOOTER_FEEDFORWARD = new SimpleMotorFeedforward(0.779,5.4601E-05,4.6717E-06);
+        // public static final SimpleMotorFeedforward SHOOTER_FEEDFORWARD = new SimpleMotorFeedforward(0.779,5.4601E-05,4.6717E-06);
         public static final double READY_SPEED_TOLERANCE = 200;
     }
 
@@ -91,7 +92,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final double rollerSpeed = 0.6;
+        public static final double rollerSpeed = 0.63; // 0.6
         public static final int rollerPort = 5;
     }
 
