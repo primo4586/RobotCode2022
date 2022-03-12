@@ -40,7 +40,7 @@ public final class Constants {
         public static final int FeederPort = 6;
         public static final double FeederVoltage = 6.5;
         public static final double FeederSpeed = 0.8;
-        public static final double ShooterSpeed = 12500; // 13500
+        public static final double ShooterSpeed = 13000; // 13500
 
         // public static final PIDConfig FEEDER_CONFIG = new PIDConfig(1, 0, 0, 0);
         public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(0.2, 0, 0.2, 0.05);
@@ -57,7 +57,7 @@ public final class Constants {
         public static final int leftFollowerPort = 1;
         public static final int rightFollowerPort = 3;
 
-        // pid?
+        // pid? 
         public static final double METER_PER_TICK = 0.0001558524480;
         public static final PIDConfig L_CONFIG = new PIDConfig(1, 0, 0, 0);
         public static final PIDConfig R_CONFIG = new PIDConfig(1, 0, 0, 0);
@@ -92,7 +92,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final double rollerSpeed = 0.63; // 0.6
+        public static final double rollerSpeed = 0.7; // 0.6
         public static final int rollerPort = 5;
     }
 

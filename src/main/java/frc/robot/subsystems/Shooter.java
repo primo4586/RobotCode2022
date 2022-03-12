@@ -5,13 +5,11 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import autonomous.PIDConfig;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
@@ -21,6 +19,7 @@ public class Shooter extends SubsystemBase {
   private WPI_TalonFX m_shooter;
   private PrimoTab tab;
   private double pidSetpoint;
+  private double changeShooter =1;
 
   
   public Shooter() {
@@ -39,8 +38,11 @@ public class Shooter extends SubsystemBase {
     m_shooter.set(shooterSpeed);
   }
 
-  public double getVelocity() {
-    return m_shooter.getSelectedSensorVelocity();
+  public void increaseShooterSpeed() {
+    this.changeShooter*=1.05;
+  }
+  public void decreaseShooterSpeed(){
+    this.changeShooter*=0.95;
   }
 
   public void setConfig(PIDConfig config) {
@@ -59,6 +61,18 @@ public class Shooter extends SubsystemBase {
     this.m_shooter.set(ControlMode.Velocity, velocity);
 
   }  
+  /*
+    public void setVelocity(double velocity) {
+
+    this.pidSetpoint = velocity * this.changeShooter;
+    this.m_shooter.set(ControlMode.Velocity, velocity);
+
+  }
+  */
+  public double getShooterVelocity(){
+    return this.m_shooter.get();
+  }
+  
 
   public PrimoTab getTab() {
       return tab;
