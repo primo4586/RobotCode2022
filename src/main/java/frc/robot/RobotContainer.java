@@ -146,9 +146,11 @@ public class RobotContainer {
     B_Operator.whenPressed(new ReleaseClaw(climb, 2)); // open level 2
     X_Operator.whenPressed(new ReleaseClaw(climb, 3)); // open level 3
 
-    A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
+    // A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
 
   }
+
+  // test
 
   private void buildCameras() {
     this.forward = CameraServer.startAutomaticCapture("Forward", 0);
