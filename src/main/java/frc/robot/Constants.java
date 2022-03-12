@@ -47,6 +47,7 @@ public final class Constants {
         // public static final SimpleMotorFeedforward SHOOTER_FEEDFORWARD = new SimpleMotorFeedforward(0.779,0.11182,0.0095677);
         // public static final SimpleMotorFeedforward SHOOTER_FEEDFORWARD = new SimpleMotorFeedforward(0.779,5.4601E-05,4.6717E-06);
         public static final double READY_SPEED_TOLERANCE = 200;
+        public static final double ShooterVoltage = 0;
     }
 
     
@@ -84,7 +85,8 @@ public final class Constants {
         // Limit is in TICKS.
         public static final int FORWARD_LIMIT = 0;
         public static final int BACKWARD_LIMIT = 0;
-        public static final double chainSpeed = 0.7;
+        public static final double chainVoltage = 0.7 * 13;
+
         public static int switchAport = 8;
         public static int switchBport = 9;
         public static int sPistonAport = 7;

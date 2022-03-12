@@ -6,6 +6,7 @@ package frc.robot.commands.ClimbCommands;
 
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.Climb;
 
@@ -42,11 +43,10 @@ public class ManualRotateChain extends CommandBase {
   public void execute() {
     if(isOk && climb.isEnabled()){
       // System.out.println("Climb moment");
-      if(speed.getAsDouble() > 0.3) {
-       this.climb.c_control(ClimbConstants.chainSpeed);
-      }
+      if(speed.getAsDouble() > 0.3) 
+       this.climb.setVoltage(Constants.ClimbConstants.chainVoltage);
       else if(speed.getAsDouble() < -0.3)
-        this.climb.c_control(-ClimbConstants.chainSpeed);
+        this.climb.setVoltage(-Constants.ClimbConstants.chainVoltage);
       else 
         this.climb.c_control(0);
       
