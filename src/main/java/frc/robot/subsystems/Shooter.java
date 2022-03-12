@@ -35,7 +35,7 @@ public class Shooter extends SubsystemBase {
 
   public void s_control (double shooterSpeed){
     // give m_shooter speed
-    m_shooter.set(shooterSpeed);
+    this.m_shooter.set(Constants.ShooterConstants.ShooterSpeed);
   }
 
   public void increaseShooterSpeed() {
@@ -53,14 +53,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setVelocity(double velocity) {
-
-    // double shooterFF = ShooterConstants.SHOOTER_FEEDFORWARD.calculate(velocity);
-
     this.pidSetpoint = velocity;
-    // this.m_shooter.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, shooterFF);
     this.m_shooter.set(ControlMode.Velocity, velocity);
 
   }  
+ 
   /*
     public void setVelocity(double velocity) {
 
