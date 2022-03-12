@@ -54,9 +54,6 @@ public class RobotContainer {
   private JoystickButton RB_Driver; // change direction
   private JoystickButton LB_Driver; // open and roolig roller
 
-  private JoystickButton START_Debug; // Driver controller to test interpolation
-  private InterpolationMap debugMap = new InterpolationMap().put(0, 5).put(1, 10).put(2, 25).put(3, 10);
-
   // operator buttons:
   private JoystickButton START_Operator; // Enable/Disable Climb Control
   private JoystickButton B_Operator; // realse level 2
@@ -90,6 +87,7 @@ public class RobotContainer {
     this.feeder = feeder;
     this.intake = intake;
     this.pistonForFeeder = pistonForFeeder;
+
 
     buildButtons();
 
@@ -153,14 +151,6 @@ public class RobotContainer {
 
     A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
     
-    // START_Debug.whenPressed(new InstantCommand(() -> {
-    //   PrimoTab testTab = PrimoShuffleboard.getInstance().getPrimoTab("limelight_debug");
-
-    //   double x = testTab.addEntry("Test X").getDouble(0);
-
-    //   testTab.addEntry("Result Interpolation").setNumber(InterpolateUtil.interpolate(debugMap,x));
-    // }));
-
   }
 
   private void buildCameras() {

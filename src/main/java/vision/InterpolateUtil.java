@@ -14,7 +14,7 @@ public class InterpolateUtil {
      */
     public static double interpolate(InterpolationMap data, double x) {
 
-        if (data.get(x) > Double.MAX_VALUE)
+        if (data.get(x) > -Double.MAX_VALUE)
             return data.get(x);
 
         InterpolationPoint closestBefore = new InterpolationPoint(-1, -1);
@@ -25,6 +25,7 @@ public class InterpolateUtil {
                 closestBefore = new InterpolationPoint(point.getKey(), point.getValue());
             if (point.getKey() > x) {
                 closestAfter = new InterpolationPoint(point.getKey(), point.getValue());
+
                 break;
             }
         }
@@ -32,13 +33,13 @@ public class InterpolateUtil {
             closestAfter = new InterpolationPoint(closestBefore.getX(), closestBefore.getValue());
 
         return linearInterpolation(closestBefore.getX(), closestBefore.getValue(), closestAfter.getX(),
-                closestBefore.getValue(), x);
+                closestAfter.getValue(), x);
     }
 
     /**
      * Linear interpolation between two 2D points. Finds the Y value between the two
      * points given an X value between the two points
-     * {@see https://bit.ly/2ZJtQlt}
+     * {@see https://theeducationlife.com/interpolation-formula/}
      * 
      * @param x1       Point 1's X
      * @param y1       Point 1's Y
@@ -48,12 +49,13 @@ public class InterpolateUtil {
      * @return The Y value for the X value between the 2 points, basically the
      *         missing Y coordinate
      */
-    private static double linearInterpolation(double x1, double y1, double x2, double y2, double xBetween) {
+    private static double linearInterpolation(double x1, double y1,double x2, double y2, double xBetween) {
 
-        double minX = Math.min(x1, x2), maxX = Math.max(x1, x2);
-        double minY = Math.min(y1, y2), maxY = Math.max(y1, y2);
+        double minX = Math.min(x1,x2), maxX = Math.max(x1,x2);
+        double minY = Math.min(y1,y2), maxY = Math.max(y1,y2);
 
-        return minY + ((maxY - minY) * (xBetween - minX)) / (maxX - minX);
+
+       return minY + ((maxY - minY) * (xBetween-minX))/(maxX - minX);
     }
 
 }
