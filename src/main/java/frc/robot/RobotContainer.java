@@ -153,13 +153,13 @@ public class RobotContainer {
 
     A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
     
-    START_Debug.whenPressed(new InstantCommand(() -> {
-      PrimoTab testTab = PrimoShuffleboard.getInstance().getPrimoTab("limelight_debug");
+    // START_Debug.whenPressed(new InstantCommand(() -> {
+    //   PrimoTab testTab = PrimoShuffleboard.getInstance().getPrimoTab("limelight_debug");
 
-      double x = testTab.addEntry("Test X").getDouble(0);
+    //   double x = testTab.addEntry("Test X").getDouble(0);
 
-      testTab.addEntry("Result Interpolation").setNumber(InterpolateUtil.interpolate(debugMap,x));
-    }));
+    //   testTab.addEntry("Result Interpolation").setNumber(InterpolateUtil.interpolate(debugMap,x));
+    // }));
 
   }
 
