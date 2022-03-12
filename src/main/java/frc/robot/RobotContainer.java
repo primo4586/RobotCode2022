@@ -138,7 +138,7 @@ public class RobotContainer {
     START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled())));
 
     climb.setDefaultCommand(
-        new ManualRotateChain(climb, () -> o_joystick.getRawAxis(XboxController.Axis.kRightY.value), true));
+        new ManualRotateChain(climb, () -> o_joystick.getRawAxis(XboxController.Axis.kRightY.value)));
 
     RB_Operator.whenPressed(new ManualClawA(climb));
     LB_Operator.whenPressed(new ManualClawB(climb));
@@ -149,8 +149,6 @@ public class RobotContainer {
     // A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
 
   }
-
-  // test
 
   private void buildCameras() {
     this.forward = CameraServer.startAutomaticCapture("Forward", 0);

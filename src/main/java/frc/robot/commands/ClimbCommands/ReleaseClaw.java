@@ -5,12 +5,11 @@
 package frc.robot.commands.ClimbCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ClimbConstants;
+import frc.robot.Constants;
 import frc.robot.subsystems.Climb;
 
 public class ReleaseClaw extends CommandBase {
   private Climb climb;
-  private boolean isOk;
   private int numLevel; //the level the robot moving to 
   
   public ReleaseClaw(Climb climb, int numLevel) {
@@ -23,24 +22,17 @@ public class ReleaseClaw extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(numLevel == 2){
-      this.isOk = climb.islevel3Secure();
-      System.out.println("is ok 2:" + this.isOk);
-    }
-      else if(numLevel == 3)
-        this.isOk = climb.islevel2or4Secure();
+   if(this.numLevel == 2){
+     climb.setSolenoidLevel2or4(Constants.ClimbConstants.PISTON_RELEASE);
+   }
+   if(this.numLevel == 3){
+    climb.setSolenoidLevel3(Constants.ClimbConstants.PISTON_RELEASE);
+  }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    if(this.isOk && climb.isEnabled()){
-      if(numLevel==2)
-        climb.setSolenoidLevel2or4(ClimbConstants.PISTON_RELEASE);
-      else if(numLevel == 3)
-        climb.setSolenoidLevel3(ClimbConstants.PISTON_RELEASE);
-    }
-    // climb.setLevel(climb.getLevel() + 1);
+  public void execute() {    
   }
 
   // Called once the command ends or is interrupted.
