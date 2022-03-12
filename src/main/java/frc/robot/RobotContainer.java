@@ -30,6 +30,8 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PistonForFeeder;
 import frc.robot.subsystems.Shooter;
+import vision.InterpolateUtil;
+import vision.InterpolationMap;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -51,6 +53,9 @@ public class RobotContainer {
   private JoystickButton Y_Driver; // spin rollers backwards
   private JoystickButton RB_Driver; // change direction
   private JoystickButton LB_Driver; // open and roolig roller
+
+  private JoystickButton START_Debug; // Driver controller to test interpolation
+  private InterpolationMap debugMap = new InterpolationMap().put(0, 5).put(1, 10).put(2, 25).put(3, 10);
 
   // operator buttons:
   private JoystickButton START_Operator; // Enable/Disable Climb Control
@@ -147,6 +152,14 @@ public class RobotContainer {
     X_Operator.whenPressed(new ReleaseClaw(climb, 3)); // open level 3
 
     A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
+    
+    START_Debug.whenPressed(new InstantCommand(() -> {
+      PrimoTab testTab = PrimoShuffleboard.getInstance().getPrimoTab("limelight_debug");
+
+      double x = testTab.addEntry("Test X").getDouble(0);
+
+      testTab.addEntry("Result Interpolation").setNumber(InterpolateUtil.interpolate(debugMap,x));
+    }));
 
   }
 
