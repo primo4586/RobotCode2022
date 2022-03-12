@@ -32,10 +32,14 @@ public class PistonForFeeder extends SubsystemBase {
     this.p_feeder.set(state);
   }
 
+  // Reveresed because thats how it is for some reason
+  public boolean getState() {
+    return !state;
+  }
+
 
   @Override
   public void periodic() {
-    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Feeder Piston").forceSetBoolean(!state);
     // This method will be called once per scheduler run
   }
 }

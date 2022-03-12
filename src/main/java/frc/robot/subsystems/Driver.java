@@ -199,15 +199,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
       Debug Info, general subsystem info we might need
     */
     primoOdometry.update();
-   
-    tab.addEntry("Left Velocity").setNumber(getLeftVelocity());
-    tab.addEntry("Left Pos. ").setNumber(getLeftPositionInMeters());
-    tab.addEntry("Right Velocity").setNumber(getRightVelocity());
-    tab.addEntry("Right Pos. ").setNumber(getRightPositionInMeters());
-    tab.addEntry("Odometry X").setNumber(primoOdometry.getPose().getX());
-    tab.addEntry("Odometry Y").setNumber(primoOdometry.getPose().getY());
-    tab.addEntry("Gyro angle").setNumber(getYaw());
-    tab.addEntry("Is forward").setBoolean(isDirectionForward());
   }
 
   

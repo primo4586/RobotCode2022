@@ -66,8 +66,6 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
 
-    tab.addEntry("Roller Speed").setNumber(getRollerSpeed());
-    tab.addEntry("Joint State").setBoolean(isJointOpen());
     // This method will be called once per scheduler run
   }
 }

@@ -155,6 +155,7 @@ public class RobotContainer {
     this.backward = CameraServer.startAutomaticCapture("Backward", 1);
 
     this.camHandler = new CameraHandler(forward, backward);
+    PrimoShuffleboard.getInstance().updateCameras(camHandler);
   }
 
 }
