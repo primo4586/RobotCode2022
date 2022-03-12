@@ -29,37 +29,18 @@ public class ManualShooter extends PrimoCommandBase {
     // this.speed = shooterSpeed;
     addRequirements(shooter);
 
-    speed = this.shooter.getTab().addEntry("Speed");
-    // Kp = this.shooter.getTab().addEntry("Kp");
-    // Ki = this.shooter.getTab().addEntry("Ki");
-    // Kd = this.shooter.getTab().addEntry("Kd");
-    // Kf = this.shooter.getTab().addEntry("Kf");
-
-    // setPoint = this.shooter.getTab().addEntry("setPoint");
-
+    // speed = this.shooter.getTab().addEntry("Speed");
   }
 
   @Override
   public void initialize() {
-    // LEDs.getInstance().setClimbBarsEffect(new GradientEffect(LEDColor.FLAME_ORANGE,LEDColor.RED));
   }
   
 
   @Override
   public void execute() {
     // shooter.setConfig(new PIDConfig(Kp.getDouble(0), Ki.getDouble(0), Kd.getDouble(0), Kf.getDouble(0)));
-    this.shooter.setVelocity(ShooterConstants.ShooterSpeed);
-    // System.out.println("Shooter Velocity: " + shooter.getVelocity());
-    
-
-    // if(!reached && shooter.isReadyToShoot()) {
-    // System.out.println("Current speed: " + shooter.getVelocity());
-    // reached = true;
-    // } else if(reached && !shooter.isReadyToShoot())
-    //     reached = !reached;
-    // System.out.println("Reached speed: " + shooter.isReadyToShoot());
-    
-    // this.shooter.setVelocity(speed.getDouble(0));    
+    this.shooter.setVelocity(ShooterConstants.ShooterSpeed);  
   }
 
   @Override
