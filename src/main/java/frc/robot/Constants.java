@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.robot.commands.DriverCommands.FollowPath;
+import vision.InterpolationMap;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -32,7 +33,7 @@ public final class Constants {
         public static final int intakeJointPort = 5;
         public static final int climbSolenoidA = 6;
         public static final int climbSolenoidB = 7;
-        public static final int feederPort = 4;
+        public static final int feederPort = 0; // 4
     }
 
     public static final class ShooterConstants {
@@ -43,10 +44,17 @@ public final class Constants {
         public static final double ShooterSpeed = 13000; // 13500
 
         // public static final PIDConfig FEEDER_CONFIG = new PIDConfig(1, 0, 0, 0);
-        public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(0.2, 0, 0.2, 0.05);
+        public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(0.22, 0, 0.2, 0.055);
         // public static final SimpleMotorFeedforward SHOOTER_FEEDFORWARD = new SimpleMotorFeedforward(0.779,0.11182,0.0095677);
         // public static final SimpleMotorFeedforward SHOOTER_FEEDFORWARD = new SimpleMotorFeedforward(0.779,5.4601E-05,4.6717E-06);
-        public static final double READY_SPEED_TOLERANCE = 200;
+        public static final double READY_SPEED_TOLERANCE = 400;
+
+        public static final InterpolationMap VISION_MAP = new InterpolationMap()
+                                                                    .put(1.45, 12500)
+                                                                    .put(1.73, 13000)
+                                                                    .put(1.95,13800)
+                                                                    .put(2.1, 14500)
+                                                                    .put(2.26,14800);
     }
 
     

@@ -32,16 +32,12 @@ public class Limelight {
 
         double visibility = visibilityRate.calculate(tv);
         // If it sees the target well, ("80%" visibillity) we want to keep updating, otherwise the values are not reliable
-        if(visibility > 0.8) {
+        if(visibility > 0.6) {
             calculateTargetVector();
 
             this.angleX = Math.toDegrees(Math.atan2(targetPos.getY(), targetPos.getX()));
             this.distance = Math.sqrt(Math.pow(targetPos.getX(), 2) + Math.pow(targetPos.getY(), 2));
-        } else {
-            this.angleX = -999;
-            this.distance = -999;
-        }
-
+        } 
         debugTab.addEntry("visibillity rate").setNumber(visibility);
         debugTab.addEntry("Robot Angle X").setNumber(angleX);
         debugTab.addEntry("Distance").setNumber(distance);

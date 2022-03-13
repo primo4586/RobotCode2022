@@ -31,4 +31,9 @@ public class InterpolationPoint {
     public void setValue(double value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + value + ")";
+    }
 }
