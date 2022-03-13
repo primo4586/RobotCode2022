@@ -22,6 +22,7 @@ import frc.robot.commands.DriverCommands.ArcadeDrive;
 import frc.robot.commands.IntakeCommands.ManualJoint;
 import frc.robot.commands.IntakeCommands.ManualRoller;
 import frc.robot.commands.IntakeCommands.TogglePistonAndRoller;
+import frc.robot.commands.ShooterCommands.AutoShooter;
 import frc.robot.commands.ShooterCommands.ManualFeeder;
 import frc.robot.commands.ShooterCommands.ManualShooter;
 import frc.robot.subsystems.Climb;
@@ -54,6 +55,7 @@ public class RobotContainer {
   private JoystickButton Y_Driver; // spin rollers backwards
   private JoystickButton RB_Driver; // change direction
   private JoystickButton LB_Driver; // open and roolig roller
+  private JoystickButton X_Driver; // Auto Shoot
 
   // operator buttons:
   private JoystickButton START_Operator; // Enable/Disable Climb Control
@@ -104,9 +106,10 @@ public class RobotContainer {
     this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
     this.Y_Driver = new JoystickButton(d_joystick, XboxController.Button.kY.value);
     this.RB_Driver = new JoystickButton(d_joystick, XboxController.Button.kRightBumper.value);
+    this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
+    this.X_Driver = new JoystickButton(d_joystick, XboxController.Button.kX.value);
     this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
 
-    this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
     this.START_Operator = new JoystickButton(o_joystick, XboxController.Button.kStart.value);
     this.A_Operator = new JoystickButton(o_joystick, XboxController.Button.kA.value);
     this.B_Operator = new JoystickButton(o_joystick, XboxController.Button.kB.value);
@@ -132,6 +135,7 @@ public class RobotContainer {
     this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
     Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> InterpolateUtil.interpolate(ShooterConstants.VISION_MAP, limelight.getDistance())),
         new ManualFeeder(feeder)));
+    X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight));  
     // Y_Operator.whileHeld(new ManualFeeder(feeder));
 
     // intake:
