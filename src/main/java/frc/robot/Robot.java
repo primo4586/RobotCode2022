@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -69,9 +70,10 @@ public class Robot extends TimedRobot {
 
     this.flashTimer = new Timer();
 
-    robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder);
-    autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder);
     limelight = new Limelight();
+
+    robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder,limelight);
+    autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder,limelight);
 
     // leds = new AddressableLED(0);
     // ledBuffer = new AddressableLEDBuffer(10);
@@ -83,7 +85,7 @@ public class Robot extends TimedRobot {
     // leds.setData(ledBuffer);
     
     // leds.start();
-    
+    // LiveWindow.disableAllTelemetry();
  
   }
 

@@ -17,7 +17,7 @@ public class ManualFeeder extends CommandBase {
   public ManualFeeder(Feeder feeder) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.feeder = feeder;
-    // this.feederSpeed = this.feeder.getTab().addEntry("Feeder Speed");
+    this.feederSpeed = this.feeder.getTab().addEntry("Voltage");
     addRequirements(feeder);
 
     // Kp = this.feeder.getTab().addEntry("Feeder P");
@@ -40,8 +40,8 @@ public class ManualFeeder extends CommandBase {
   public void execute() {
     // this.feeder.f_control(feeder.getTab().addEntry("setPoint").getDouble(0));
     // this.feeder.f_control(ShooterConstants.FeederSpeed);
-    // this.feeder.setVoltage(feeder.getTab().addEntry("Voltage").getDouble(0));
-    this.feeder.setVoltage(ShooterConstants.FeederVoltage);
+    this.feeder.setVoltage(5);
+    // this.feeder.setVoltage(ShooterConstants.FeederVoltage);
     // System.out.println("Feeder Speed: " + ShooterConstants.FeederSpeed);
   }
 

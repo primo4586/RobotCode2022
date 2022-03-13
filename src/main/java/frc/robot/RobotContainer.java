@@ -32,6 +32,7 @@ import frc.robot.subsystems.PistonForFeeder;
 import frc.robot.subsystems.Shooter;
 import vision.InterpolateUtil;
 import vision.InterpolationMap;
+import vision.Limelight;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -71,13 +72,14 @@ public class RobotContainer {
   private Intake intake;
   private Driver driver;
   private PistonForFeeder pistonForFeeder;
+  private Limelight limelight;
 
   private UsbCamera forward;
   private UsbCamera backward;
   private CameraHandler camHandler;
 
   public RobotContainer(Driver driver, Shooter shooter, Feeder feeder, Intake intake, Climb climb,
-      PistonForFeeder pistonForFeeder) {
+      PistonForFeeder pistonForFeeder, Limelight limelight) {
     this.d_joystick = new Joystick(0);
     this.o_joystick = new Joystick(1);
 
@@ -87,7 +89,7 @@ public class RobotContainer {
     this.feeder = feeder;
     this.intake = intake;
     this.pistonForFeeder = pistonForFeeder;
-
+    this.limelight = limelight;
 
     buildButtons();
 
@@ -128,7 +130,7 @@ public class RobotContainer {
     
     // shooter:
     this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
-    Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, ShooterConstants.ShooterSpeed),
+    Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> InterpolateUtil.interpolate(ShooterConstants.VISION_MAP, limelight.getDistance())),
         new ManualFeeder(feeder)));
     // Y_Operator.whileHeld(new ManualFeeder(feeder));
 

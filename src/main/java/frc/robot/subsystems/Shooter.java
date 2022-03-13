@@ -87,6 +87,8 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     tab.addEntry("Shooter Velocity").setNumber(m_shooter.getSelectedSensorVelocity());
     tab.addEntry("Reached target velocity").forceSetBoolean(isReadyToShoot());
+    tab.addEntry("PID Setpoint").setNumber(pidSetpoint);
+    tab.addEntry("Speed");
     PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Reached Shooter Speed").forceSetBoolean(isReadyToShoot());
     PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Shooter Vel").setNumber(m_shooter.getSelectedSensorVelocity());  }
   
