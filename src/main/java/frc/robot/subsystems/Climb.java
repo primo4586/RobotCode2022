@@ -52,7 +52,7 @@ public class Climb extends SubsystemBase {
     this.solenoidB = new Solenoid(Constants.Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM,
         Constants.Pneumatics.climbSolenoidB);
 
-    this.brakeSolenoid = new Solenoid(Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, 0);
+    // this.brakeSolenoid = new Solenoid(Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, 0);
 
     this.switchA = new DigitalInput(ClimbConstants.switchAport);
     this.switchB = new DigitalInput(ClimbConstants.switchBport);

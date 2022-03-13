@@ -17,6 +17,7 @@ public class ManualFeeder extends CommandBase {
   public ManualFeeder(Feeder feeder) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.feeder = feeder;
+    this.feederSpeed = this.feeder.getTab().addEntry("Voltage");
     addRequirements(feeder);
   }
 
@@ -30,7 +31,11 @@ public class ManualFeeder extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.feeder.setVoltage(ShooterConstants.FeederVoltage);
+    // this.feeder.f_control(feeder.getTab().addEntry("setPoint").getDouble(0));
+    // this.feeder.f_control(ShooterConstants.FeederSpeed);
+    this.feeder.setVoltage(5);
+    // this.feeder.setVoltage(ShooterConstants.FeederVoltage);
+    // System.out.println("Feeder Speed: " + ShooterConstants.FeederSpeed);
   }
 
   // Called once the command ends or is interrupted.
