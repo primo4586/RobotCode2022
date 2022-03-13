@@ -22,7 +22,8 @@ public class AutoShooter extends CommandBase {
   private Limelight limelight;
   private double speed;
 
-  public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder, Limelight limelight) {
+  public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
+      Limelight limelight) {
     this.shooter = shooter;
     this.piston = pistonForFeeder;
     this.limelight = limelight;
@@ -45,15 +46,16 @@ public class AutoShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.r_control(0.3);
     feeder.setVoltage(5);
 
-
     shooter.setVelocity(speed);
-    if(shooter.isReadyToShoot())
-        piston.setSolenoid(true); 
-    else
-        piston.setSolenoid(false);
+    if (shooter.isReadyToShoot()) {
+      piston.setSolenoid(true);
+      intake.r_control(0.3);
+    } else {
+      intake.r_control(0);
+      piston.setSolenoid(false);
+    }
   }
 
   // Called once the command ends or is interrupted.
