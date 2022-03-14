@@ -34,7 +34,6 @@ public class Climb extends SubsystemBase {
   private boolean isMotIn;
   private boolean canSearch3 = true;
   private boolean canSearch2or4 = true;
-  private boolean brake = false;
 
   private PrimoTab tab;
   private boolean isEnabled;
@@ -54,11 +53,11 @@ public class Climb extends SubsystemBase {
 
     // this.brakeSolenoid = new Solenoid(Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, 0);
 
-    this.switchA = new DigitalInput(ClimbConstants.switchAport);
-    this.switchB = new DigitalInput(ClimbConstants.switchBport);
+    // this.switchA = new DigitalInput(ClimbConstants.switchAport);
+    // this.switchB = new DigitalInput(ClimbConstants.switchBport);
 
-    this.sPistonA = new DigitalInput(ClimbConstants.sPistonAport);
-    this.sPistonB = new DigitalInput(ClimbConstants.sPistonBport);
+    // this.sPistonA = new DigitalInput(ClimbConstants.sPistonAport);
+    // this.sPistonB = new DigitalInput(ClimbConstants.sPistonBport);
 
     this.level = 1;
     this.isMotIn = false;
@@ -67,7 +66,6 @@ public class Climb extends SubsystemBase {
 
     this.isEnabled = false;
 
-    this.brake = brakeSolenoid.get();
     this.m_climbleft.follow(this.m_climbRight);
   }
 
@@ -83,15 +81,6 @@ public class Climb extends SubsystemBase {
     m_climbRight.setVoltage(voltage);
   }
 
-  // TRUE means that the chain is locked!!
-  public void setBrake(boolean locked) {
-    brakeSolenoid.set(locked);
-    this.brake = locked;
-  }
-
-  public boolean isBrake() {
-      return brake;
-  }
 
   public boolean getCanSearch3() {
     return this.canSearch3;

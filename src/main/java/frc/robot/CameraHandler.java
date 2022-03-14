@@ -42,9 +42,6 @@ public class CameraHandler {
         setCamera(0);
         // enableLimelightStream();
 
-        PrimoShuffleboard.getInstance().getCompetitonBoard().getTab().add("POV: You are Itzik", sink.getSource());
-        // PrimoShuffleboard.getInstance().getCompetitonBoard().getTab().add("POV: You are Limelight",
-        //         limelightSink.getSource());
 
     }
 

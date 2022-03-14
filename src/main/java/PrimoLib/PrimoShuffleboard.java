@@ -58,14 +58,13 @@ public class PrimoShuffleboard {
         /**
          * Climb Tab
          */
-        climbTab.addEntry("2&4 Secure").forceSetBoolean(climb.islevel2or4Secure());
-        climbTab.addEntry("2&4 Mot").forceSetBoolean(climb.isMot2or4In());
-        climbTab.addEntry("2&4 Piston").forceSetBoolean(climb.isClawLockOn2or4());
+        // climbTab.addEntry("2&4 Secure").forceSetBoolean(climb.islevel2or4Secure());
+        // climbTab.addEntry("2&4 Mot").forceSetBoolean(climb.isMot2or4In());
+        // climbTab.addEntry("2&4 Piston").forceSetBoolean(climb.isClawLockOn2or4());
         climbTab.addEntry("Climb Enabled").forceSetBoolean(climb.isEnabled());
-        climbTab.addEntry("3 Secure").forceSetBoolean(climb.islevel3Secure());
-        climbTab.addEntry("3 Mot").forceSetBoolean(climb.isMot3In());
-        climbTab.addEntry("3 Piston").forceSetBoolean(climb.isClawLockOn3());
-        climbTab.addEntry("Brake State").forceSetBoolean(climb.isBrake());
+        // climbTab.addEntry("3 Secure").forceSetBoolean(climb.islevel3Secure());
+        // climbTab.addEntry("3 Mot").forceSetBoolean(climb.isMot3In());
+        // climbTab.addEntry("3 Piston").forceSetBoolean(climb.isClawLockOn3());
   
         /**
          * Intake Tab
