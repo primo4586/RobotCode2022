@@ -36,6 +36,7 @@ public class AlignByVision extends CommandBase {
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("AlignByVision");
     tab.getTab().add("PID", config);
     // Use addRequirements() here to declare subsystem dependencies.
+ 
   }
 
   // Called when the command is initially scheduled.

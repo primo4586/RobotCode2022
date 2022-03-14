@@ -12,12 +12,16 @@ import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import autonomous.CommandSelector;
 import autonomous.PathHandler;
+import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.AutoCommands.OneBallAuto;
 import frc.robot.commands.DriverCommands.DriveByTime;
 import frc.robot.commands.DriverCommands.FollowPath;
+import frc.robot.commands.DriverCommands.FollowPathVoltage;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Driver;
 import frc.robot.subsystems.Feeder;
@@ -62,6 +66,17 @@ public class AutonomousContainer {
     public Command getSelectedCommand() {
         return this.autoSelector.getCommand();
     }
+
+    // public FollowPathVoltage getCommandForTrajectory(Driver driver, Trajectory trajectory, boolean setOdometry) {
+    //     return new FollowPathVoltage(trajectory, 
+    //         () -> driver.getPrimoOdometry().getPose(),
+    //         new RamseteController(AutoConstants.RAMSETE_B, AutoConstants.RAMSETE_ZETA),
+    //         AutoConstants.KINEMATICS,
+    //         driver::driveVelocity,
+    //         driver,
+    //         setOdometry
+    //     );
+    // }
 
 }
 

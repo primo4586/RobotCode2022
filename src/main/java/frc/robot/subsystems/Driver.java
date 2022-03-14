@@ -17,6 +17,7 @@ import PrimoLib.PrimoTab;
 import autonomous.DifferentialDriveData;
 import autonomous.PIDConfig;
 import autonomous.PrimoDifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -97,14 +98,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   }
   
   //general funcions
-  
-  public static void setMotorSpeed(WPI_TalonFX motor, double speed)
-  {
-    /* 
-      Gets a Talon instance and sets it's speed
-    */
-    motor.set(speed);
-  }
+
 
   public void changeDirection(){
     this.isForward = !this.isForward;  
@@ -162,6 +156,12 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     diffDrive.feed();
   }
 
+  public void driveVoltage(double leftVoltage, double rightVoltage) {
+    this.m_leftLeader.setVoltage(leftVoltage);
+    this.m_rightLeader.setVoltage(rightVoltage);
+    diffDrive.feed();
+  }
+
   public void feed() {
     diffDrive.feed();
   }
@@ -190,6 +190,10 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   @Override
   public double getRightDistance() {
     return getRightPositionInMeters();
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return primoOdometry.getWheelSpeeds();
   }
 
   @Override

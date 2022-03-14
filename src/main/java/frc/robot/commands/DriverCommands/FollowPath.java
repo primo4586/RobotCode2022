@@ -31,6 +31,7 @@ public class FollowPath extends CommandBase implements Runnable{
   private PrimoTab tab;
 
   /**
+   * 
    * Moves the robot to follow a specified path.
    * @param driver Driver's subsystem
    * @param trajectory Path to follow, genereated trajectory from the {@link PathHandler} class
