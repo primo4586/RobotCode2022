@@ -27,45 +27,59 @@ public class AlignByVision extends CommandBase {
   private double initalSetpointAngle;
   
   /** Creates a new AlignByVision. */
-  public AlignByVision(Driver driver, DoubleSupplier visionAngle, double tolerance) {
+  public AlignByVision(Driver driver, DoubleSupplier visionAngle) {
     addRequirements(driver);
 
     this.visionAngle = visionAngle;
     this.driver = driver;
+    this.config = new PIDConfig(1, 0, 0, 0);
     this.pidController = config.getController();
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("AlignByVision");
-    tab.getTab().add("PID", config);
+    tab.addEntry("AlignByVision P").setNumber(0);
+    tab.addEntry("AlignByVision I");
+    tab.addEntry("AlignByVision D");
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.initalSetpointAngle = driver.getYaw() + visionAngle.getAsDouble();
+    driver.resetGyro();
+    this.initalSetpointAngle = visionAngle.getAsDouble();
     this.angleError = visionAngle.getAsDouble();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    config.setKp(tab.addEntry("AlignByVision P").getDouble(0));
+    config.setKi(tab.addEntry("AlignByVision I").getDouble(0));
+    config.setKd(tab.addEntry("AlignByVision D").getDouble(0));
+    pidController = config.getController();
+
+    System.out.println("AAAAAA");
     this.angleError = initalSetpointAngle - driver.getYaw();
     double output = pidController.calculate(driver.getYaw(), initalSetpointAngle);
+    System.out.println("angleError: " + angleError);
 
     tab.addEntry("PID Output").setNumber(output);
+    tab.addEntry("Gyro angle").setNumber(driver.getYaw());
     tab.addEntry("Angle Error").setNumber(angleError);
     tab.addEntry("Limelight Angle").setNumber(visionAngle.getAsDouble());
-    driver.driveVelocity(output, output);
+
+    driver.rotationDrive(output);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driver.driveVelocity(0, 0);
+    driver.driveVoltage(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.angleError <= VisionConstants.alignByVisionTolerance;
+    return false;
   }
 }

@@ -35,7 +35,8 @@ public class Limelight {
         if(visibility > 0.6) {
             calculateTargetVector();
 
-            this.angleX = Math.toDegrees(Math.atan2(targetPos.getY(), targetPos.getX()));
+            // this.angleX = Math.toDegrees(Math.atan2(targetPos.getY(), targetPos.getX()));
+            this.angleX = table.getEntry("tx").getDouble(0);
             this.distance = Math.sqrt(Math.pow(targetPos.getX(), 2) + Math.pow(targetPos.getY(), 2));
         } 
         debugTab.addEntry("visibillity rate").setNumber(visibility);

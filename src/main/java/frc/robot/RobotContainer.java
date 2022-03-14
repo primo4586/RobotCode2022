@@ -18,6 +18,7 @@ import frc.robot.commands.ClimbCommands.ManualClawA;
 import frc.robot.commands.ClimbCommands.ManualClawB;
 import frc.robot.commands.ClimbCommands.ManualRotateChain;
 import frc.robot.commands.ClimbCommands.ReleaseClaw;
+import frc.robot.commands.DriverCommands.AlignByVision;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
 import frc.robot.commands.IntakeCommands.ManualJoint;
 import frc.robot.commands.IntakeCommands.ManualRoller;
@@ -135,7 +136,8 @@ public class RobotContainer {
     this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
     Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> InterpolateUtil.interpolate(ShooterConstants.VISION_MAP, limelight.getDistance())),
         new ManualFeeder(feeder)));
-    X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight));  
+    // X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight));
+    X_Driver.whileHeld(new AlignByVision(driver, () -> -limelight.getAngleX()));  
     // Y_Operator.whileHeld(new ManualFeeder(feeder));
 
     // intake:
