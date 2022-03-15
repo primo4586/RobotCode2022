@@ -97,7 +97,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   }
 
   public void rotationDrive(double rotation) {
-    diffDrive.arcadeDrive(0, rotation, false);
+    diffDrive.arcadeDrive(0, -rotation, false);
   }
   
   //general funcions
