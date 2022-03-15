@@ -5,6 +5,7 @@
 package frc.robot;
 
 import PrimoLib.PrimoShuffleboard;
+
 import PrimoLib.PrimoTab;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -143,7 +144,7 @@ public class RobotContainer {
     RB_Operator.whenPressed(new ManualClawA(climb));
     LB_Operator.whenPressed(new ManualClawB(climb));
 
-    B_Operator.whenPressed(new ReleaseClaw(climb, 2)); // open level 2
+    B_Operator.whileHeld(new ReleaseClaw(climb, 2)); // open level 2
     X_Operator.whenPressed(new ReleaseClaw(climb, 3)); // open level 3
 
     // A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));

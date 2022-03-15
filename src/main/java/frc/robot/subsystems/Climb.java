@@ -68,7 +68,7 @@ public class Climb extends SubsystemBase {
     this.isEnabled = false;
 
     this.brake = brakeSolenoid.get();
-    this.m_climbleft.follow(this.m_climbRight);
+    // this.m_climbleft.follow(this.m_climbRight);
   }
 
   public void c_control(double speed) {
@@ -77,10 +77,12 @@ public class Climb extends SubsystemBase {
      */
   
     m_climbRight.set(speed);
+    m_climbleft.set(-speed);
   }
 
   public void setVoltage(double voltage){
     m_climbRight.setVoltage(voltage);
+    m_climbleft.setVoltage(voltage);
   }
 
   // TRUE means that the chain is locked!!

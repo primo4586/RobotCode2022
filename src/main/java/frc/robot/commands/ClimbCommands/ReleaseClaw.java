@@ -37,11 +37,17 @@ public class ReleaseClaw extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    
+    if(this.numLevel == 2){
+      climb.setSolenoidLevel2or4(Constants.ClimbConstants.PISTON_LOCKED);
+    }
+    
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

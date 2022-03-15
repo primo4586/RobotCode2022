@@ -85,7 +85,7 @@ public final class Constants {
         // Limit is in TICKS.
         public static final int FORWARD_LIMIT = 0;
         public static final int BACKWARD_LIMIT = 0;
-        public static final double chainVoltage = 0.7 * 13;
+        public static final double chainVoltage = 0.35 * 13;//0.7
 
         public static int switchAport = 8;
         public static int switchBport = 9;
