@@ -57,17 +57,13 @@ public class Shooter extends SubsystemBase {
     this.m_shooter.set(ControlMode.Velocity, velocity);
 
   }  
- 
-  /*
-    public void setVelocity(double velocity) {
-
-    this.pidSetpoint = velocity * this.changeShooter;
-    this.m_shooter.set(ControlMode.Velocity, velocity);
-
-  }
-  */
+  
   public double getShooterVelocity(){
     return this.m_shooter.get();
+  }
+
+  public double getPidSetpoint() {
+      return pidSetpoint;
   }
   
 
@@ -82,9 +78,5 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    tab.addEntry("Shooter Velocity").setNumber(m_shooter.getSelectedSensorVelocity());
-    tab.addEntry("Reached target velocity").forceSetBoolean(isReadyToShoot());
-    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Reached Shooter Speed").forceSetBoolean(isReadyToShoot());
-    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Shooter Vel").setNumber(m_shooter.getSelectedSensorVelocity());  }
-  
+  }
 }

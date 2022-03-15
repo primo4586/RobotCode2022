@@ -23,6 +23,7 @@ import frc.robot.commands.DriverCommands.ArcadeDrive;
 import frc.robot.commands.IntakeCommands.ManualJoint;
 import frc.robot.commands.IntakeCommands.ManualRoller;
 import frc.robot.commands.IntakeCommands.TogglePistonAndRoller;
+import frc.robot.commands.ShooterCommands.AutoShooter;
 import frc.robot.commands.ShooterCommands.ManualFeeder;
 import frc.robot.commands.ShooterCommands.ManualShooter;
 import frc.robot.subsystems.Climb;
@@ -31,6 +32,9 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PistonForFeeder;
 import frc.robot.subsystems.Shooter;
+import vision.InterpolateUtil;
+import vision.InterpolationMap;
+import vision.Limelight;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -52,6 +56,7 @@ public class RobotContainer {
   private JoystickButton Y_Driver; // spin rollers backwards
   private JoystickButton RB_Driver; // change direction
   private JoystickButton LB_Driver; // open and roolig roller
+  private JoystickButton X_Driver; // Auto Shoot
 
   // operator buttons:
   private JoystickButton START_Operator; // Enable/Disable Climb Control
@@ -70,13 +75,14 @@ public class RobotContainer {
   private Intake intake;
   private Driver driver;
   private PistonForFeeder pistonForFeeder;
+  private Limelight limelight;
 
   private UsbCamera forward;
   private UsbCamera backward;
   private CameraHandler camHandler;
 
   public RobotContainer(Driver driver, Shooter shooter, Feeder feeder, Intake intake, Climb climb,
-      PistonForFeeder pistonForFeeder) {
+      PistonForFeeder pistonForFeeder, Limelight limelight) {
     this.d_joystick = new Joystick(0);
     this.o_joystick = new Joystick(1);
 
@@ -86,6 +92,7 @@ public class RobotContainer {
     this.feeder = feeder;
     this.intake = intake;
     this.pistonForFeeder = pistonForFeeder;
+    this.limelight = limelight;
 
     buildButtons();
 
@@ -100,9 +107,10 @@ public class RobotContainer {
     this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
     this.Y_Driver = new JoystickButton(d_joystick, XboxController.Button.kY.value);
     this.RB_Driver = new JoystickButton(d_joystick, XboxController.Button.kRightBumper.value);
+    this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
+    this.X_Driver = new JoystickButton(d_joystick, XboxController.Button.kX.value);
     this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
 
-    this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
     this.START_Operator = new JoystickButton(o_joystick, XboxController.Button.kStart.value);
     this.A_Operator = new JoystickButton(o_joystick, XboxController.Button.kA.value);
     this.B_Operator = new JoystickButton(o_joystick, XboxController.Button.kB.value);
@@ -126,8 +134,9 @@ public class RobotContainer {
     
     // shooter:
     this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
-    Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, ShooterConstants.ShooterSpeed),
+    Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> InterpolateUtil.interpolate(ShooterConstants.VISION_MAP, limelight.getDistance())),
         new ManualFeeder(feeder)));
+    X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight));  
     // Y_Operator.whileHeld(new ManualFeeder(feeder));
 
     // intake:
@@ -156,6 +165,7 @@ public class RobotContainer {
     this.backward = CameraServer.startAutomaticCapture("Backward", 1);
 
     this.camHandler = new CameraHandler(forward, backward);
+    PrimoShuffleboard.getInstance().updateCameras(camHandler);
   }
 
 }

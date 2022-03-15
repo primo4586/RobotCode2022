@@ -24,6 +24,7 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PistonForFeeder;
 import frc.robot.subsystems.Shooter;
+import vision.Limelight;
 
 /** Add your docs here. */
 public class AutonomousContainer {
@@ -35,7 +36,7 @@ public class AutonomousContainer {
     // Paths/Commands for autos
     private Map<String, Command> autoPaths;
 
-    public AutonomousContainer(Driver driver,Shooter shooter, Feeder feeder, Intake intake, Climb climb, PistonForFeeder piston) {
+    public AutonomousContainer(Driver driver,Shooter shooter, Feeder feeder, Intake intake, Climb climb, PistonForFeeder piston, Limelight limelight) {
         this.competitionTab = PrimoShuffleboard.getInstance().getPrimoTab("Competition Dashboard");
         this.autoPaths = new HashMap<String,Command>();
 

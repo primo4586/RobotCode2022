@@ -30,7 +30,7 @@ public class OneBallAuto extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
-    ParallelCommandGroup shooting = new ParallelCommandGroup(new ManualShooter(shooter, ShooterConstants.ShooterSpeed).withTimeout(7), new ManualFeeder(feeder).withTimeout(7));
+    ParallelCommandGroup shooting = new ParallelCommandGroup(new ManualShooter(shooter, () -> ShooterConstants.ShooterSpeed).withTimeout(7), new ManualFeeder(feeder).withTimeout(7));
     SequentialCommandGroup pistonDelay = new SequentialCommandGroup(new WaitCommand(4), new InstantCommand(() -> piston.solenoidControll(),piston),new WaitCommand(2));
 
     ParallelCommandGroup beforeBackwardsPath = new ParallelCommandGroup(shooting,pistonDelay);

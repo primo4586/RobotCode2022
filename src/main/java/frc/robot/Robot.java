@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -22,9 +23,12 @@ import frc.robot.subsystems.Shooter;
 import vision.Limelight;
 
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to
+ * each mode, as described in the TimedRobot documentation. If you change the
+ * name of this class or
+ * the package after creating this project, you must also update the
+ * build.gradle file in the
  * project.
  */
 public class Robot extends TimedRobot {
@@ -33,7 +37,7 @@ public class Robot extends TimedRobot {
   // Containers
   private RobotContainer robotContainer;
   private AutonomousContainer autoContainer;
-  
+
   // Vision
   private Limelight limelight;
 
@@ -44,20 +48,19 @@ public class Robot extends TimedRobot {
   private Driver driver;
   private Climb climb;
   private PistonForFeeder pistonForFeeder;
-  
+
   private boolean compFlash = false;
   private Timer flashTimer;
 
-  // private AddressableLED leds;
-  // private AddressableLEDBuffer ledBuffer;
-
   /**
-   * This function is run when the robot is first started up and should be used for any
+   * This function is run when the robot is first started up and should be used
+   * for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our
     // autonomous chooser on the dashboard.
 
     this.intake = new Intake();
@@ -69,50 +72,51 @@ public class Robot extends TimedRobot {
 
     this.flashTimer = new Timer();
 
-    robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder);
-    autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder);
     limelight = new Limelight();
 
-    // leds = new AddressableLED(0);
-    // ledBuffer = new AddressableLEDBuffer(10);
-    // leds.setLength(ledBuffer.getLength());
-    // for(int i = 0; i < ledBuffer.getLength(); i++) {
-    //   ledBuffer.setRGB(i, 255, 0, 0);
-    // }
-    // leds.setData(ledBuffer);
-    // leds.setData(ledBuffer);
-    
-    // leds.start();
-    
+    robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder,limelight);
+    autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder,limelight);
+
  
   }
 
   /**
-   * This function is called every robot packet, no matter the mode. Use this for items like
-   * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
+   * This function is called every robot packet, no matter the mode. Use this for
+   * items like
+   * diagnostics that you want ran during disabled, autonomous, teleoperated and
+   * test.
    *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
+   * <p>
+   * This runs after the mode specific periodic functions, but before LiveWindow
+   * and
    * SmartDashboard integrated updating.
    */
   @Override
   public void robotPeriodic() {
-    
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
+
+    // Runs the Scheduler. This is responsible for polling buttons, adding
+    // newly-scheduled
+    // commands, running already-scheduled commands, removing finished or
+    // interrupted commands,
+    // and running subsystem periodic() methods. This must be called from the
+    // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     Shuffleboard.update();
     limelight.update();
- 
+    PrimoShuffleboard.getInstance().update(driver, shooter, climb, feeder, intake, pistonForFeeder);
+
     // LEDs.getInstance().update();
   }
 
-
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
-  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
+  /**
+   * This autonomous runs the autonomous command selected by your
+   * {@link RobotContainer} class.
+   */
   @Override
   public void autonomousInit() {
     m_autonomousCommand = autoContainer.getSelectedCommand();
@@ -126,7 +130,8 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
   public void teleopInit() {
@@ -145,18 +150,15 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if(Timer.getMatchTime() <= 40 && Timer.getMatchTime() > 30) {
-      if(flashTimer.hasElapsed(0.5)) {
+    if (Timer.getMatchTime() <= 40 && Timer.getMatchTime() > 30) {
+      if (flashTimer.hasElapsed(0.5)) {
         PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert").forceSetBoolean(compFlash);
         compFlash = !compFlash;
         flashTimer.reset();
       }
-    } 
-    else if(Timer.getMatchTime() <= 30)
-       {
-        PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert").forceSetBoolean(false);
-       } 
-        // LEDs.getInstance().setClimbBarsEffect(new FlashColor(LEDColor.FLAME_ORANGE,0.5));
+    } else if (Timer.getMatchTime() <= 30) {
+      PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert").forceSetBoolean(false);
+    }
   }
 
   @Override
@@ -167,5 +169,6 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 }

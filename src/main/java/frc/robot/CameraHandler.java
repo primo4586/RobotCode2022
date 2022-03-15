@@ -40,11 +40,8 @@ public class CameraHandler {
         }
 
         setCamera(0);
-        enableLimelightStream();
+        // enableLimelightStream();
 
-        PrimoShuffleboard.getInstance().getCompetitonBoard().getTab().add("POV: You are Itzik", sink.getSource());
-        PrimoShuffleboard.getInstance().getCompetitonBoard().getTab().add("POV: You are Limelight",
-                limelightSink.getSource());
 
     }
 
@@ -63,8 +60,8 @@ public class CameraHandler {
         return sink.getSource();
     }
 
-    public VideoSource getCurrentSource() {
-        return cameras.get(index);
+    public VideoSource getLimelightSource() {
+        return limelightSink.getSource();
     }
 
     public void setCamera(int index) {
