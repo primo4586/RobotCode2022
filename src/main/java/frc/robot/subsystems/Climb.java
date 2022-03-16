@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ClimbConstants;
-import frc.robot.Constants.Pneumatics;
 
 public class Climb extends SubsystemBase {
 
@@ -87,37 +86,31 @@ public class Climb extends SubsystemBase {
     /*
      * sets the first to climb piston state
      */
-    this.solenoidB.set(state);
+    this.solenoidA.set(state);
   }
 
   public void setSolenoidLevel3(boolean state) {
     /*
      * sets the second to climb piston state
      */
-    this.solenoidA.set(state);
+    this.solenoidB.set(state);
   }
 
   /* TO-DO: explain logic in comments, why do you need three functions? */
 
   public boolean isClawLockOn2or4() {
-    return !this.sPistonB.get();
-  }
-
-  public boolean isClawLockOn3() {
     return !this.sPistonA.get();
   }
 
+  public boolean isClawLockOn3() {
+    return !this.sPistonB.get();
+  }
+
   public boolean islevel2or4Secure() {
-    // return true if the claw close on the mot and its ok to move on
-    // System.out.println("is mot 2 or 4 in:"+ isMot2or4In());
-    // System.out.println("is claw lock "+ isClawLockOn2or4());
     return isClawLockOn2or4();
   }
 
   public boolean islevel3Secure() {
-    // return true if the claw close on the mot and its ok to move on
-    // System.out.println("Level 3 Mot: " + isMot3In());
-    // System.out.println("Level 3 Claw: " + isClawLockOn3());
     return isClawLockOn3();
   }
 

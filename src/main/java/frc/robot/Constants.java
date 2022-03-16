@@ -94,10 +94,8 @@ public final class Constants {
         public static final int BACKWARD_LIMIT = 0;
         public static final double chainVoltage = 0.35 * 13;//0.7
 
-        public static int switchAport = 8;
-        public static int switchBport = 9;
-        public static int sPistonAport = 7;
-        public static int sPistonBport = 6;
+        public static int sPistonAport = 1;
+        public static int sPistonBport = 0;
     }
 
     public static final class IntakeConstants {

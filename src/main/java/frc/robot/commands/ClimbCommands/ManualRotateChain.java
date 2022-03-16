@@ -34,14 +34,12 @@ public class ManualRotateChain extends CommandBase {
   @Override
   public void execute() {
     if(this.isOk){
-      if(speed.getAsDouble() > 0.3) {
+      if(speed.getAsDouble() > 0.3) 
        this.climb.setVoltage(Constants.ClimbConstants.chainVoltage);
-      }
       else if(speed.getAsDouble() < -0.3)
         this.climb.setVoltage(-Constants.ClimbConstants.chainVoltage);
       else 
         this.climb.c_control(0);
-      
     }
   }
   

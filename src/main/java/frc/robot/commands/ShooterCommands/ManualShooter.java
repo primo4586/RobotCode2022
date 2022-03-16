@@ -51,7 +51,7 @@ public class ManualShooter extends PrimoCommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    shooter.s_control(0);
+    shooter.setVelocity(0);
     // LEDs.getInstance().setClimbBarsEffect(new StaticColor(LEDColor.PRIMO_BLUE));
   }
 
