@@ -20,20 +20,10 @@ public class Climb extends SubsystemBase {
   private Solenoid solenoidA; // Side A
   private Solenoid solenoidB; // Side B
 
-  private Solenoid brakeSolenoid;
-
-  // switch:
-  private DigitalInput switchA;
-  private DigitalInput switchB;
-
   // piston sensors:
   private DigitalInput sPistonA; // Right A
   private DigitalInput sPistonB; // Left B
 
-  private int level; // the level the robot move to
-  private boolean isMotIn;
-  private boolean canSearch3 = true;
-  private boolean canSearch2or4 = true;
 
   private PrimoTab tab;
   private boolean isEnabled;
@@ -53,20 +43,16 @@ public class Climb extends SubsystemBase {
 
     // this.brakeSolenoid = new Solenoid(Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, 0);
 
-    // this.switchA = new DigitalInput(ClimbConstants.switchAport);
-    // this.switchB = new DigitalInput(ClimbConstants.switchBport);
 
-    // this.sPistonA = new DigitalInput(ClimbConstants.sPistonAport);
-    // this.sPistonB = new DigitalInput(ClimbConstants.sPistonBport);
+    this.sPistonA = new DigitalInput(ClimbConstants.sPistonAport);
+    this.sPistonB = new DigitalInput(ClimbConstants.sPistonBport);
 
-    this.level = 1;
-    this.isMotIn = false;
 
     this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Climb");
 
     this.isEnabled = false;
 
-    this.brake = brakeSolenoid.get();
+    // this.brake = brakeSolenoid.get();
     // this.m_climbleft.follow(this.m_climbRight);
   }
 
@@ -76,7 +62,7 @@ public class Climb extends SubsystemBase {
      */
   
     m_climbRight.set(speed);
-    m_climbleft.set(-speed);
+    m_climbleft.set(speed);
   }
 
   public void setVoltage(double voltage){
@@ -84,22 +70,6 @@ public class Climb extends SubsystemBase {
     m_climbleft.setVoltage(voltage);
   }
 
-
-  public boolean getCanSearch3() {
-    return this.canSearch3;
-  }
-
-  public void setCanSearch3(boolean can) {
-    this.canSearch3 = can;
-  }
-
-  public boolean getCanSearch2or4() {
-    return this.canSearch2or4;
-  }
-
-  public void setCanSearch2or4(boolean can) {
-    this.canSearch2or4 = can;
-  }
 
   public double getAbsoluteSpeed() {
     return Math.abs(m_climbRight.get());
@@ -117,47 +87,38 @@ public class Climb extends SubsystemBase {
     /*
      * sets the first to climb piston state
      */
-    this.solenoidA.set(state);
+    this.solenoidB.set(state);
   }
 
   public void setSolenoidLevel3(boolean state) {
     /*
      * sets the second to climb piston state
      */
-    this.solenoidB.set(state);
+    this.solenoidA.set(state);
   }
 
   /* TO-DO: explain logic in comments, why do you need three functions? */
 
-  public boolean isMot2or4In() {
-    this.isMotIn = !this.switchA.get();
-    return this.isMotIn;
-  }
-
-  public boolean isMot3In() {
-    return !this.switchB.get();
-  }
-
   public boolean isClawLockOn2or4() {
-    return !this.sPistonA.get();
+    return !this.sPistonB.get();
   }
 
   public boolean isClawLockOn3() {
-    return !this.sPistonB.get();
+    return !this.sPistonA.get();
   }
 
   public boolean islevel2or4Secure() {
     // return true if the claw close on the mot and its ok to move on
     // System.out.println("is mot 2 or 4 in:"+ isMot2or4In());
     // System.out.println("is claw lock "+ isClawLockOn2or4());
-    return isMot2or4In() && isClawLockOn2or4();
+    return isClawLockOn2or4();
   }
 
   public boolean islevel3Secure() {
     // return true if the claw close on the mot and its ok to move on
     // System.out.println("Level 3 Mot: " + isMot3In());
     // System.out.println("Level 3 Claw: " + isClawLockOn3());
-    return isMot3In() && isClawLockOn3();
+    return isClawLockOn3();
   }
 
   public boolean isHang() {
@@ -174,13 +135,6 @@ public class Climb extends SubsystemBase {
       enableClimb();
   }
 
-  public int getLevel() {
-    return level;
-  }
-
-  public void setLevel(int level) {
-    this.level = level;
-  }
 
   @Override
   public void periodic() {

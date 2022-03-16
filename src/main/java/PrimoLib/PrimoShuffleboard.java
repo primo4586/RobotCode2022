@@ -29,8 +29,8 @@ public class PrimoShuffleboard {
     }
 
     public void updateCameras(CameraHandler camHandler) {
-        getCompetitonBoard().getTab().add("POV: You are Itzik", camHandler.getActiveSource());
-        getCompetitonBoard().getTab().add("POV: You are Limelight", camHandler.getLimelightSource());
+        // getCompetitonBoard().getTab().add("POV: You are Itzik", camHandler.getActiveSource());
+        // getCompetitonBoard().getTab().add("POV: You are Limelight", camHandler.getLimelightSource());
     }
 
     public void update(Driver driver, Shooter shooter, Climb climb, Feeder feeder, Intake intake, PistonForFeeder pistonForFeeder) {
