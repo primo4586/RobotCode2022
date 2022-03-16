@@ -206,6 +206,10 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     return getRightPositionInMeters();
   }
 
+  public PrimoTab getTab() {
+      return tab;
+  }
+
   @Override
   public void periodic() {
     /*

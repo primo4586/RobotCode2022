@@ -40,7 +40,7 @@ public class AutoShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.speed = InterpolateUtil.interpolate(ShooterConstants.VISION_MAP, limelight.getDistance());
+    this.speed = InterpolateUtil.interpolate(ShooterConstants.SHOOTER_VISION_MAP, limelight.getDistance());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -48,13 +48,13 @@ public class AutoShooter extends CommandBase {
   public void execute() {
     feeder.setVoltage(5);
 
+    System.out.println(shooter.getShooterVelocity());
     shooter.setVelocity(speed);
     if (shooter.isReadyToShoot()) {
       piston.setSolenoid(true);
       intake.r_control(0.3);
     } else {
-      intake.r_control(0);
-      piston.setSolenoid(false);
+      // piston.setSolenoid(false);
     }
   }
 

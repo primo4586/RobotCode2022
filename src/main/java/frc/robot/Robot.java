@@ -75,6 +75,7 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder,limelight);
     autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder,limelight);
 
+    LiveWindow.disableAllTelemetry();
     // leds = new AddressableLED(0);
     // ledBuffer = new AddressableLEDBuffer(10);
     // leds.setLength(ledBuffer.getLength());
@@ -104,7 +105,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    Shuffleboard.update();
+    // Shuffleboard.update();
     limelight.update();
  
     // LEDs.getInstance().update();
