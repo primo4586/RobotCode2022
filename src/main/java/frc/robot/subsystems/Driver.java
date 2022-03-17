@@ -71,6 +71,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     this.m_leftFollower.setInverted(true);
     this.m_leftLeader.setInverted(true);
 
+
     this.diffDrive = new DifferentialDrive(m_leftLeader, m_rightLeader);
 
     this.isForward = true;
@@ -104,8 +105,45 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
   public void changeDirection(){
     this.isForward = !this.isForward;  
-       
   }
+
+  public void selectPIDProfile(int slot) {
+    this.m_leftLeader.selectProfileSlot(slot, 0);
+    this.m_rightLeader.selectProfileSlot(slot, 0);
+  }
+
+  public void setPosition(double leftPosition, double rightPosition) {
+    this.m_leftLeader.set(ControlMode.Position, leftPosition);
+    this.m_rightLeader.set(ControlMode.Position, rightPosition);
+  }
+
+  public void setPIDConfig(int slot, PIDConfig leftConfig, PIDConfig rightConfig) {
+    setRightPID(slot, rightConfig);
+    setLeftPID(slot, leftConfig);
+  }
+
+  public void setRightPID(int slot, PIDConfig config) {
+    this.m_rightLeader.config_kP(slot, config.getKp());
+    this.m_rightLeader.config_kI(slot, config.getKi());
+    this.m_rightLeader.config_kD(slot, config.getKd());
+    this.m_rightLeader.config_kF(slot, config.getKf());
+  }
+
+  public void setLeftPID(int slot, PIDConfig config) {
+    this.m_leftLeader.config_kP(slot, config.getKp());
+    this.m_leftLeader.config_kI(slot, config.getKi());
+    this.m_leftLeader.config_kD(slot, config.getKd());
+    this.m_leftLeader.config_kF(slot, config.getKf());
+  }
+  
+  public double getLeftPositionError() {
+    return this.m_leftLeader.getClosedLoopError();
+  }
+
+  public double getRightPositionError() {
+    return this.m_rightLeader.getClosedLoopError();
+  }
+
 
   public boolean isDirectionForward(){
     return this.isForward;
