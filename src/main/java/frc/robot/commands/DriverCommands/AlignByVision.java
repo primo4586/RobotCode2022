@@ -5,10 +5,13 @@ import java.util.function.DoubleSupplier;
 import PrimoLib.PrimoCommandBase;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Driver;
+import vision.Limelight;
 import vision.LimelightConstants;
 
 public class AlignByVision extends PrimoCommandBase implements Runnable {
@@ -19,13 +22,18 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
   private double setPoint, initialGyro;
   Timer timer;
   Notifier notifier;
+  private boolean isCancelled = false;
+  private Joystick joystick;
+  private Limelight limelight;
   double prevTime;
 
-  public AlignByVision(Driver driver, DoubleSupplier limelightAngle) {
+  public AlignByVision(Driver driver, DoubleSupplier limelightAngle, Limelight limelight, Joystick joystick) {
     this.driver = driver;
     s = limelightAngle;
     timer = new Timer();
+    this.joystick = joystick;
     notifier = new Notifier(this);
+    this.limelight = limelight;
 
     this.Kp = this.driver.getTab().addEntry("AlignByVision Kp");
     Kp.setNumber(0.05);
@@ -52,6 +60,11 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
 
   @Override
   public void initialize() {
+    if(!(limelight.getDistance() < 2.05 && limelight.getDistance() >= 1.5)) {
+      driver.getTab().addEntry("CANCELLED").forceSetBoolean(true);
+      isCancelled = true;
+      return;
+    }
     timer.start();
 
     prevTime = timer.get();
@@ -72,6 +85,11 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
   @Override
   public void execute() {
 
+    isCancelled = !(limelight.getDistance() < 2.05 && limelight.getDistance() >= 1.5);
+    if(isCancelled) {
+      joystick.setRumble(RumbleType.kRightRumble, 1);
+      joystick.setRumble(RumbleType.kLeftRumble, 1);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -79,13 +97,14 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
   public void end(boolean interrupted) {
     notifier.stop();
     driver.d_control(0, 0);
-
+    joystick.setRumble(RumbleType.kRightRumble, 0);
+    joystick.setRumble(RumbleType.kLeftRumble, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return controller.atSetpoint();
+    return controller.atSetpoint() && !isCancelled;
   }
 
   public double limitOutPut(double output, double max, double min) {
