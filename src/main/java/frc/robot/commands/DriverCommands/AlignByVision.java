@@ -21,9 +21,14 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
   PIDController controller;
   private double setPoint, initialGyro;
   Timer timer;
+  // CR: [Works] - is the notifier really needed?
   Notifier notifier;
   private boolean isCancelled = false;
+  // CR: [Design] - Maybe try to find a better way to communicate the distance, Maybe even through the dashboard, it really shouldn't be here.
+  // You can wrap the commands in the AlignAndShoot command group with a conditional command, that accroding to the distance will triggers the joystick or calls the align and shoot commands.
+  // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html#conditionalcommand
   private Joystick joystick;
+  // CR: [Design] - If you get the Limelight object, then you don't need the DoubleSupplier
   private Limelight limelight;
   double prevTime;
 
@@ -36,6 +41,7 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
     this.limelight = limelight;
 
     this.Kp = this.driver.getTab().addEntry("AlignByVision Kp");
+    // CR: [Style] - Add the pid consts to Constanst class
     Kp.setNumber(0.05);
 
     this.liMax = this.driver.getTab().addEntry("AlignByVision lim max");
@@ -60,6 +66,7 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
 
   @Override
   public void initialize() {
+    // CR: [Design] - You can get the boundries from the interpolation map
     if(!(limelight.getDistance() < 2.05 && limelight.getDistance() >= 1.5)) {
       driver.getTab().addEntry("CANCELLED").forceSetBoolean(true);
       isCancelled = true;
@@ -108,20 +115,26 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
   }
 
   public double limitOutPut(double output, double max, double min) {
+    // CR: [Nice] - Very neat formula!
     return Math.min(max, Math.max(min, output));
   }
 
   @Override
   public void run() {
+    // CR: [Works] - Why is the time needed?
     double currTime = timer.get();
 
+    // CR: [Works] - There's no need to re-set the PID values
     this.controller.setPID(this.Kp.getDouble(0), this.Ki.getDouble(0), this.Kd.getDouble(0));
+    // CR: [Style] - This minus is confusing. You should set the TARGET_NOT_VISIBLE to -999
     setPoint = s.getAsDouble() == -LimelightConstants.TARGET_NOT_VISIBLE ? 0 : s.getAsDouble();
 
+    // CR: [Works] - The setpoint variable is actually a measurement. It is wrong using the 2 prameter overload of calculate, you should use the 1 parameter overload.
+    // i.e `controller.calculate(measurement)`. Note that the signs in `driver.driveVelocity(-power, power)` might flip.
     double power = limitOutPut(controller.calculate(0, setPoint), liMax.getDouble(0), liMin.getDouble(0));
     driver.getTab().addEntry("power").forceSetDouble(power);
 
-
+    // CR: [Works] - The check isn't really necessary, the tolerance will handle it.
     if (Math.abs(s.getAsDouble()) > 0.9)
       driver.driveVelocity(-power, power);
 
