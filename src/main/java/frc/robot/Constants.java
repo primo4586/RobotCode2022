@@ -92,7 +92,7 @@ public final class Constants {
         // Limit is in TICKS.
         public static final int FORWARD_LIMIT = 0;
         public static final int BACKWARD_LIMIT = 0;
-        public static final double chainVoltage = 0.35 * 13;//0.7
+        public static final double chainVoltage = 0.5 * 13;//0.7
 
         public static int sPistonAport = 1;
         public static int sPistonBport = 0;
