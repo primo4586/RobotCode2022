@@ -18,10 +18,12 @@ import vision.Limelight;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AlignAndShoot extends SequentialCommandGroup {
   /** Creates a new AlignAndShoot. */
-  public AlignAndShoot(Driver driver, Shooter shooter, Intake intake, Feeder feeder, PistonForFeeder piston, Limelight limelight) {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new AlignByVision(driver, () -> -limelight.getAngleX()));
-    addCommands(new AutoShooter(shooter, piston, intake, feeder, limelight));
+  public AlignAndShoot(Driver driver, Shooter shooter, Intake intake, Feeder feeder, PistonForFeeder piston,
+      Limelight limelight) {
+
+    if (limelight.isVisible() && shooter.isWithInRange(limelight.getAverageDistance())) {
+      addCommands(new AlignByVision(driver, () -> -limelight.getAngleX()));
+      addCommands(new AutoShooter(shooter, piston, intake, feeder, limelight));
+    }
   }
 }

@@ -39,23 +39,25 @@ public final class Constants {
     public static final class ShooterConstants {
         public static final int ShooterPort = 15;
         public static final int FeederPort = 6;
-        public static final double FeederVoltage = 6.5;
+        public static final double FeederVoltage = 5;
         public static final double FeederSpeed = 0.8;
         public static final double ShooterSpeed = 13000; // 13500
 
         // public static final PIDConfig FEEDER_CONFIG = new PIDConfig(1, 0, 0, 0);
         public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(0.22, 0, 0.2, 0.06);
-        // public static final SimpleMotorFeedforward SHOOTER_FEEDFORWARD = new
-        // SimpleMotorFeedforward(0.779,0.11182,0.0095677);
-        // public static final SimpleMotorFeedforward SHOOTER_FEEDFORWARD = new
-        // SimpleMotorFeedforward(0.779,5.4601E-05,4.6717E-06);
+        
         public static final double READY_SPEED_TOLERANCE = 200;
+
+        public static final double MIN_SHOOTING_RANGE = 1.5;
+        public static final double MAX_SHOOTING_RANGE = 2.05;
+        
 
         public static final InterpolationMap SHOOTER_VISION_MAP = new InterpolationMap()
                 .put(1.45, 12500)
                 .put(1.73, 13000)
                 .put(1.98, 14250)
                 .put(2.1, 14700);
+
 
         public static final InterpolationMap FEEDER_VISION_MAP = new InterpolationMap();                
     }

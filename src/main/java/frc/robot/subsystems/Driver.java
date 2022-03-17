@@ -101,14 +101,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   }
   
   //general funcions
-  
-  public static void setMotorSpeed(WPI_TalonFX motor, double speed)
-  {
-    /* 
-      Gets a Talon instance and sets it's speed
-    */
-    motor.set(speed);
-  }
 
   public void changeDirection(){
     this.isForward = !this.isForward;  

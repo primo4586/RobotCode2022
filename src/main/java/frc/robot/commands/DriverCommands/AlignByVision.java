@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Driver;
+import vision.LimelightConstants;
 
 public class AlignByVision extends PrimoCommandBase implements Runnable {
   private Driver driver;
@@ -30,18 +31,17 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
     Kp.setNumber(0.05);
 
     this.liMax = this.driver.getTab().addEntry("AlignByVision lim max");
-    liMax.setNumber(0.3);
+    liMax.setNumber(99);
 
     this.liMin = this.driver.getTab().addEntry("AlignByVision lim min");
-    liMin.setNumber(-0.3);
+    liMin.setNumber(-99);
 
     this.Ki = this.driver.getTab().addEntry("AlignByVision Ki");
     Ki.setNumber(0.00);
     this.Kd = this.driver.getTab().addEntry("AlignByVision Kd");
     Kd.setNumber(0.0005);
     this.error = this.driver.getTab().addEntry("pid error");
-    this.Kf = this.driver.getTab().addEntry("AlignByVision Kf");
-    Kf.setNumber(0.1);
+    
     this.target = this.driver.getTab().addEntry("AlignByVision Setpoint");
 
     // s = () -> target.getDouble(0);
@@ -60,10 +60,9 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
     initialGyro = driver.getYaw();
     setPoint = s.getAsDouble(); // + initialGyro;
     this.controller.reset();
-    this.controller.setPID(this.Kp.getDouble(0), 0, this.Kd.getDouble(0));
+    this.controller.setPID(this.Kp.getDouble(0), Ki.getDouble(0), this.Kd.getDouble(0));
     this.controller.setSetpoint(setPoint);
 
-    this.controller.setIntegratorRange(-0.2, 0.2);
     controller.setTolerance(1);
 
     notifier.startPeriodic(0.01);
@@ -96,23 +95,19 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
   @Override
   public void run() {
     double currTime = timer.get();
-    SmartDashboard.putNumber("dt", prevTime - currTime);
 
     this.controller.setPID(this.Kp.getDouble(0), this.Ki.getDouble(0), this.Kd.getDouble(0));
-    setPoint = s.getAsDouble() == -999 ? 0 : s.getAsDouble();
+    setPoint = s.getAsDouble() == -LimelightConstants.TARGET_NOT_VISIBLE ? 0 : s.getAsDouble();
 
     double power = limitOutPut(controller.calculate(0, setPoint), liMax.getDouble(0), liMin.getDouble(0));
     driver.getTab().addEntry("power").forceSetDouble(power);
 
-    power = setPoint >= -2 || setPoint == 0 ? power : -0.2;
 
     if (Math.abs(s.getAsDouble()) > 0.9)
       driver.driveVelocity(-power, power);
 
-    controller.setSetpoint(setPoint);
     error.setNumber(controller.getPositionError());
 
-    // driver.feed();
 
     prevTime = currTime;
 
