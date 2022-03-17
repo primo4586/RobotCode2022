@@ -66,7 +66,7 @@ public final class Constants {
         
         public static final PIDConfig PID = new PIDConfig(0.03, 0.0005, 0.01, 0.5);
         public static final double TICKS_FOR_ROTATION = 0;
-        public static final double ERROR_TOLERANCE = 0;
+        public static final double ERROR_TOLERANCE = 100;
 
         public static final PIDConfig L_PID = new PIDConfig(1, 0, 0, 0);
         public static final PIDConfig R_PID = new PIDConfig(1, 0, 0, 0);

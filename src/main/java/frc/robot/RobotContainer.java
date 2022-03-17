@@ -137,9 +137,10 @@ public class RobotContainer {
     // this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
     Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> InterpolateUtil.interpolate(ShooterConstants.SHOOTER_VISION_MAP, limelight.getDistance())),
         new ManualFeeder(feeder)));
-    // X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight));
-    // X_Driver.whileHeld(new AlignByVision(driver, () -> -limelight.getAngleX()));  
-    B_Driver.whileHeld(new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight));
+    X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight));
+    // B_Driver.whileHeld(new AlignAndS(driver, shooter, intake, feeder, pistonForFeeder, limelight));
+    B_Driver.whileHeld(new AlignByVision(driver, () -> -limelight.getAngleX()));  
+    // B_Driver.whileHeld(new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight));
     // Y_Operator.whileHeld(new ManualFeeder(feeder));
 
     // intake:

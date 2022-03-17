@@ -24,6 +24,11 @@ public class AlignByVision extends CommandBase {
   private DoubleSupplier limelightAngle;
   private PrimoTab tab;
   private NetworkTableEntry kP, kI, kD, kF;
+
+  double wheelCenterRadius = AutoConstants.TRACKWIDTH / 2;
+  double wheelPerimeter = AutoConstants.DIAMETER  * Math.PI;
+  double ticksWithRatio = AutoConstants.TICKS * AutoConstants.GEAR_RATIO;
+
  
   private double positonSetpoint;
 
@@ -42,32 +47,35 @@ public class AlignByVision extends CommandBase {
 
     // PID is built into the Falcons, so we don't need to make a different PID profile for aligning, 
     // but we do need to make a PID profile for position control in general
-    driver.selectPIDProfile(1);
+    driver.selectPIDProfile(0);
   }
 
   @Override
   public void initialize() {
     
+    driver.resetEncoders();
     double limelightAngleInRadians = Math.toRadians(limelightAngle.getAsDouble());
-    double wheelCenterRadius = AutoConstants.TRACKWIDTH / 2;
-    double wheelPerimeter = AutoConstants.DIAMETER  * Math.PI;
-    double ticksWithRatio = AutoConstants.TICKS * AutoConstants.GEAR_RATIO;
+
 
     PIDConfig config = new PIDConfig(kP.getDouble(0), kI.getDouble(0), kD.getDouble(0), kF.getDouble(0));
     driver.setPIDConfig(0, config, config);
-
     positonSetpoint = ((limelightAngleInRadians * wheelCenterRadius) / wheelPerimeter) * ticksWithRatio;
+
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double limelightAngleInRadians = Math.toRadians(limelightAngle.getAsDouble());
+    positonSetpoint = ((limelightAngleInRadians * wheelCenterRadius) / wheelPerimeter) * ticksWithRatio;
+
+
 
     PIDConfig config = new PIDConfig(kP.getDouble(0), kI.getDouble(0), kD.getDouble(0), kF.getDouble(0));
     driver.setPIDConfig(0, config, config);
 
-    driver.setPosition(-positonSetpoint, positonSetpoint);
+    driver.setPosition(positonSetpoint, -positonSetpoint);
     driver.feed();
   }
 
@@ -80,7 +88,8 @@ public class AlignByVision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return driver.getLeftPositionError() <= AlignConstants.ERROR_TOLERANCE && driver.getRightPositionError() <= AlignConstants.ERROR_TOLERANCE;
+    return Math.abs(limelightAngle.getAsDouble()) <= 2;
+    // return driver.getLeftPositionError() <= AlignConstants.ERROR_TOLERANCE && driver.getRightPositionError() <= AlignConstants.ERROR_TOLERANCE;
   }
 
 }
