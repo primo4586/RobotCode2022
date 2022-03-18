@@ -106,7 +106,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     // Shuffleboard.update();
     limelight.update();
-    PrimoShuffleboard.getInstance().update(driver, shooter, climb, feeder, intake, pistonForFeeder);
+    PrimoShuffleboard.getInstance().update(driver, shooter, climb, feeder, intake, pistonForFeeder,limelight);
 
     // LEDs.getInstance().update();
   }

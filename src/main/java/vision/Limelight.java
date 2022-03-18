@@ -50,7 +50,6 @@ public class Limelight {
         debugTab.addEntry("Robot Angle X").setNumber(angleX);
         debugTab.addEntry("Distance").setNumber(distance);
 
-        PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Is Visible").setBoolean(isVisible());
     }
 
     // Calculates the vector from the robot center to the target.

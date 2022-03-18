@@ -12,6 +12,7 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PistonForFeeder;
 import frc.robot.subsystems.Shooter;
+import vision.Limelight;
 
 public class PrimoShuffleboard {
 
@@ -33,7 +34,7 @@ public class PrimoShuffleboard {
         // getCompetitonBoard().getTab().add("POV: You are Limelight", camHandler.getLimelightSource());
     }
 
-    public void update(Driver driver, Shooter shooter, Climb climb, Feeder feeder, Intake intake, PistonForFeeder pistonForFeeder) {
+    public void update(Driver driver, Shooter shooter, Climb climb, Feeder feeder, Intake intake, PistonForFeeder pistonForFeeder, Limelight limelight) {
 
         PrimoTab climbTab = getPrimoTab("Climb");
         PrimoTab driverTab = getPrimoTab("Driver");
@@ -84,8 +85,8 @@ public class PrimoShuffleboard {
          */
         compTab.addEntry("Feeder Piston").forceSetBoolean(pistonForFeeder.getState());
         compTab.addEntry("Reached Shooter Speed").forceSetBoolean(shooter.isReadyToShoot());
-
-
+        compTab.addEntry("Is Visible").forceSetBoolean(limelight.isVisible());
+        compTab.addEntry("Is In Range").forceSetBoolean(shooter.isWithInRange(limelight.getDistance()));
     }
 
     // Adds or gets a new PrimoTab to avoid adding a tab that already exists and
@@ -107,7 +108,7 @@ public class PrimoShuffleboard {
 
     public void buildCompetitionTab() {
 
-        PrimoTab tab = PrimoShuffleboard.getInstance().getPrimoTab("Competition Dashboard");
+        PrimoTab tab = PrimoShuffleboard.getInstance().getCompetitonBoard();
 
         tab.addEntry("Time").setNumber(Timer.getMatchTime());
         tab.addEntry("Climb Alert").forceSetBoolean(true);
