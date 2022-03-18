@@ -34,7 +34,7 @@ public class PrimoShuffleboard {
         // getCompetitonBoard().getTab().add("POV: You are Limelight", camHandler.getLimelightSource());
     }
 
-    public void update(Driver driver, Shooter shooter, Climb climb, Feeder feeder, Intake intake, PistonForFeeder pistonForFeeder, Limelight limelight) {
+    public void updateDebug(Driver driver, Shooter shooter, Climb climb, Feeder feeder, Intake intake, PistonForFeeder pistonForFeeder, Limelight limelight) {
 
         PrimoTab climbTab = getPrimoTab("Climb");
         PrimoTab driverTab = getPrimoTab("Driver");
@@ -42,7 +42,6 @@ public class PrimoShuffleboard {
         PrimoTab feederTab = getPrimoTab("Feeder");
         PrimoTab intakeTab = getPrimoTab("Intake");
 
-        PrimoTab compTab = getCompetitonBoard();
 
         /**
          *  Driver Tab
@@ -59,14 +58,8 @@ public class PrimoShuffleboard {
         /**
          * Climb Tab
          */
-        // climbTab.addEntry("2&4 Secure").forceSetBoolean(climb.islevel2or4Secure());
-        // climbTab.addEntry("2&4 Mot").forceSetBoolean(climb.isMot2or4In());
-        // climbTab.addEntry("2&4 Piston").forceSetBoolean(climb.isClawLockOn2or4());
         climbTab.addEntry("Climb Enabled").forceSetBoolean(climb.isEnabled());
-        // climbTab.addEntry("3 Secure").forceSetBoolean(climb.islevel3Secure());
-        // climbTab.addEntry("3 Mot").forceSetBoolean(climb.isMot3In());
-        // climbTab.addEntry("3 Piston").forceSetBoolean(climb.isClawLockOn3());
-  
+    
         /**
          * Intake Tab
          */
@@ -83,10 +76,21 @@ public class PrimoShuffleboard {
         /**
          * Competition Tab entries
          */
+       
+    }
+
+    public void updateCompetiton(Driver driver, Shooter shooter, Climb climb, Feeder feeder, Intake intake, PistonForFeeder pistonForFeeder, Limelight limelight) {
+
+        PrimoTab compTab = getCompetitonBoard();
+
         compTab.addEntry("Feeder Piston").forceSetBoolean(!pistonForFeeder.getState());
         compTab.addEntry("Reached Shooter Speed").forceSetBoolean(shooter.isReadyToShoot());
         compTab.addEntry("Is Visible").forceSetBoolean(limelight.isVisible());
         compTab.addEntry("Is In Range").forceSetBoolean(shooter.isWithInRange(limelight.getDistance()));
+
+
+        PrimoTab climbTab = getPrimoTab("Climb");
+        climbTab.addEntry("Climb Enabled").forceSetBoolean(climb.isEnabled());
     }
 
     // Adds or gets a new PrimoTab to avoid adding a tab that already exists and
