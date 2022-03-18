@@ -84,7 +84,7 @@ public class Limelight {
     public double getAngleX() {
         if(!isVisible())
             return LimelightConstants.TARGET_NOT_VISIBLE;
-        return angleX;
+        return -angleX;
     }
 
     public double getAverageDistance() {

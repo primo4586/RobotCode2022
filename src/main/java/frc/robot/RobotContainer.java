@@ -139,7 +139,7 @@ public class RobotContainer {
         new ManualFeeder(feeder)));
     X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight));
     // B_Driver.whileHeld(new AlignByVision(driver, () -> -limelight.getAngleX()));  
-    B_Driver.whileHeld(new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight, () -> limelight.getDistance(),d_joystick));
+    B_Driver.whileHeld(new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight,d_joystick));
     // Y_Operator.whileHeld(new ManualFeeder(feeder));
 
     // intake:

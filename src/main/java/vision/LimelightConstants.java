@@ -15,6 +15,6 @@ public class LimelightConstants {
     public static final double CAMERA_HEIGHT = 0.60;
     public static final double TARGET_HEIGHT = 2.48;
 
-    public static final double TARGET_NOT_VISIBLE = 999;
+    public static final double TARGET_NOT_VISIBLE = -999;
 
 }

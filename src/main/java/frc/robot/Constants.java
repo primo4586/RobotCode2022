@@ -59,12 +59,13 @@ public final class Constants {
                 .put(2.1, 14700);
 
 
-        public static final InterpolationMap FEEDER_VISION_MAP = new InterpolationMap();                
+        public static final InterpolationMap FEEDER_VISION_MAP = new InterpolationMap();   
+
     }
 
     public static final class AlignConstants {
         
-        public static final PIDConfig PID = new PIDConfig(0.03, 0.0005, 0.01, 0.5);
+        public static final PIDConfig PID = new PIDConfig(0.05, 0, 0.0005, 0);
     }
 
     public static final class DriverConstants {
