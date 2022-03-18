@@ -50,7 +50,7 @@ public class AutoShooter extends CommandBase {
 
     shooter.setVelocity(speed);
     if (shooter.isReadyToShoot()) {
-      piston.setSolenoid(false);
+      piston.setSolenoid(true);
       intake.r_control(0.3);
     } 
   }
@@ -58,7 +58,7 @@ public class AutoShooter extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    piston.setSolenoid(true);
+    piston.setSolenoid(false);
     shooter.s_control(0);
     intake.r_control(0);
     feeder.f_control(0);

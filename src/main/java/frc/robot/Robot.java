@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
     autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder,limelight);
 
     LiveWindow.disableAllTelemetry();
-    pistonForFeeder.setSolenoid(true);
+    // pistonForFeeder.setSolenoid(true);
     // leds = new AddressableLED(0);
     // ledBuffer = new AddressableLEDBuffer(10);
     // leds.setLength(ledBuffer.getLength());
