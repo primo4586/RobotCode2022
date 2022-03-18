@@ -44,8 +44,8 @@ public class FollowPathVoltage extends CommandBase {
 
         this.controller = new RamseteController(AutoConstants.RAMSETE_B, AutoConstants.RAMSETE_ZETA);
 
-        this.leftController = DriverConstants.L_CONFIG.getController();
-        this.rightController = DriverConstants.R_CONFIG.getController();
+        this.leftController = DriverConstants.L_CONFIG.getController(0.02);
+        this.rightController = DriverConstants.R_CONFIG.getController(0.02);
 
         this.setOdometry = setOdometry;
         addRequirements(driver);

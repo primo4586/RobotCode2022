@@ -13,11 +13,13 @@ public class DriveByTime extends CommandBase {
   private double time;
   private Timer timer;
   private Driver driver;
+  private double speed;
 
-  public DriveByTime(Driver driver, double time) {
+  public DriveByTime(Driver driver, double time, double speed) {
     this.time = time;
     this.driver = driver;
     this.timer = new Timer();
+    this.speed = speed;
     addRequirements(driver);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -31,13 +33,13 @@ public class DriveByTime extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driver.driveVelocity(-0.5, -0.5);
+      driver.driveVelocity(-speed, -speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driver.driveVelocity(0.5, 0.5);
+    driver.driveVelocity(0, 0);
   }
 
   // Returns true when the command should end.

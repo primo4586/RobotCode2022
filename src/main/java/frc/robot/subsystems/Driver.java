@@ -148,6 +148,10 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     return primoOdometry;
   }
 
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return primoOdometry.getWheelSpeeds();
+  }
+
   public void driveVelocity(double rightMetersPerSecond, double leftMetersPerSecond) {
     // Feedforward calculates the amount of voltage we need to stay at the speeds we want
     double leftFF = Constants.AutoConstants.FEEDFORWARD_LEFT.calculate(leftMetersPerSecond) / 12;
