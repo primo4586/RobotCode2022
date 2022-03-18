@@ -6,6 +6,7 @@ package frc.robot;
 
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.leds.LEDs;
+import edu.wpi.first.util.net.PortForwarder;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -79,6 +80,13 @@ public class Robot extends TimedRobot {
 
     LiveWindow.disableAllTelemetry();
 
+    // Apparently there's a HUGE issue with having the limelight connected to the second port of the router instead of through a network switch
+    // when trying to access the Limelight dashboard while being connected to the robot over USB, that it seemingly unreliable and in a way not possible? 
+    // (even with us doing that before?) [https://docs.limelightvision.io/en/latest/best_practices.html#before-an-event]
+    // So this is just a percaution as said in the link
+    PortForwarder.add(5800, "limelight.local", 5800); 
+    PortForwarder.add(5801, "limelight.local", 5801); 
+    PortForwarder.add(5802, "limelight.local", 5802); 
  
   }
 
