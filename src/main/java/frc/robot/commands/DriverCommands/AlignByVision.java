@@ -1,71 +1,77 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands.DriverCommands;
 
 import java.util.function.DoubleSupplier;
 
-import PrimoLib.PrimoShuffleboard;
-import PrimoLib.PrimoTab;
+import PrimoLib.PrimoCommandBase;
 import autonomous.PIDConfig;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.VisionConstants;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.AlignConstants;
 import frc.robot.subsystems.Driver;
+import vision.Limelight;
+import vision.LimelightConstants;
 
-public class AlignByVision extends CommandBase {
-
-  private Driver driver;
-  private PrimoTab tab;
-
-  private PIDConfig config;
-  private PIDController pidController;
-  private DoubleSupplier visionAngle;
-
-  private double angleError;
-  private double initalSetpointAngle;
+public class AlignByVision extends PrimoCommandBase implements Runnable {
   
-  /** Creates a new AlignByVision. */
-  public AlignByVision(Driver driver, DoubleSupplier visionAngle, double tolerance) {
+  private Driver driver;
+  PIDController controller;
+  private double setPoint;
+  // Kept notifier just in case it's actually required to be running at a different thread and frequency then the normal command scheduler
+  Notifier notifier;
+  private Limelight limelight;
+
+  public AlignByVision(Driver driver, Limelight limelight) {
+    this.driver = driver;
+    this.limelight = limelight;
+
+    notifier = new Notifier(this);
+    PIDConfig config = AlignConstants.PID;
+
     addRequirements(driver);
 
-    this.visionAngle = visionAngle;
-    this.driver = driver;
-    this.pidController = config.getController();
-    this.tab = PrimoShuffleboard.getInstance().getPrimoTab("AlignByVision");
-    tab.getTab().add("PID", config);
-    // Use addRequirements() here to declare subsystem dependencies.
+    this.controller = config.getController(0.01);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.initalSetpointAngle = driver.getYaw() + visionAngle.getAsDouble();
-    this.angleError = visionAngle.getAsDouble();
+    this.setPoint = limelight.getAngleX();
+    this.controller.reset();
+    this.controller.setSetpoint(setPoint);
+    controller.setTolerance(1);
+
+    notifier.startPeriodic(0.01);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.angleError = initalSetpointAngle - driver.getYaw();
-    double output = pidController.calculate(driver.getYaw(), initalSetpointAngle);
-
-    tab.addEntry("PID Output").setNumber(output);
-    tab.addEntry("Angle Error").setNumber(angleError);
-    tab.addEntry("Limelight Angle").setNumber(visionAngle.getAsDouble());
-    driver.driveVelocity(output, output);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driver.driveVelocity(0, 0);
+    notifier.stop();
+    driver.d_control(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.angleError <= VisionConstants.alignByVisionTolerance;
+    return controller.atSetpoint();
+  }
+  
+  @Override
+  public void run() {
+    setPoint = limelight.isVisible() ? limelight.getAngleX() : 0;
+
+    double power = controller.calculate(0,setPoint);
+    driver.getTab().addEntry("power").forceSetDouble(power);
+
+    driver.driveVelocity(-power, power);
   }
 }

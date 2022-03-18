@@ -12,8 +12,8 @@ public class PIDConfig implements Sendable {
     private double Kd;
     private double Kf;
 
-    public PIDController getController(){
-        return new PIDController(Kp, Ki, Kd, 0.02);
+    public PIDController getController(double period){
+        return new PIDController(Kp, Ki, Kd, period);
     }
 
     /**

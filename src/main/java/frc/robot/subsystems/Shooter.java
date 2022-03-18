@@ -66,6 +66,9 @@ public class Shooter extends SubsystemBase {
       return pidSetpoint;
   }
   
+  public double getPidSetpoint() {
+      return pidSetpoint;
+  }
 
   public PrimoTab getTab() {
       return tab;
@@ -75,6 +78,11 @@ public class Shooter extends SubsystemBase {
     return pidSetpoint != 0 && Math.abs(m_shooter.getSelectedSensorVelocity() - pidSetpoint) <= ShooterConstants.READY_SPEED_TOLERANCE;
   }
   
+  
+  public boolean isWithInRange(double distance) {
+    return distance < ShooterConstants.MAX_SHOOTING_RANGE && distance >= ShooterConstants.MIN_SHOOTING_RANGE;
+  }        
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

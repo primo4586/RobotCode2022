@@ -95,16 +95,12 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     }
     this.diffDrive.arcadeDrive(speed, -rotation);
   }
+
+  public void rotationDrive(double rotation) {
+    diffDrive.arcadeDrive(0, -rotation, false);
+  }
   
   //general funcions
-  
-  public static void setMotorSpeed(WPI_TalonFX motor, double speed)
-  {
-    /* 
-      Gets a Talon instance and sets it's speed
-    */
-    motor.set(speed);
-  }
 
   public void changeDirection(){
     this.isForward = !this.isForward;  
@@ -143,6 +139,10 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     this.gyro.setYaw(0);
     }
 
+  public void resetGyro() {
+    this.gyro.setYaw(0);
+  }  
+
   public PrimoDifferentialDriveOdometry getPrimoOdometry(){
     return primoOdometry;
   }
@@ -159,6 +159,12 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     // Sets the motor's velocity setpoint to the velocity given, and uses the FeedForward values to stabilize its velocity and be able to stay on it for a while
     this.m_leftLeader.set(ControlMode.Velocity, leftSpeedsIn100ms / Constants.AutoConstants.METER_PER_TICK, DemandType.ArbitraryFeedForward, leftFF);
     this.m_rightLeader.set(ControlMode.Velocity, rightSpeedsIn100ms / Constants.AutoConstants.METER_PER_TICK, DemandType.ArbitraryFeedForward, rightFF);
+    diffDrive.feed();
+  }
+
+  public void driveVoltage(double leftVoltage, double rightVoltage) {
+    this.m_leftLeader.setVoltage(leftVoltage);
+    this.m_rightLeader.setVoltage(rightVoltage);
     diffDrive.feed();
   }
 
@@ -190,6 +196,10 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   @Override
   public double getRightDistance() {
     return getRightPositionInMeters();
+  }
+
+  public PrimoTab getTab() {
+      return tab;
   }
 
   @Override

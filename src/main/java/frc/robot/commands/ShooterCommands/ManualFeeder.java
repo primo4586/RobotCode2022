@@ -31,11 +31,8 @@ public class ManualFeeder extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // this.feeder.f_control(feeder.getTab().addEntry("setPoint").getDouble(0));
-    // this.feeder.f_control(ShooterConstants.FeederSpeed);
-    this.feeder.setVoltage(5);
-    // this.feeder.setVoltage(ShooterConstants.FeederVoltage);
-    // System.out.println("Feeder Speed: " + ShooterConstants.FeederSpeed);
+    // this.feeder.setVoltage(5);
+    this.feeder.setVoltage(feederSpeed.getDouble(0));
   }
 
   // Called once the command ends or is interrupted.

@@ -19,7 +19,7 @@ public class PistonForFeeder extends SubsystemBase {
 
   public PistonForFeeder() {
     this.p_feeder = new Solenoid(Pneumatics.pcmPort,  PneumaticsModuleType.CTREPCM, Constants.Pneumatics.feederPort);
-    this.state = false;
+    this.state = true;
   }
   
   public void solenoidControll(){
