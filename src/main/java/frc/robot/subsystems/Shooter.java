@@ -65,10 +65,6 @@ public class Shooter extends SubsystemBase {
   public double getPidSetpoint() {
       return pidSetpoint;
   }
-  
-  public double getPidSetpoint() {
-      return pidSetpoint;
-  }
 
   public PrimoTab getTab() {
       return tab;
