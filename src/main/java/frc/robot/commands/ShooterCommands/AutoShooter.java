@@ -4,6 +4,8 @@
 
 package frc.robot.commands.ShooterCommands;
 
+import PrimoLib.PrimoShuffleboard;
+import PrimoLib.PrimoTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Feeder;
@@ -21,6 +23,7 @@ public class AutoShooter extends CommandBase {
   private Feeder feeder;
   private Limelight limelight;
   private double speed;
+  private PrimoTab shooterTab;
 
   public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
       Limelight limelight) {
@@ -29,6 +32,7 @@ public class AutoShooter extends CommandBase {
     this.limelight = limelight;
     this.intake = intake;
     this.feeder = feeder;
+    this.shooterTab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
 
     addRequirements(shooter);
     addRequirements(intake);
@@ -40,31 +44,30 @@ public class AutoShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.speed = InterpolateUtil.interpolate(ShooterConstants.VISION_MAP, limelight.getDistance());
+    this.speed = InterpolateUtil.interpolate(ShooterConstants.SHOOTER_VISION_MAP, limelight.getAverageDistance());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    feeder.setVoltage(5);
+    feeder.setVoltage(ShooterConstants.FeederVoltage);
 
     shooter.setVelocity(speed);
+    shooterTab.addEntry("Shooter Velocity").forceSetNumber(shooter.getShooterVelocity());
     if (shooter.isReadyToShoot()) {
       piston.setSolenoid(true);
       intake.r_control(0.3);
-    } else {
-      intake.r_control(0);
-      piston.setSolenoid(false);
-    }
+    } 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     piston.setSolenoid(false);
-    shooter.s_control(0);
+    shooter.setVelocity(0);
     intake.r_control(0);
-    feeder.f_control(0);
+    feeder.setVoltage(0
+    );
   }
 
   // Returns true when the command should end.

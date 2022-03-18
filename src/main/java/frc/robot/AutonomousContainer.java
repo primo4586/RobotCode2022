@@ -41,12 +41,12 @@ public class AutonomousContainer {
     private Map<String, Command> autoPaths;
 
     public AutonomousContainer(Driver driver,Shooter shooter, Feeder feeder, Intake intake, Climb climb, PistonForFeeder piston, Limelight limelight) {
-        this.competitionTab = PrimoShuffleboard.getInstance().getPrimoTab("Competition Dashboard");
+        this.competitionTab = PrimoShuffleboard.getInstance().getCompetitonBoard();
         this.autoPaths = new HashMap<String,Command>();
 
         // Loading the autonomous trajectories
-        Trajectory oneBallPath = PathHandler.getInstance().loadPath("output/oneBallAuto.wpilib.json"); 
-        Trajectory oneMeter = PathHandler.getInstance().loadPath("output/oneMeter.wpilib.json");
+        // Trajectory oneBallPath = PathHandler.getInstance().loadPath("output/oneBallAuto.wpilib.json"); 
+        // Trajectory oneMeter = PathHandler.getInstance().loadPath("output/oneMeter.wpilib.json");
 
 
         // Creating & adding the commands to the selector
@@ -58,8 +58,8 @@ public class AutonomousContainer {
         autoPaths.put("Test", testCmd);
         autoPaths.put("One Ball Auto", oneBallAuto);
         autoPaths.put("Time drive", time);
-        autoPaths.put("Test Follow", new FollowPath(driver, oneBallPath, true));
-        autoPaths.put("Test Curved", new FollowPath(driver, oneMeter, true));
+        // autoPaths.put("Test Follow", new FollowPath(driver, oneBallPath, true));
+        // autoPaths.put("Test Curved", new FollowPath(driver, oneMeter, true));
         this.autoSelector = new CommandSelector(autoPaths, competitionTab.getTab());
     }
 

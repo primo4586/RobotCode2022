@@ -47,11 +47,14 @@ public class ManualShooter extends PrimoCommandBase {
   public void execute() {
     // shooter.setConfig(new PIDConfig(Kp.getDouble(0), Ki.getDouble(0), Kd.getDouble(0), Kf.getDouble(0)));
     this.shooter.setVelocity(shooterSpeed.getAsDouble());
+    // System.out.println("Shooter Velocity: " + shooter.getVelocity());
+    
+    // this.shooter.setVelocity(speed.getDouble(0));    
   }
 
   @Override
   public void end(boolean interrupted) {
-    shooter.s_control(0);
+    shooter.setVelocity(0);
     // LEDs.getInstance().setClimbBarsEffect(new StaticColor(LEDColor.PRIMO_BLUE));
   }
 

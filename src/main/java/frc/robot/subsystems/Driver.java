@@ -96,9 +96,12 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     }
     this.diffDrive.arcadeDrive(speed, -rotation);
   }
+
+  public void rotationDrive(double rotation) {
+    diffDrive.arcadeDrive(0, -rotation, false);
+  }
   
   //general funcions
-
 
   public void changeDirection(){
     this.isForward = !this.isForward;  
@@ -136,6 +139,10 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     this.m_leftLeader.setSelectedSensorPosition(0,0,10);
     this.gyro.setYaw(0);
     }
+
+  public void resetGyro() {
+    this.gyro.setYaw(0);
+  }  
 
   public PrimoDifferentialDriveOdometry getPrimoOdometry(){
     return primoOdometry;
@@ -192,8 +199,8 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     return getRightPositionInMeters();
   }
 
-  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return primoOdometry.getWheelSpeeds();
+  public PrimoTab getTab() {
+      return tab;
   }
 
   @Override

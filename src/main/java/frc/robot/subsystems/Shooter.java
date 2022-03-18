@@ -35,7 +35,7 @@ public class Shooter extends SubsystemBase {
 
   public void s_control (double shooterSpeed){
     // give m_shooter speed
-    m_shooter.set(shooterSpeed);
+    this.m_shooter.set(Constants.ShooterConstants.ShooterSpeed);
   }
 
   public void increaseShooterSpeed() {
@@ -53,23 +53,18 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setVelocity(double velocity) {
-
-    // double shooterFF = ShooterConstants.SHOOTER_FEEDFORWARD.calculate(velocity);
-
     this.pidSetpoint = velocity;
-    // this.m_shooter.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, shooterFF);
     this.m_shooter.set(ControlMode.Velocity, velocity);
 
   }  
   
   public double getShooterVelocity(){
-    return this.m_shooter.get();
+    return this.m_shooter.getSelectedSensorVelocity();
   }
 
   public double getPidSetpoint() {
       return pidSetpoint;
   }
-  
 
   public PrimoTab getTab() {
       return tab;
@@ -79,6 +74,11 @@ public class Shooter extends SubsystemBase {
     return pidSetpoint != 0 && Math.abs(m_shooter.getSelectedSensorVelocity() - pidSetpoint) <= ShooterConstants.READY_SPEED_TOLERANCE;
   }
   
+  
+  public boolean isWithInRange(double distance) {
+    return distance < ShooterConstants.MAX_SHOOTING_RANGE && distance >= ShooterConstants.MIN_SHOOTING_RANGE;
+  }        
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

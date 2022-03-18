@@ -10,12 +10,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import autonomous.PIDConfig;
-import edu.wpi.first.wpilibj.PneumaticsControlModule;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.Pneumatics;
 
 public class Feeder extends SubsystemBase {
   // create the feeder motor
@@ -40,16 +36,6 @@ public class Feeder extends SubsystemBase {
     m_feeder.setVoltage(voltage);
   }
 
-  public void setConfig(PIDConfig config) {
-    m_feeder.config_kP(0, config.getKp());
-    m_feeder.config_kI(0, config.getKi());
-    m_feeder.config_kD(0, config.getKd());
-    m_feeder.config_kF(0, config.getKf());
-  }
-
-  public void pidControl(double setpoint) {
-    m_feeder.set(ControlMode.Velocity, setpoint);
-  }
 
   public PrimoTab getTab() {
       return tab;

@@ -77,6 +77,8 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder,limelight);
     autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder,limelight);
 
+    LiveWindow.disableAllTelemetry();
+
  
   }
 
@@ -102,9 +104,9 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    Shuffleboard.update();
+    // Shuffleboard.update();
     limelight.update();
-    PrimoShuffleboard.getInstance().update(driver, shooter, climb, feeder, intake, pistonForFeeder);
+    PrimoShuffleboard.getInstance().update(driver, shooter, climb, feeder, intake, pistonForFeeder,limelight);
 
     // LEDs.getInstance().update();
   }

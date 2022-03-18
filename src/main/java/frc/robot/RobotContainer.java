@@ -5,6 +5,7 @@
 package frc.robot;
 
 import PrimoLib.PrimoShuffleboard;
+
 import PrimoLib.PrimoTab;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -18,6 +19,8 @@ import frc.robot.commands.ClimbCommands.ManualClawA;
 import frc.robot.commands.ClimbCommands.ManualClawB;
 import frc.robot.commands.ClimbCommands.ManualRotateChain;
 import frc.robot.commands.ClimbCommands.ReleaseClaw;
+import frc.robot.commands.DriverCommands.AlignAndShoot;
+import frc.robot.commands.DriverCommands.AlignByVision;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
 import frc.robot.commands.IntakeCommands.ManualJoint;
 import frc.robot.commands.IntakeCommands.ManualRoller;
@@ -56,6 +59,7 @@ public class RobotContainer {
   private JoystickButton RB_Driver; // change direction
   private JoystickButton LB_Driver; // open and roolig roller
   private JoystickButton X_Driver; // Auto Shoot
+  private JoystickButton A_Driver; // open piston and spin roller
 
   // operator buttons:
   private JoystickButton START_Operator; // Enable/Disable Climb Control
@@ -108,6 +112,7 @@ public class RobotContainer {
     this.RB_Driver = new JoystickButton(d_joystick, XboxController.Button.kRightBumper.value);
     this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
     this.X_Driver = new JoystickButton(d_joystick, XboxController.Button.kX.value);
+    this.A_Driver = new JoystickButton(d_joystick, XboxController.Button.kA.value);
     this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
 
     this.START_Operator = new JoystickButton(o_joystick, XboxController.Button.kStart.value);
@@ -132,13 +137,16 @@ public class RobotContainer {
     }));
     
     // shooter:
-    this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
-    Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> InterpolateUtil.interpolate(ShooterConstants.VISION_MAP, limelight.getDistance())),
-        new ManualFeeder(feeder)));
-    X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight));  
+    this.A_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
+    Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> 13000),new ManualFeeder(feeder)));
+    X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight));
+    // B_Driver.whileHeld(new AlignByVision(driver, () -> -limelight.getAngleX()));  
+    B_Driver.whileHeld(new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight,d_joystick));
     // Y_Operator.whileHeld(new ManualFeeder(feeder));
+    
 
     // intake:
+    
     LB_Driver.whenPressed(new ManualJoint(intake));
     this.intake.setDefaultCommand(new ManualRoller(intake, Constants.IntakeConstants.rollerSpeed));
     Y_Driver.whileHeld(new ManualRoller(intake, -Constants.IntakeConstants.rollerSpeed)); // plita
@@ -147,16 +155,16 @@ public class RobotContainer {
     START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled())));
 
     climb.setDefaultCommand(
-        new ManualRotateChain(climb, () -> o_joystick.getRawAxis(XboxController.Axis.kRightY.value), true));
+        new ManualRotateChain(climb, () -> o_joystick.getRawAxis(XboxController.Axis.kRightY.value)));
 
     RB_Operator.whenPressed(new ManualClawA(climb));
     LB_Operator.whenPressed(new ManualClawB(climb));
 
-    B_Operator.whenPressed(new ReleaseClaw(climb, 2)); // open level 2
+    B_Operator.whileHeld(new ReleaseClaw(climb, 2)); // open level 2
     X_Operator.whenPressed(new ReleaseClaw(climb, 3)); // open level 3
 
-    A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
-    
+    // A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
+
   }
 
   private void buildCameras() {

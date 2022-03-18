@@ -16,12 +16,16 @@ public class Limelight {
     private Vector3D targetPos;
 
     private LinearFilter visibilityRate;
+    private LinearFilter distanceAverageFilter;
+    private double distanceAverage;
+    private double visibility;
     private PrimoTab debugTab;
 
 
     public Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
         visibilityRate = LinearFilter.movingAverage(10);
+        distanceAverageFilter = LinearFilter.movingAverage(20);
         debugTab = PrimoShuffleboard.getInstance().getPrimoTab("limelight_debug");
     }
 
@@ -30,17 +34,22 @@ public class Limelight {
     public void update() {
         double tv = table.getEntry("tv").getDouble(0);
 
-        double visibility = visibilityRate.calculate(tv);
+        visibility = visibilityRate.calculate(tv);
         // If it sees the target well, ("80%" visibillity) we want to keep updating, otherwise the values are not reliable
-        if(visibility > 0.6) {
+        if(isVisible()) {
             calculateTargetVector();
 
-            this.angleX = Math.toDegrees(Math.atan2(targetPos.getY(), targetPos.getX()));
+            // this.angleX = Math.toDegrees(Math.atan2(targetPos.getY(), targetPos.getX()));
+            this.angleX = table.getEntry("tx").getDouble(0);
             this.distance = Math.sqrt(Math.pow(targetPos.getX(), 2) + Math.pow(targetPos.getY(), 2));
-        } 
+            distanceAverage = distanceAverageFilter.calculate(distance);
+        } else {
+            distanceAverageFilter.reset();
+        }
         debugTab.addEntry("visibillity rate").setNumber(visibility);
         debugTab.addEntry("Robot Angle X").setNumber(angleX);
         debugTab.addEntry("Distance").setNumber(distance);
+
     }
 
     // Calculates the vector from the robot center to the target.
@@ -62,11 +71,22 @@ public class Limelight {
         this.targetPos = Vector3D.subtract(cameraTarget, robotCenterOffset);
     }
     
+    public boolean isVisible() {
+        return visibility >= 0.4;
+    }
+
+
     public double getDistance() {
         return distance;
     }
 
     public double getAngleX() {
-        return angleX;
+        if(!isVisible())
+            return LimelightConstants.TARGET_NOT_VISIBLE;
+        return -angleX;
+    }
+
+    public double getAverageDistance() {
+        return distanceAverage;
     }
 }
