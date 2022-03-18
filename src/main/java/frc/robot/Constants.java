@@ -44,12 +44,12 @@ public final class Constants {
         public static final double ShooterSpeed = 13000; // 13500
 
         // public static final PIDConfig FEEDER_CONFIG = new PIDConfig(1, 0, 0, 0);
-        public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(0.22, 0, 0.2, 0.06);
+        public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(0.22, 0, 0.2, 0.055);
         
-        public static final double READY_SPEED_TOLERANCE = 200;
+        public static final double READY_SPEED_TOLERANCE = 400;
 
         public static final double MIN_SHOOTING_RANGE = 1.5;
-        public static final double MAX_SHOOTING_RANGE = 2.05;
+        public static final double MAX_SHOOTING_RANGE = 1.85;
         
 
         public static final InterpolationMap SHOOTER_VISION_MAP = new InterpolationMap()

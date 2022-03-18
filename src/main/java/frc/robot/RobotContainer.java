@@ -59,6 +59,7 @@ public class RobotContainer {
   private JoystickButton RB_Driver; // change direction
   private JoystickButton LB_Driver; // open and roolig roller
   private JoystickButton X_Driver; // Auto Shoot
+  private JoystickButton A_Driver; // open piston and spin roller
 
   // operator buttons:
   private JoystickButton START_Operator; // Enable/Disable Climb Control
@@ -111,6 +112,7 @@ public class RobotContainer {
     this.RB_Driver = new JoystickButton(d_joystick, XboxController.Button.kRightBumper.value);
     this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
     this.X_Driver = new JoystickButton(d_joystick, XboxController.Button.kX.value);
+    this.A_Driver = new JoystickButton(d_joystick, XboxController.Button.kA.value);
     this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
 
     this.START_Operator = new JoystickButton(o_joystick, XboxController.Button.kStart.value);
@@ -135,13 +137,13 @@ public class RobotContainer {
     }));
     
     // shooter:
-    // this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
-    Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> InterpolateUtil.interpolate(ShooterConstants.SHOOTER_VISION_MAP, limelight.getDistance())),
-        new ManualFeeder(feeder)));
+    this.A_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
+    Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> 13000),new ManualFeeder(feeder)));
     X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight));
     // B_Driver.whileHeld(new AlignByVision(driver, () -> -limelight.getAngleX()));  
     B_Driver.whileHeld(new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight,d_joystick));
     // Y_Operator.whileHeld(new ManualFeeder(feeder));
+    
 
     // intake:
     

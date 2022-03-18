@@ -59,7 +59,7 @@ public class Shooter extends SubsystemBase {
   }  
   
   public double getShooterVelocity(){
-    return this.m_shooter.get();
+    return this.m_shooter.getSelectedSensorVelocity();
   }
 
   public double getPidSetpoint() {

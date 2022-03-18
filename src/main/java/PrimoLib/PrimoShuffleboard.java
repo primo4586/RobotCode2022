@@ -76,14 +76,14 @@ public class PrimoShuffleboard {
         /**
          * Shooter Tab
          */
-        shooterTab.addEntry("Shooter Velocity").setNumber(shooter.getShooterVelocity());
+        shooterTab.addEntry("Shooter Velocity").forceSetNumber(shooter.getShooterVelocity());
         shooterTab.addEntry("Reached target velocity").forceSetBoolean(shooter.isReadyToShoot());
-        shooterTab.addEntry("Shooter Setpoint").setNumber(shooter.getPidSetpoint());
+        shooterTab.addEntry("Shooter Setpoint").forceSetNumber(shooter.getPidSetpoint());
 
         /**
          * Competition Tab entries
          */
-        compTab.addEntry("Feeder Piston").forceSetBoolean(pistonForFeeder.getState());
+        compTab.addEntry("Feeder Piston").forceSetBoolean(!pistonForFeeder.getState());
         compTab.addEntry("Reached Shooter Speed").forceSetBoolean(shooter.isReadyToShoot());
         compTab.addEntry("Is Visible").forceSetBoolean(limelight.isVisible());
         compTab.addEntry("Is In Range").forceSetBoolean(shooter.isWithInRange(limelight.getDistance()));
