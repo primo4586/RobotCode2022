@@ -141,7 +141,7 @@ public class RobotContainer {
     Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> 13000),new ManualFeeder(feeder)));
     X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight));
     // B_Driver.whileHeld(new AlignByVision(driver, () -> -limelight.getAngleX()));  
-    B_Driver.whileHeld(new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight,d_joystick));
+    B_Driver.whileHeld(new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight,d_joystick,camHandler));
     // Y_Operator.whileHeld(new ManualFeeder(feeder));
     
 
@@ -152,7 +152,7 @@ public class RobotContainer {
     Y_Driver.whileHeld(new ManualRoller(intake, -Constants.IntakeConstants.rollerSpeed)); // plita
 
     // climb:
-    START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled())));
+    START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled()), climb));
 
     climb.setDefaultCommand(
         new ManualRotateChain(climb, () -> o_joystick.getRawAxis(XboxController.Axis.kRightY.value)));
@@ -175,4 +175,7 @@ public class RobotContainer {
     PrimoShuffleboard.getInstance().updateCameras(camHandler);
   }
 
+  public CameraHandler getCamHandler() {
+      return camHandler;
+  }
 }

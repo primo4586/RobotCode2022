@@ -103,8 +103,11 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   //general funcions
 
   public void changeDirection(){
-    this.isForward = !this.isForward;  
-       
+    this.isForward = !this.isForward;      
+  }
+
+  public void setForward(boolean forward) {
+    this.isForward = forward;
   }
 
   public boolean isDirectionForward(){

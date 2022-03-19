@@ -80,6 +80,8 @@ public class Climb extends SubsystemBase {
 
     PrimoShuffleboard.getInstance().selectTab("Climb");
     this.isEnabled = true;
+    this.solenoidA.set(Constants.ClimbConstants.PISTON_LOCKED);
+    this.solenoidA.set(Constants.ClimbConstants.PISTON_LOCKED);
   }
 
   public void setSolenoidLevel2or4(boolean state) {
