@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.CameraHandler;
 import frc.robot.commands.ShooterCommands.AutoShooter;
@@ -32,5 +33,13 @@ public class AlignAndShoot extends SequentialCommandGroup {
         new AutoShooter(shooter, piston, intake, feeder, limelight, camHandler));
 
     addCommands(new ConditionalCommand(alignAndShoot, new RumbleJoystick(joystick), () -> shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()));    
+  }
+
+  public AlignAndShoot(Driver driver, Shooter shooter, Intake intake, Feeder feeder, PistonForFeeder piston, Limelight limelight) {
+
+    SequentialCommandGroup alignAndShoot = new SequentialCommandGroup(new AlignByVision(driver, limelight),
+        new AutoShooter(shooter, piston, intake, feeder, limelight));
+
+    addCommands(new ConditionalCommand(alignAndShoot, new InstantCommand(), () -> shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()));    
   }
 }

@@ -17,6 +17,7 @@ import PrimoLib.PrimoTab;
 import autonomous.DifferentialDriveData;
 import autonomous.PIDConfig;
 import autonomous.PrimoDifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -148,6 +149,10 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
   public PrimoDifferentialDriveOdometry getPrimoOdometry(){
     return primoOdometry;
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return primoOdometry.getWheelSpeeds();
   }
 
   public void driveVelocity(double rightMetersPerSecond, double leftMetersPerSecond) {

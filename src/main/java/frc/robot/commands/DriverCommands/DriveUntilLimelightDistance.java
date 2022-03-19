@@ -4,47 +4,50 @@
 
 package frc.robot.commands.DriverCommands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Driver;
+import vision.Limelight;
 
-public class DriveByTime extends CommandBase {
-  /** Creates a new DriveByTime. */
-  private double time;
-  private Timer timer;
+public class DriveUntilLimelightDistance extends CommandBase {
+
   private Driver driver;
-  private double speed;
+  private Limelight limelight;
 
-  public DriveByTime(Driver driver, double time, double speed) {
-    this.time = time;
-    this.driver = driver;
-    this.timer = new Timer();
-    this.speed = speed;
-    addRequirements(driver);
+  private double speed, targetDistance, tolerance;
+
+  
+
+  /** Creates a new DriveUntilLimelightDistance. */
+  public DriveUntilLimelightDistance(Driver driver, Limelight limelight, double speed, double distance, double tolerance) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.driver = driver;
+    this.limelight = limelight;
+    this.speed = speed;
+    this.targetDistance = distance;
+    this.tolerance = tolerance;
+    addRequirements(driver);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    timer.start();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      driver.driveVelocity(-speed, -speed);
+    driver.driveVelocity(0.5, 0.5);  
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driver.driveVelocity(0, 0);
+    driver.d_control(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(time);
+    return limelight.isVisible() && limelight.getDistance() < targetDistance;
+    // return Math.abs(targetDistance - limelight.getDistance()) <= tolerance;
   }
 }

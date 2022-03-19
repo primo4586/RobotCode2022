@@ -61,12 +61,29 @@ public class AutoShooter extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
+   public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
+      double speed) {
+    this.shooter = shooter;
+    this.piston = pistonForFeeder;
+    this.intake = intake;
+    this.feeder = feeder;
+    this.limelight = null;
+    this.speed = speed;
+    this.shooterTab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
+
+    addRequirements(shooter);
+    addRequirements(intake);
+    addRequirements(feeder);
+    addRequirements(piston);
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(camHandler != null)
-        camHandler.setCamera(1);
-    this.speed = InterpolateUtil.interpolate(ShooterConstants.SHOOTER_VISION_MAP, limelight.getAverageDistance());
+   
+    if(limelight != null)
+        this.speed = InterpolateUtil.interpolate(ShooterConstants.SHOOTER_VISION_MAP, limelight.getAverageDistance());
   }
 
   // Called every time the scheduler runs while the command is scheduled.

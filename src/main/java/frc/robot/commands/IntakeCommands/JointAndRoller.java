@@ -10,6 +10,7 @@ import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.Intake;
 
 public class JointAndRoller extends CommandBase {
@@ -40,7 +41,8 @@ public class JointAndRoller extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   
+
+    intake.r_control(IntakeConstants.rollerSpeed);
     // if(intake.isJointOpen())  
     //   this.intake.r_control(Constants.IntakeConstants.rollerSpeed);
     // System.out.println("Command state: " + intake.isJointOpen());
@@ -51,9 +53,8 @@ public class JointAndRoller extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     System.out.println("End state: " + intake.isJointOpen());
-   if(!intake.isJointOpen()) 
-      this.intake.r_control(0);
-    // this.intake.setJointState(false);
+    intake.r_control(0);
+    this.intake.setJoint(false);
 
   }
 
