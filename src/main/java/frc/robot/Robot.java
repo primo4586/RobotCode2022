@@ -152,8 +152,11 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    robotContainer.getCamHandler().setCamera(0);
+    driver.setForward(true);
     flashTimer.start();
     PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert").forceSetBoolean(true);
+    
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

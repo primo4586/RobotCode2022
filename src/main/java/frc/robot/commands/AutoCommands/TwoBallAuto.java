@@ -4,12 +4,15 @@
 
 package frc.robot.commands.AutoCommands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.DriverCommands.AlignAndShoot;
 import frc.robot.commands.DriverCommands.DriveByTime;
+import frc.robot.commands.DriverCommands.DriveUntilLimelightDistance;
+import frc.robot.commands.IntakeCommands.JointAndRoller;
+import frc.robot.commands.IntakeCommands.ManualJoint;
 import frc.robot.commands.IntakeCommands.ManualRoller;
 import frc.robot.subsystems.Driver;
 import frc.robot.subsystems.Feeder;
@@ -28,12 +31,10 @@ public class TwoBallAuto extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
-    ParallelCommandGroup intakeBall = new ParallelCommandGroup(new DriveByTime(driver, 3, 0.5),
-        new ManualRoller(intake, IntakeConstants.rollerSpeed).withTimeout(3));
-    SequentialCommandGroup tarmacAndShoot = new SequentialCommandGroup(new DriveByTime(driver, 1.5, -0.5),
-        new AlignAndShoot(driver, shooter, intake, feeder, piston, limelight));
-    
+    ParallelCommandGroup intakeBall = new ParallelCommandGroup(new DriveByTime(driver, 3, 0.5),new JointAndRoller(intake).withTimeout(5));
+    SequentialCommandGroup rangeAndShoot = new SequentialCommandGroup(new DriveUntilLimelightDistance(driver,limelight,2,1.7,0.05).withTimeout(5),new AlignAndShoot(driver, shooter, intake, feeder, piston, limelight).withTimeout(4));
 
-    addCommands(intakeBall, tarmacAndShoot, new DriveByTime(driver, 5, 0.5));
+
+    addCommands(intakeBall, rangeAndShoot);
   }
 }

@@ -53,7 +53,7 @@ public class AutonomousContainer {
 
         // Creating & adding the commands to the selector
         InstantCommand testCmd = new InstantCommand(() -> System.out.println("Test Auto"));
-        NoLLOneBallAuto oneBallAutoNoLimelight = new NoLLOneBallAuto(driver, shooter, piston,feeder);
+        NoLLOneBallAuto oneBallAutoNoLimelight = new NoLLOneBallAuto(driver, shooter, piston,intake,feeder);
         TwoBallAuto twoBallAuto = new TwoBallAuto(driver, shooter, piston, feeder, intake, limelight);
         OneBallAuto oneBallAuto = new OneBallAuto(driver, shooter, piston, feeder, intake, limelight);
 

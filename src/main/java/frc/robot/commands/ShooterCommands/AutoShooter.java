@@ -7,6 +7,7 @@ package frc.robot.commands.ShooterCommands;
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.CameraHandler;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
@@ -24,6 +25,25 @@ public class AutoShooter extends CommandBase {
   private Limelight limelight;
   private double speed;
   private PrimoTab shooterTab;
+  private CameraHandler camHandler;
+  private int prevCamIndex;
+
+  public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
+  Limelight limelight, CameraHandler camHandler) {
+    this.shooter = shooter;
+    this.piston = pistonForFeeder;
+    this.limelight = limelight;
+    this.intake = intake;
+    this.feeder = feeder;
+    this.shooterTab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
+
+    addRequirements(shooter);
+    addRequirements(intake);
+    addRequirements(feeder);
+    addRequirements(piston);
+    this.camHandler = camHandler;
+    this.prevCamIndex = camHandler.getIndex();
+  }
 
   public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
       Limelight limelight) {
@@ -41,10 +61,29 @@ public class AutoShooter extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
+   public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
+      double speed) {
+    this.shooter = shooter;
+    this.piston = pistonForFeeder;
+    this.intake = intake;
+    this.feeder = feeder;
+    this.limelight = null;
+    this.speed = speed;
+    this.shooterTab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
+
+    addRequirements(shooter);
+    addRequirements(intake);
+    addRequirements(feeder);
+    addRequirements(piston);
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.speed = InterpolateUtil.interpolate(ShooterConstants.SHOOTER_VISION_MAP, limelight.getAverageDistance());
+   
+    if(limelight != null)
+        this.speed = InterpolateUtil.interpolate(ShooterConstants.SHOOTER_VISION_MAP, limelight.getAverageDistance());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -66,8 +105,9 @@ public class AutoShooter extends CommandBase {
     piston.setSolenoid(false);
     shooter.setVelocity(0);
     intake.r_control(0);
-    feeder.setVoltage(0
-    );
+    feeder.setVoltage(0);
+    if(camHandler != null)
+      camHandler.setCamera(prevCamIndex);
   }
 
   // Returns true when the command should end.

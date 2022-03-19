@@ -22,10 +22,10 @@ public class OneBallAuto extends SequentialCommandGroup {
   public OneBallAuto(Driver driver, Shooter shooter, PistonForFeeder piston, Feeder feeder, Intake intake,
   Limelight limelight) {
     
-    DriveByTime oneMeterBack = new DriveByTime(driver, 2, 0.5);
+    
     AlignAndShoot alignAndShoot = new AlignAndShoot(driver, shooter, intake, feeder, piston, limelight);
-    DriveByTime outOfTarmac = new DriveByTime(driver, 5, 0.5);
+    DriveByTime outOfTarmac = new DriveByTime(driver, 4, 0.5);
 
-    addCommands(oneMeterBack, alignAndShoot, outOfTarmac);
+    addCommands(alignAndShoot.withTimeout(3), outOfTarmac);
   }
 }
