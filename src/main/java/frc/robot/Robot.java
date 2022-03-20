@@ -42,6 +42,9 @@ public class Robot extends TimedRobot {
   // Vision
   private Limelight limelight;
 
+  private AddressableLED leds;
+  private AddressableLEDBuffer buffer;
+
   // Subsystems
   private Intake intake;
   private Shooter shooter;
@@ -88,6 +91,14 @@ public class Robot extends TimedRobot {
     PortForwarder.add(5801, "limelight.local", 5801); 
     PortForwarder.add(5802, "limelight.local", 5802); 
  
+    leds = new AddressableLED(9);
+    buffer = new AddressableLEDBuffer(200);
+    leds.setLength(buffer.getLength());
+    for(int i = 0; i < buffer.getLength(); i++) {
+      buffer.setRGB(i, 250, 209, 0);
+    }
+    leds.setData(buffer);
+    leds.start();
   }
 
   /**
@@ -117,8 +128,10 @@ public class Robot extends TimedRobot {
     // PrimoShuffleboard.getInstance().updateDebug(driver, shooter, climb, feeder, intake, pistonForFeeder,limelight);
     // Separated the debug tabs from the main tabs, Maybe we could make it a toggleable thing through a debug "enable/disable" entry, or just comment out the call for the debug function
     PrimoShuffleboard.getInstance().updateCompetiton(driver, shooter, climb, feeder, intake, pistonForFeeder, limelight);
-
-    // LEDs.getInstance().update();
+    for(int i = 0; i < buffer.getLength(); i++) {
+      buffer.setRGB(i, 250, 209, 0);
+    }
+    leds.setData(buffer);
   }
 
   @Override

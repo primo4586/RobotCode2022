@@ -17,7 +17,7 @@ public class LEDs {
     private AddressableLEDBuffer[] climbBuffers;
     private AddressableLEDBuffer mainBuffer;
 
-    public static final int LENGTH = 160;
+    public static final int LENGTH = 200;
     public static final int PORT = 8;
 
     public static LEDs instance;
@@ -30,7 +30,7 @@ public class LEDs {
 
         this.climbBuffers = new AddressableLEDBuffer[4];
         for(int i = 0; i < climbBuffers.length; i++)
-            climbBuffers[i] = new AddressableLEDBuffer(40);
+            climbBuffers[i] = new AddressableLEDBuffer(50);
 
         this.mainBuffer = new AddressableLEDBuffer(LENGTH);
 

@@ -34,19 +34,14 @@ public class ManualRotateChain extends CommandBase {
   @Override
   public void execute() {
     if(this.isOk){
-      if(speed.getAsDouble() > 0.3) 
-       this.climb.setVoltage(Constants.ClimbConstants.chainVoltage);
-      else if(speed.getAsDouble() < -0.3)
-        this.climb.setVoltage(-Constants.ClimbConstants.chainVoltage);
-      else 
-        this.climb.c_control(0);
+       this.climb.setVoltage(Constants.ClimbConstants.chainVoltage*speed.getAsDouble());
     }
   }
   
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.climb.c_control(0);
+    this.climb.setVoltage(0);
     System.out.println("ROTATE CHAIN END!");
   }
 
