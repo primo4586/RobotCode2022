@@ -6,9 +6,11 @@ package frc.robot;
 
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.leds.LEDs;
+import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.net.PortForwarder;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -77,12 +79,14 @@ public class Robot extends TimedRobot {
     this.flashTimer = new Timer();
 
     limelight = new Limelight();
+    // That's literally all it takes
+    // [https://docs.wpilib.org/en/stable/docs/software/telemetry/datalog.html#standard-data-logging-using-datalogmanager]
+    DataLogManager.start();  
 
     robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder,limelight);
     autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder,limelight);
 
     LiveWindow.disableAllTelemetry();
-
     // Apparently there's a HUGE issue with having the limelight connected to the second port of the router instead of through a network switch
     // when trying to access the Limelight dashboard while being connected to the robot over USB, that it seemingly unreliable and in a way not possible? 
     // (even with us doing that before?) [https://docs.limelightvision.io/en/latest/best_practices.html#before-an-event]

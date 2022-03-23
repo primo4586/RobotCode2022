@@ -73,9 +73,6 @@ public class PrimoShuffleboard {
         shooterTab.addEntry("Reached target velocity").forceSetBoolean(shooter.isReadyToShoot());
         shooterTab.addEntry("Shooter Setpoint").forceSetNumber(shooter.getPidSetpoint());
 
-        /**
-         * Competition Tab entries
-         */
        
     }
 

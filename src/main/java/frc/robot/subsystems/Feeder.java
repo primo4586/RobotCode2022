@@ -21,10 +21,10 @@ public class Feeder extends SubsystemBase {
   public Feeder() {
     this.m_feeder = new WPI_TalonSRX(Constants.ShooterConstants.FeederPort);
 
-    this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Feeder");
+    // this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Feeder");
 
-    tab.addEntry("setPoint").setNumber(0);
-    tab.addEntry("Voltage").setNumber(0);
+    // tab.addEntry("setPoint").setNumber(0);
+    // tab.addEntry("Voltage").setNumber(0);
   }
 
   public void f_control(double feederSpeed) {
