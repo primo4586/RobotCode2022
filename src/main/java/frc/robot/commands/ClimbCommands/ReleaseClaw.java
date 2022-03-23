@@ -10,13 +10,11 @@ import frc.robot.subsystems.Climb;
 
 public class ReleaseClaw extends CommandBase {
   private Climb climb;
-  private int numLevel; //the level the robot moving to 
-  private boolean ok;
-  
+  private int numLevel; // the level the robot moving to
+
   public ReleaseClaw(Climb climb, int numLevel) {
     this.climb = climb;
     this.numLevel = numLevel;
-    this.ok = false;
 
     addRequirements(climb);
   }
@@ -24,21 +22,23 @@ public class ReleaseClaw extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-   if(this.numLevel == 2 && climb.islevel2or4Secure()){
-     climb.setSolenoidLevel2or4(Constants.ClimbConstants.PISTON_RELEASE);
-   }
-   if(this.numLevel == 3 && climb.islevel3Secure())
-    climb.setSolenoidLevel3(Constants.ClimbConstants.PISTON_RELEASE);
+    if (climb.isEnabled()) {
+      if (this.numLevel == 2 && climb.islevel3Secure()) {
+        climb.setSolenoidLevel2or4(Constants.ClimbConstants.PISTON_RELEASE);
+      }
+      if (this.numLevel == 3 && climb.islevel2or4Secure())
+        climb.setSolenoidLevel3(Constants.ClimbConstants.PISTON_RELEASE);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {    
+  public void execute() {
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) { 
+  public void end(boolean interrupted) {
   }
 
   // Returns true when the command should end.

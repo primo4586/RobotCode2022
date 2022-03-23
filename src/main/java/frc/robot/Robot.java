@@ -187,6 +187,7 @@ public class Robot extends TimedRobot {
     } else if (Timer.getMatchTime() <= 30) {
       PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert").forceSetBoolean(false);
     }
+    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Time").forceSetNumber(Timer.getMatchTime());
   }
 
   @Override

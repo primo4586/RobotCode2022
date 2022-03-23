@@ -87,7 +87,7 @@ public class PrimoShuffleboard {
         compTab.addEntry("Reached Shooter Speed").forceSetBoolean(shooter.isReadyToShoot());
         compTab.addEntry("Is Visible").forceSetBoolean(limelight.isVisible());
         compTab.addEntry("Is In Range").forceSetBoolean(shooter.isWithInRange(limelight.getDistance()));
-
+        
 
         PrimoTab climbTab = getPrimoTab("Climb");
         climbTab.addEntry("Climb Enabled").forceSetBoolean(climb.isEnabled());

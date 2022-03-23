@@ -50,6 +50,13 @@ public class Intake extends SubsystemBase {
     this.m_roller.set(m_rollerSpeed); 
   }
 
+  public void setVoltage(double m_rollerSpeed ){
+    /*
+      Gets speed and set data to motor
+    */
+    this.m_roller.setVoltage(m_rollerSpeed); 
+  }
+
   public void controllServo(){
     this.servoFeeder.set(0.0);
   }

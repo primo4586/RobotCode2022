@@ -49,7 +49,7 @@ public final class Constants {
         public static final double READY_SPEED_TOLERANCE = 400;
 
         public static final double MIN_SHOOTING_RANGE = 1.5;
-        public static final double MAX_SHOOTING_RANGE = 1.85;
+        public static final double MAX_SHOOTING_RANGE = 1.9;
         
 
         public static final InterpolationMap SHOOTER_VISION_MAP = new InterpolationMap()
@@ -109,7 +109,8 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final double rollerSpeed = 0.7; // 0.6
+        public static final double rollerSpeed = 0.7
+        ; // 0.6
         public static final int rollerPort = 5;
     }
 

@@ -30,9 +30,9 @@ public class ManualRoller extends CommandBase {
   @Override
   public void execute() {
     if(intake.isJointOpen())
-        this.intake.r_control(speed);
+        this.intake.setVoltage(13 * speed);
     else
-        this.intake.r_control(0);    
+        this.intake.setVoltage(0);  
   }
 
   // Called once the command ends or is interrupted.

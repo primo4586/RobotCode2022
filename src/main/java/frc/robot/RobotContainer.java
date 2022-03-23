@@ -134,10 +134,11 @@ public class RobotContainer {
     this.RB_Driver.whenPressed(new InstantCommand(() -> {
       driver.changeDirection();
       camHandler.switchCamera();
-    }));
+    }, driver));
     
     // shooter:
-    this.A_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, 13000));
+    // this.A_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, 13000));
+    this.A_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
     Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> 13000),new ManualFeeder(feeder)));
     X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight));
     // B_Driver.whileHeld(new AlignByVision(driver, () -> -limelight.getAngleX()));  
