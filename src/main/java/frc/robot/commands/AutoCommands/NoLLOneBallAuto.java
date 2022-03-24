@@ -32,7 +32,7 @@ public class NoLLOneBallAuto extends SequentialCommandGroup {
     // SequentialCommandGroup pistonDelay = new SequentialCommandGroup(new WaitCommand(4), new InstantCommand(() -> piston.setSolenoid(true),piston),new WaitCommand(2));
 
     // ParallelCommandGroup manualShoot = new ParallelCommandGroup(shooting,pistonDelay);
-    addCommands(new AutoShooter(shooter, piston, intake, feeder, ShooterConstants.ShooterSpeed).withTimeout(3));
+    addCommands(new AutoShooter(shooter, piston, intake, feeder, () -> ShooterConstants.ShooterSpeed,() -> 0).withTimeout(3));
     addCommands(new ParallelCommandGroup(new InstantCommand(() -> piston.setSolenoid(false)),new DriveByTime(driver, 5, 0.5)));
   }
 }

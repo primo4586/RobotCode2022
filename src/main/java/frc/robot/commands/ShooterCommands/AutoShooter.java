@@ -4,6 +4,9 @@
 
 package frc.robot.commands.ShooterCommands;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -24,12 +27,15 @@ public class AutoShooter extends CommandBase {
   private Feeder feeder;
   private Limelight limelight;
   private double speed;
+  private DoubleSupplier shooterSpeed;
+  private DoubleSupplier feederSpeed;
   private PrimoTab shooterTab;
   private CameraHandler camHandler;
+  private BooleanSupplier isAligned;
   private int prevCamIndex;
 
   public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
-  Limelight limelight, CameraHandler camHandler) {
+  Limelight limelight, CameraHandler camHandler, BooleanSupplier isAligned) {
     this.shooter = shooter;
     this.piston = pistonForFeeder;
     this.limelight = limelight;
@@ -43,16 +49,20 @@ public class AutoShooter extends CommandBase {
     addRequirements(piston);
     this.camHandler = camHandler;
     this.prevCamIndex = camHandler.getIndex();
+    this.isAligned = isAligned;
   }
 
   public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
-      Limelight limelight) {
+      Limelight limelight, BooleanSupplier isAligned) {
     this.shooter = shooter;
     this.piston = pistonForFeeder;
     this.limelight = limelight;
     this.intake = intake;
     this.feeder = feeder;
+    
+
     this.shooterTab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
+    this.isAligned = isAligned;
 
     addRequirements(shooter);
     addRequirements(intake);
@@ -61,14 +71,16 @@ public class AutoShooter extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
+
    public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
-      double speed) {
+      DoubleSupplier speed, DoubleSupplier feederSpeed) {
     this.shooter = shooter;
+    this.feederSpeed = feederSpeed;
     this.piston = pistonForFeeder;
     this.intake = intake;
     this.feeder = feeder;
     this.limelight = null;
-    this.speed = speed;
+    this.shooterSpeed = speed;
     this.shooterTab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
 
     addRequirements(shooter);
@@ -89,11 +101,11 @@ public class AutoShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    feeder.setVoltage(ShooterConstants.FeederVoltage);
+    feeder.setVoltage(5);
 
     shooter.setVelocity(speed);
     shooterTab.addEntry("Shooter Velocity").forceSetNumber(shooter.getShooterVelocity());
-    if (shooter.isReadyToShoot()) {
+    if (shooter.isReadyToShoot() && isAligned.getAsBoolean()) {
       piston.setSolenoid(true);
       intake.r_control(0.3);
     } 

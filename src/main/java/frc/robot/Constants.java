@@ -48,15 +48,18 @@ public final class Constants {
         
         public static final double READY_SPEED_TOLERANCE = 400;
 
-        public static final double MIN_SHOOTING_RANGE = 1.5;
-        public static final double MAX_SHOOTING_RANGE = 1.9;
+        public static final double MIN_SHOOTING_RANGE = 1;
+        public static final double MAX_SHOOTING_RANGE = 2;
         
 
         public static final InterpolationMap SHOOTER_VISION_MAP = new InterpolationMap()
-                .put(1.45, 12500)
-                .put(1.73, 13000)
-                .put(1.98, 14250)
-                .put(2.1, 14700);
+                .put(1, 14100)
+                .put(1.2, 13800)
+                .put(1.4, 12800)
+                .put(1.6, 12800)
+                .put(1.8, 12800)
+                .put(2, 13200)
+                .put(2.1, 13300);
 
 
         public static final InterpolationMap FEEDER_VISION_MAP = new InterpolationMap();   

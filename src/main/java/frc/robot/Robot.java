@@ -125,7 +125,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     // Shuffleboard.update();
     limelight.update();
-    // PrimoShuffleboard.getInstance().updateDebug(driver, shooter, climb, feeder, intake, pistonForFeeder,limelight);
+    PrimoShuffleboard.getInstance().updateDebug(driver, shooter, climb, feeder, intake, pistonForFeeder,limelight);
     // Separated the debug tabs from the main tabs, Maybe we could make it a toggleable thing through a debug "enable/disable" entry, or just comment out the call for the debug function
     PrimoShuffleboard.getInstance().updateCompetiton(driver, shooter, climb, feeder, intake, pistonForFeeder, limelight);
     for(int i = 0; i < buffer.getLength(); i++) {

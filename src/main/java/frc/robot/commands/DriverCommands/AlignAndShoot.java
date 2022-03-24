@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.CameraHandler;
 import frc.robot.commands.ShooterCommands.AutoShooter;
@@ -24,21 +25,21 @@ import vision.Limelight;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AlignAndShoot extends SequentialCommandGroup {
+public class AlignAndShoot extends ParallelCommandGroup {
   /** Creates a new AlignAndShoot. */
   public AlignAndShoot(Driver driver, Shooter shooter, Intake intake, Feeder feeder, PistonForFeeder piston,
       Limelight limelight, Joystick joystick, CameraHandler camHandler) {
 
-    SequentialCommandGroup alignAndShoot = new SequentialCommandGroup(new AlignByVision(driver, limelight),
-        new AutoShooter(shooter, piston, intake, feeder, limelight, camHandler));
-
+    ParallelCommandGroup alignAndShoot = new ParallelCommandGroup(new AlignByVision(driver, limelight),
+        new AutoShooter(shooter, piston, intake, feeder, limelight, camHandler,() -> Math.abs(limelight.getAngleX()) <= 2));
+        
     addCommands(new ConditionalCommand(alignAndShoot, new RumbleJoystick(joystick), () -> shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()));    
   }
 
   public AlignAndShoot(Driver driver, Shooter shooter, Intake intake, Feeder feeder, PistonForFeeder piston, Limelight limelight) {
 
-    SequentialCommandGroup alignAndShoot = new SequentialCommandGroup(new AlignByVision(driver, limelight),
-        new AutoShooter(shooter, piston, intake, feeder, limelight));
+    ParallelCommandGroup alignAndShoot = new ParallelCommandGroup(new AlignByVision(driver, limelight),
+        new AutoShooter(shooter, piston, intake, feeder, limelight, () -> Math.abs(limelight.getAngleX()) <= 2));
 
     addCommands(new ConditionalCommand(alignAndShoot, new InstantCommand(), () -> shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()));    
   }

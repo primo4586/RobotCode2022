@@ -137,10 +137,13 @@ public class RobotContainer {
     }, driver));
     
     // shooter:
+    // this.A_Driver.whileHeld(new ManualShooter(shooter, () -> 0.0).alongWith(new ManualFeeder(feeder)));
+    this.A_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, () ->PrimoShuffleboard.getInstance().getPrimoTab("Shooter").addEntry("Speed").getDouble(0),
+    () -> PrimoShuffleboard.getInstance().getPrimoTab("Feeder").addEntry("Voltage").getDouble(5)));
     // this.A_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, 13000));
-    this.A_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
+    // this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
     Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> 13000),new ManualFeeder(feeder)));
-    X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight));
+    X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight,() -> Math.abs(limelight.getAngleX()) <= 1));
     // B_Driver.whileHeld(new AlignByVision(driver, () -> -limelight.getAngleX()));  
     B_Driver.whileHeld(new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight,d_joystick,camHandler));
     // Y_Operator.whileHeld(new ManualFeeder(feeder));
