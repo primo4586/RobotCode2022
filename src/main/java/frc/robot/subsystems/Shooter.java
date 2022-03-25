@@ -19,7 +19,6 @@ public class Shooter extends SubsystemBase {
   private WPI_TalonFX m_shooter;
   private PrimoTab tab;
   private double pidSetpoint;
-  private double changeShooter =1;
 
   
   public Shooter() {
@@ -28,8 +27,8 @@ public class Shooter extends SubsystemBase {
     this.m_shooter.setInverted(true);
     this.setConfig(ShooterConstants.SHOOTER_CONFIG);
 
-    this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
-    tab.addEntry("Speed");
+    // this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
+    // tab.addEntry("Speed");
     this.pidSetpoint = 0;
   }
 
@@ -38,12 +37,7 @@ public class Shooter extends SubsystemBase {
     this.m_shooter.set(Constants.ShooterConstants.ShooterSpeed);
   }
 
-  public void increaseShooterSpeed() {
-    this.changeShooter*=1.05;
-  }
-  public void decreaseShooterSpeed(){
-    this.changeShooter*=0.95;
-  }
+ 
 
   public void setConfig(PIDConfig config) {
     this.m_shooter.config_kP(0, config.getKp());

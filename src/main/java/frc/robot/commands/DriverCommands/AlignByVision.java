@@ -24,6 +24,7 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
   // Kept notifier just in case it's actually required to be running at a different thread and frequency then the normal command scheduler
   Notifier notifier;
   private Limelight limelight;
+  
 
   public AlignByVision(Driver driver, Limelight limelight) {
     this.driver = driver;
@@ -70,7 +71,7 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
     setPoint = limelight.isVisible() ? limelight.getAngleX() : 0;
 
     double power = controller.calculate(0,setPoint);
-    driver.getTab().addEntry("power").forceSetDouble(power);
+    // driver.getTab().addEntry("power").forceSetDouble(power);
 
     driver.driveVelocity(-power, power);
   }

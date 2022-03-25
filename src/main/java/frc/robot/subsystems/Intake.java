@@ -21,12 +21,10 @@ public class Intake extends SubsystemBase {
   private Servo servoFeeder;
   private boolean stateOfJoint;
   
-  private PrimoTab tab;
 
   public Intake() {
     this.m_roller = new WPI_TalonSRX(Constants.IntakeConstants.rollerPort);
     this.p_joint = new Solenoid(Constants.Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, Constants.Pneumatics.intakeJointPort);
-    this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Feeder");
     // this.servoFeeder = new Servo(0);
     this.stateOfJoint = true;
   }

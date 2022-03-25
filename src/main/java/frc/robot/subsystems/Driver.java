@@ -37,7 +37,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     private PigeonIMU gyro;
     private WPI_TalonSRX gyroTalon;
     
-    private PrimoTab tab;
 
     private boolean isForward; 
     
@@ -79,11 +78,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     this.gyroTalon = new WPI_TalonSRX(Constants.DriverConstants.gyroPorts);
     this.gyro = new PigeonIMU(gyroTalon);
     this.gyro.configFactoryDefault();
-
-    this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Driver");
-    tab.addEntry("FollowPath Right Setpoint");
-    tab.addEntry("FollowPath Left Setpoint");
-
     primoOdometry = new PrimoDifferentialDriveOdometry(this, ()-> resetEncoders());
   }
 
@@ -205,11 +199,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
   public double getRightDistance() {
     return getRightPositionInMeters();
   }
-
-  public PrimoTab getTab() {
-      return tab;
-  }
-
+  
   @Override
   public void periodic() {
     /*

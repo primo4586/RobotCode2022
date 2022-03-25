@@ -47,8 +47,6 @@ public class Climb extends SubsystemBase {
     this.sPistonB = new DigitalInput(ClimbConstants.sPistonBport);
 
 
-    this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Climb");
-
     this.isEnabled = false;
 
     // this.brake = brakeSolenoid.get();
