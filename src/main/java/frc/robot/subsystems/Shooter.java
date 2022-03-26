@@ -71,8 +71,8 @@ public class Shooter extends SubsystemBase {
   
   public boolean isWithInRange(double distance) {
     return distance < ShooterConstants.MAX_SHOOTING_RANGE && distance >= ShooterConstants.MIN_SHOOTING_RANGE;
-  }        
-
+  }   
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

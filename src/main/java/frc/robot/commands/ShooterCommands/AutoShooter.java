@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 
 import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.CameraHandler;
 import frc.robot.Constants.ShooterConstants;
@@ -28,7 +29,6 @@ public class AutoShooter extends CommandBase {
   private Limelight limelight;
   private double speed;
   private DoubleSupplier shooterSpeed;
-  private DoubleSupplier feederSpeed;
   private PrimoTab shooterTab;
   private CameraHandler camHandler;
   private BooleanSupplier isAligned;
@@ -59,7 +59,7 @@ public class AutoShooter extends CommandBase {
     this.limelight = limelight;
     this.intake = intake;
     this.feeder = feeder;
-    
+
 
     this.shooterTab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
     this.isAligned = isAligned;
@@ -73,12 +73,12 @@ public class AutoShooter extends CommandBase {
 
 
    public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
-      DoubleSupplier speed, DoubleSupplier feederSpeed) {
+      DoubleSupplier speed) {
     this.shooter = shooter;
-    this.feederSpeed = feederSpeed;
     this.piston = pistonForFeeder;
     this.intake = intake;
     this.feeder = feeder;
+    this.isAligned = () -> true;
     this.limelight = null;
     this.shooterSpeed = speed;
     this.shooterTab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
@@ -96,12 +96,17 @@ public class AutoShooter extends CommandBase {
    
     if(limelight != null)
         this.speed = InterpolateUtil.interpolate(ShooterConstants.SHOOTER_VISION_MAP, limelight.getAverageDistance());
+    else
+      speed = shooterSpeed.getAsDouble();        
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(limelight != null)
+        this.speed = InterpolateUtil.interpolate(ShooterConstants.SHOOTER_VISION_MAP, limelight.getAverageDistance());
     feeder.setVoltage(5);
+
 
     shooter.setVelocity(speed);
     shooterTab.addEntry("Shooter Velocity").forceSetNumber(shooter.getShooterVelocity());

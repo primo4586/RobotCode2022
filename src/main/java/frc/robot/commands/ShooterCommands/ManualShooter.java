@@ -1,6 +1,7 @@
 package frc.robot.commands.ShooterCommands;
 
 import PrimoLib.PrimoCommandBase;
+import PrimoLib.PrimoShuffleboard;
 import PrimoLib.leds.LEDColor;
 import PrimoLib.leds.LEDs;
 import PrimoLib.leds.LEDEffects.GradientEffect;
@@ -28,7 +29,7 @@ public class ManualShooter extends PrimoCommandBase {
     this.shooterSpeed = shooterSpeed;
     addRequirements(shooter);
 
-    speed = this.shooter.getTab().addEntry("Speed");
+    speed = PrimoShuffleboard.getInstance().getPrimoTab("Shooter").addEntry("Speed");
     // Kp = this.shooter.getTab().addEntry("Kp");
     // Ki = this.shooter.getTab().addEntry("Ki");
     // Kd = this.shooter.getTab().addEntry("Kd");

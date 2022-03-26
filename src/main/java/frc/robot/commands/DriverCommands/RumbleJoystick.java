@@ -4,6 +4,8 @@
 
 package frc.robot.commands.DriverCommands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -11,9 +13,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class RumbleJoystick extends CommandBase {
 
   private Joystick driverController;
+  private DoubleSupplier intensity;
   /** Creates a new RumbleJoystick. */
-  public RumbleJoystick(Joystick driverController) {
+  public RumbleJoystick(Joystick driverController, DoubleSupplier intensity) {
     this.driverController = driverController;
+    this.intensity = intensity;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -24,8 +28,8 @@ public class RumbleJoystick extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driverController.setRumble(RumbleType.kLeftRumble, 1);
-    driverController.setRumble(RumbleType.kRightRumble, 1);
+    driverController.setRumble(RumbleType.kLeftRumble, intensity.getAsDouble());
+    driverController.setRumble(RumbleType.kRightRumble, intensity.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

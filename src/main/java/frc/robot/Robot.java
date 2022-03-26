@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
     limelight = new Limelight();
     // That's literally all it takes
     // [https://docs.wpilib.org/en/stable/docs/software/telemetry/datalog.html#standard-data-logging-using-datalogmanager]
-    DataLogManager.start();  
+    // DataLogManager.start();  
 
     robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder,limelight);
     autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder,limelight);
@@ -99,7 +99,7 @@ public class Robot extends TimedRobot {
     buffer = new AddressableLEDBuffer(200);
     leds.setLength(buffer.getLength());
     for(int i = 0; i < buffer.getLength(); i++) {
-      buffer.setRGB(i, 250, 209, 0);
+      buffer.setRGB(i, 0, 0, 255);
     }
     leds.setData(buffer);
     leds.start();
@@ -129,11 +129,11 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     // Shuffleboard.update();
     limelight.update();
-    PrimoShuffleboard.getInstance().updateDebug(driver, shooter, climb, feeder, intake, pistonForFeeder,limelight);
+    // PrimoShuffleboard.getInstance().updateDebug(driver, shooter, climb, feeder, intake, pistonForFeeder,limelight);
     // Separated the debug tabs from the main tabs, Maybe we could make it a toggleable thing through a debug "enable/disable" entry, or just comment out the call for the debug function
     PrimoShuffleboard.getInstance().updateCompetiton(driver, shooter, climb, feeder, intake, pistonForFeeder, limelight);
     for(int i = 0; i < buffer.getLength(); i++) {
-      buffer.setRGB(i, 250, 209, 0);
+      buffer.setRGB(i, 0, 0, 255);
     }
     leds.setData(buffer);
   }

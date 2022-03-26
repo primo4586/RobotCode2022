@@ -33,7 +33,7 @@ public class AlignAndShoot extends ParallelCommandGroup {
     ParallelCommandGroup alignAndShoot = new ParallelCommandGroup(new AlignByVision(driver, limelight),
         new AutoShooter(shooter, piston, intake, feeder, limelight, camHandler,() -> Math.abs(limelight.getAngleX()) <= 2));
         
-    addCommands(new ConditionalCommand(alignAndShoot, new RumbleJoystick(joystick), () -> shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()));    
+    addCommands(new ConditionalCommand(alignAndShoot, new RumbleJoystick(joystick,() -> 1), () -> shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()));    
   }
 
   public AlignAndShoot(Driver driver, Shooter shooter, Intake intake, Feeder feeder, PistonForFeeder piston, Limelight limelight) {

@@ -4,6 +4,7 @@
 
 package frc.robot.commands.ShooterCommands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import PrimoLib.PrimoShuffleboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ShooterConstants;
@@ -17,7 +18,7 @@ public class ManualFeeder extends CommandBase {
   public ManualFeeder(Feeder feeder) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.feeder = feeder;
-    this.feederSpeed = this.feeder.getTab().addEntry("Voltage");
+    this.feederSpeed = PrimoShuffleboard.getInstance().getPrimoTab("Feeder").addEntry("Voltage");
     addRequirements(feeder);
   }
 

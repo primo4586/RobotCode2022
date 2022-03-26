@@ -9,11 +9,16 @@ import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.ClimbCommands.ManualClawA;
 import frc.robot.commands.ClimbCommands.ManualClawB;
@@ -22,6 +27,7 @@ import frc.robot.commands.ClimbCommands.ReleaseClaw;
 import frc.robot.commands.DriverCommands.AlignAndShoot;
 import frc.robot.commands.DriverCommands.AlignByVision;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
+import frc.robot.commands.DriverCommands.RumbleJoystick;
 import frc.robot.commands.IntakeCommands.ManualJoint;
 import frc.robot.commands.IntakeCommands.ManualRoller;
 import frc.robot.commands.IntakeCommands.TogglePistonAndRoller;
@@ -128,24 +134,30 @@ public class RobotContainer {
     // driver:
     driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(XboxController.Axis.kLeftY.value),
         () -> d_joystick.getRawAxis(XboxController.Axis.kRightX.value),
-        () -> d_joystick.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0,
+        () -> false,
         () -> d_joystick.getRawAxis(XboxController.Axis.kRightTrigger.value) > 0));
 
     this.RB_Driver.whenPressed(new InstantCommand(() -> {
       driver.changeDirection();
       camHandler.switchCamera();
+      if(camHandler.getIndex() == 1)
+          driver.setForward(false);
+      else
+          driver.setForward(true);    
     }, driver));
     
     // shooter:
     // this.A_Driver.whileHeld(new ManualShooter(shooter, () -> 0.0).alongWith(new ManualFeeder(feeder)));
-    this.A_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, () ->PrimoShuffleboard.getInstance().getPrimoTab("Shooter").addEntry("Speed").getDouble(0),
-    () -> PrimoShuffleboard.getInstance().getPrimoTab("Feeder").addEntry("Voltage").getDouble(5)));
+    // this.A_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, () ->PrimoShuffleboard.getInstance().getPrimoTab("Shooter").addEntry("Speed").getDouble(0),
+    // () -> PrimoShuffleboard.getInstance().getPrimoTab("Feeder").addEntry("Voltage").getDouble(5)));
     // this.A_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, 13000));
-    // this.B_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
+    this.A_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
     Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> 13000),new ManualFeeder(feeder)));
-    X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight,() -> Math.abs(limelight.getAngleX()) <= 1));
+    B_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight,() -> true));
+    
     // B_Driver.whileHeld(new AlignByVision(driver, () -> -limelight.getAngleX()));  
-    B_Driver.whileHeld(new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight,d_joystick,camHandler));
+    // X_Driver.whileHeld(new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight,d_joystick,camHandler));
+    X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, () -> ShooterConstants.ShooterSpeed));
     // Y_Operator.whileHeld(new ManualFeeder(feeder));
     
 
@@ -168,7 +180,12 @@ public class RobotContainer {
     X_Operator.whenPressed(new ReleaseClaw(climb, 3)); // open level 3
 
     // A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
+    Trigger axisTrigger = new Trigger(() -> d_joystick.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0.3);
+    ParallelCommandGroup rumble = new ParallelCommandGroup(new RumbleJoystick(d_joystick, () -> limelight.getDistance() * 0.1),
+    new ConditionalCommand(new RumbleJoystick(o_joystick, () -> 1), new InstantCommand(), () -> !limelight.isVisible()));
 
+    axisTrigger.whileActiveOnce(new SequentialCommandGroup(rumble.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()), 
+      new AutoShooter(shooter, pistonForFeeder, intake, feeder, limelight, () -> true)));
   }
 
   private void buildCameras() {
@@ -177,6 +194,11 @@ public class RobotContainer {
 
     this.camHandler = new CameraHandler(forward, backward);
     PrimoShuffleboard.getInstance().updateCameras(camHandler);
+  }
+
+  public void updateRumble() {
+
+  
   }
 
   public CameraHandler getCamHandler() {
