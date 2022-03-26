@@ -181,11 +181,14 @@ public class RobotContainer {
 
     // A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
     Trigger axisTrigger = new Trigger(() -> d_joystick.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0.3);
+
     ParallelCommandGroup rumble = new ParallelCommandGroup(new RumbleJoystick(d_joystick, () -> limelight.getDistance() * 0.1),
     new ConditionalCommand(new RumbleJoystick(o_joystick, () -> 1), new InstantCommand(), () -> !limelight.isVisible()));
 
     axisTrigger.whileActiveOnce(new SequentialCommandGroup(rumble.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()), 
       new AutoShooter(shooter, pistonForFeeder, intake, feeder, limelight, () -> true)));
+    // axisTrigger.whileActiveOnce(new SequentialCommandGroup(rumble.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()),new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight)));
+  
   }
 
   private void buildCameras() {

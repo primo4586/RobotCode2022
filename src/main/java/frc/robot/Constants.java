@@ -57,7 +57,7 @@ public final class Constants {
                 .put(1.2, 13800)
                 .put(1.4, 12800)
                 .put(1.6, 12800)
-                .put(1.8, 12800)
+                .put(1.8, 12900)
                 .put(2, 13200)
                 .put(2.1, 13300);
 
