@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
     limelight = new Limelight();
     // That's literally all it takes
     // [https://docs.wpilib.org/en/stable/docs/software/telemetry/datalog.html#standard-data-logging-using-datalogmanager]
-    // DataLogManager.start();  [Re-enable this when we check it at practice matches]
+    DataLogManager.start();  
 
     robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder,limelight);
     autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder,limelight);
@@ -100,6 +100,7 @@ public class Robot extends TimedRobot {
     leds.setLength(buffer.getLength());
     for(int i = 0; i < buffer.getLength(); i++) {
       buffer.setRGB(i, 0, 0, 255);
+      
     }
     leds.setData(buffer);
     leds.start();

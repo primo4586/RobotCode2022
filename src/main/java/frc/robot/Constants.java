@@ -112,7 +112,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final double rollerSpeed = 0.75
+        public static final double rollerSpeed = 0.8
         ; // 0.6
         public static final int rollerPort = 5;
     }

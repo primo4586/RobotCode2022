@@ -3,6 +3,9 @@ package PrimoLib;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -91,11 +94,11 @@ public class PrimoShuffleboard {
 
         PrimoTab climbTab = getPrimoTab("Climb");
         // Re-enable this when we check it at practice matches
-        // PrimoTab shooterTab = getPrimoTab("Shooter");
-        // shooterTab.addEntry("ShooterVelocity").forceSetNumber(shooter.getShooterVelocity());
-        // shooterTab.addEntry("ShooterPID").forceSetNumber(shooter.getPidSetpoint());
-        // PrimoTab debugTab = getPrimoTab("Debug");
-        // debugTab.addEntry("Battery").forceSetNumber(RobotController.getBatteryVoltage());
+        PrimoTab shooterTab = getPrimoTab("Shooter");
+        shooterTab.addEntry("ShooterVelocity").setNumber(shooter.getShooterVelocity());
+        shooterTab.addEntry("ShooterPID").setNumber(shooter.getPidSetpoint());
+        PrimoTab debugTab = getPrimoTab("Debug");
+        debugTab.addEntry("Battery").setNumber(RobotController.getBatteryVoltage());
 
         climbTab.addEntry("Climb Enabled").forceSetBoolean(climb.isEnabled());
     }

@@ -13,7 +13,7 @@ public class LimelightConstants {
 
     // Camera's height realtive to the robot's bottom, and Target's height.
     public static final double CAMERA_HEIGHT = 0.70;
-    public static final double TARGET_HEIGHT = 2.52;
+    public static final double TARGET_HEIGHT = 2.59;
 
     public static final double TARGET_NOT_VISIBLE = -999;
 

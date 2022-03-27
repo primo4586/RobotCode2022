@@ -42,7 +42,7 @@ public class JointAndRoller extends CommandBase {
   @Override
   public void execute() {
 
-    intake.r_control(IntakeConstants.rollerSpeed);
+    intake.setVoltage(13 * IntakeConstants.rollerSpeed);
     // if(intake.isJointOpen())  
     //   this.intake.r_control(Constants.IntakeConstants.rollerSpeed);
     // System.out.println("Command state: " + intake.isJointOpen());

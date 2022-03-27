@@ -176,8 +176,10 @@ public class RobotContainer {
     RB_Operator.whenPressed(new ManualClawA(climb));
     LB_Operator.whenPressed(new ManualClawB(climb));
 
-    B_Operator.whileHeld(new ReleaseClaw(climb, 2)); // open level 2
-    X_Operator.whenPressed(new ReleaseClaw(climb, 3)); // open level 3
+    // B_Operator.whileHeld(new ReleaseClaw(climb, 2)); // open level 2
+    B_Operator.whenPressed(new ManualClawA(climb));
+    // X_Operator.whenPressed(new ReleaseClaw(climb, 3)); // open level 3
+    X_Operator.whenPressed(new ManualClawB(climb));
 
     // A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
     Trigger axisTrigger = new Trigger(() -> d_joystick.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0.3);
