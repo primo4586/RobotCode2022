@@ -19,6 +19,9 @@ public class Climb extends SubsystemBase {
   private Solenoid solenoidA; // Side A
   private Solenoid solenoidB; // Side B
 
+  private boolean aSideState;
+  private boolean bSideState;
+
   // piston sensors:
   private DigitalInput sPistonA; // Right A
   private DigitalInput sPistonB; // Left B
@@ -48,9 +51,19 @@ public class Climb extends SubsystemBase {
 
 
     this.isEnabled = false;
+    this.aSideState = ClimbConstants.PISTON_LOCKED;
+    this.bSideState = ClimbConstants.PISTON_LOCKED;
 
     // this.brake = brakeSolenoid.get();
     // this.m_climbleft.follow(this.m_climbRight);
+  }
+
+  public boolean getASideState() {
+    return aSideState;
+  }
+
+  public boolean getBSideState() {
+    return bSideState;
   }
 
   public void c_control(double speed) {
@@ -76,7 +89,7 @@ public class Climb extends SubsystemBase {
     // this.setSolenoidLevel2or4(ClimbConstants.PISTON_RELEASE);
     // this.setSolenoidLevel3(ClimbConstants.PISTON_RELEASE);
 
-    PrimoShuffleboard.getInstance().selectTab("Climb");
+    // PrimoShuffleboard.getInstance().selectTab("Climb");
     this.isEnabled = true;
     this.solenoidA.set(Constants.ClimbConstants.PISTON_LOCKED);
     this.solenoidA.set(Constants.ClimbConstants.PISTON_LOCKED);
@@ -87,6 +100,7 @@ public class Climb extends SubsystemBase {
      * sets the first to climb piston state
      */
     this.solenoidA.set(state);
+    aSideState = state;
   }
 
   public void setSolenoidLevel3(boolean state) {
@@ -94,6 +108,7 @@ public class Climb extends SubsystemBase {
      * sets the second to climb piston state
      */
     this.solenoidB.set(state);
+    bSideState = state;
   }
 
   /* TO-DO: explain logic in comments, why do you need three functions? */

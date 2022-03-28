@@ -51,7 +51,6 @@ public class FollowPath extends CommandBase implements Runnable{
 
 
     addRequirements(driver);
-    tab = PrimoShuffleboard.getInstance().getPrimoTab("Driver");
   }
 
 
@@ -106,8 +105,6 @@ public class FollowPath extends CommandBase implements Runnable{
 
     // Translates the speeds to left/right motor speeds
     this.wheelSpeeds = Constants.AutoConstants.KINEMATICS.toWheelSpeeds(speeds);
-    tab.addEntry("FollowPath Right Setpoint").setNumber(wheelSpeeds.rightMetersPerSecond);
-    tab.addEntry("FollowPath Left Setpoint").setNumber(wheelSpeeds.leftMetersPerSecond);
     
     // TODO: Find out the reason for this and fix it properly, for some reason it follows paths backwards?
     driver.driveVelocity(-wheelSpeeds.rightMetersPerSecond, -wheelSpeeds.leftMetersPerSecond);  

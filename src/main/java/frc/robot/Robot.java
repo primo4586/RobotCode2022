@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
     limelight = new Limelight();
     // That's literally all it takes
     // [https://docs.wpilib.org/en/stable/docs/software/telemetry/datalog.html#standard-data-logging-using-datalogmanager]
-    DataLogManager.start();  
+    // DataLogManager.start();  
 
     robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder,limelight);
     autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder,limelight);

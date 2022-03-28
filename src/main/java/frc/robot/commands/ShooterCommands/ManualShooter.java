@@ -29,7 +29,7 @@ public class ManualShooter extends PrimoCommandBase {
     this.shooterSpeed = shooterSpeed;
     addRequirements(shooter);
 
-    speed = PrimoShuffleboard.getInstance().getPrimoTab("Shooter").addEntry("Speed");
+    // speed = PrimoShuffleboard.getInstance().getPrimoTab("Shooter").addEntry("Speed");
     // Kp = this.shooter.getTab().addEntry("Kp");
     // Ki = this.shooter.getTab().addEntry("Ki");
     // Kd = this.shooter.getTab().addEntry("Kd");
@@ -47,10 +47,10 @@ public class ManualShooter extends PrimoCommandBase {
   @Override
   public void execute() {
     // shooter.setConfig(new PIDConfig(Kp.getDouble(0), Ki.getDouble(0), Kd.getDouble(0), Kf.getDouble(0)));
-    // this.shooter.setVelocity(shooterSpeed.getAsDouble());
+    this.shooter.setVelocity(shooterSpeed.getAsDouble());
     // System.out.println("Shooter Velocity: " + shooter.getVelocity());
     
-    this.shooter.setVelocity(speed.getDouble(0));    
+    // this.shooter.setVelocity(speed.getDouble(0));    
   }
 
   @Override

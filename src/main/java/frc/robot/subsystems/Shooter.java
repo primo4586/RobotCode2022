@@ -17,7 +17,6 @@ import frc.robot.Constants.ShooterConstants;
 public class Shooter extends SubsystemBase {
   //create the shooter motor
   private WPI_TalonFX m_shooter;
-  private PrimoTab tab;
   private double pidSetpoint;
 
   
@@ -60,9 +59,6 @@ public class Shooter extends SubsystemBase {
       return pidSetpoint;
   }
 
-  public PrimoTab getTab() {
-      return tab;
-  }
 
   public boolean isReadyToShoot() {
     return pidSetpoint != 0 && Math.abs(m_shooter.getSelectedSensorVelocity() - pidSetpoint) <= ShooterConstants.READY_SPEED_TOLERANCE;
@@ -72,6 +68,7 @@ public class Shooter extends SubsystemBase {
   public boolean isWithInRange(double distance) {
     return distance < ShooterConstants.MAX_SHOOTING_RANGE && distance >= ShooterConstants.MIN_SHOOTING_RANGE;
   }   
+
   
   @Override
   public void periodic() {

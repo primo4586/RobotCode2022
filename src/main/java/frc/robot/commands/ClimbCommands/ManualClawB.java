@@ -16,6 +16,7 @@ public class ManualClawB extends CommandBase {
   public ManualClawB(Climb climb) {
     addRequirements(climb);
     this.climb = climb;
+    this.state = climb.getBSideState();
 
     // Use addRequirements() here to declare subsystem dependencies.
   }

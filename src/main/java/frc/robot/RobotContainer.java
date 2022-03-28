@@ -28,9 +28,11 @@ import frc.robot.commands.DriverCommands.AlignAndShoot;
 import frc.robot.commands.DriverCommands.AlignByVision;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
 import frc.robot.commands.DriverCommands.RumbleJoystick;
+import frc.robot.commands.DriverCommands.RumbleJoystick2;
 import frc.robot.commands.IntakeCommands.ManualJoint;
 import frc.robot.commands.IntakeCommands.ManualRoller;
 import frc.robot.commands.IntakeCommands.TogglePistonAndRoller;
+import frc.robot.commands.ShooterCommands.AngleAutoShooter;
 import frc.robot.commands.ShooterCommands.AutoShooter;
 import frc.robot.commands.ShooterCommands.ManualFeeder;
 import frc.robot.commands.ShooterCommands.ManualShooter;
@@ -66,6 +68,7 @@ public class RobotContainer {
   private JoystickButton LB_Driver; // open and roolig roller
   private JoystickButton X_Driver; // Auto Shoot
   private JoystickButton A_Driver; // open piston and spin roller
+  private JoystickButton START_Driver;
 
   // operator buttons:
   private JoystickButton START_Operator; // Enable/Disable Climb Control
@@ -119,6 +122,7 @@ public class RobotContainer {
     this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
     this.X_Driver = new JoystickButton(d_joystick, XboxController.Button.kX.value);
     this.A_Driver = new JoystickButton(d_joystick, XboxController.Button.kA.value);
+    this.START_Driver = new JoystickButton(d_joystick, XboxController.Button.kStart.value);
     this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
 
     this.START_Operator = new JoystickButton(o_joystick, XboxController.Button.kStart.value);
@@ -151,13 +155,13 @@ public class RobotContainer {
     // this.A_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, () ->PrimoShuffleboard.getInstance().getPrimoTab("Shooter").addEntry("Speed").getDouble(0),
     // () -> PrimoShuffleboard.getInstance().getPrimoTab("Feeder").addEntry("Voltage").getDouble(5)));
     // this.A_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, 13000));
-    this.A_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
+    // this.A_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
     Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> 13000),new ManualFeeder(feeder)));
     B_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight,() -> true));
     
     // B_Driver.whileHeld(new AlignByVision(driver, () -> -limelight.getAngleX()));  
     // X_Driver.whileHeld(new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight,d_joystick,camHandler));
-    X_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, () -> ShooterConstants.ShooterSpeed));
+    A_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, () -> ShooterConstants.ShooterSpeed));
     // Y_Operator.whileHeld(new ManualFeeder(feeder));
     
 
@@ -186,11 +190,17 @@ public class RobotContainer {
 
     ParallelCommandGroup rumble = new ParallelCommandGroup(new RumbleJoystick(d_joystick, () -> limelight.getDistance() * 0.1),
     new ConditionalCommand(new RumbleJoystick(o_joystick, () -> 1), new InstantCommand(), () -> !limelight.isVisible()));
+    
+    ParallelCommandGroup rumble2 = new ParallelCommandGroup(new RumbleJoystick2(d_joystick, () -> limelight.getDistance() * 0.1),
+    new ConditionalCommand(new RumbleJoystick2(o_joystick, () -> 1), new InstantCommand(), () -> !limelight.isVisible()));
 
-    axisTrigger.whileActiveOnce(new SequentialCommandGroup(rumble.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()), 
+
+    X_Driver.whileHeld(new SequentialCommandGroup(rumble.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()), 
       new AutoShooter(shooter, pistonForFeeder, intake, feeder, limelight, () -> true)));
     // axisTrigger.whileActiveOnce(new SequentialCommandGroup(rumble.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()),new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight)));
   
+    axisTrigger.whileActiveOnce(new SequentialCommandGroup(rumble2.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()),new AngleAutoShooter(shooter, pistonForFeeder, intake, feeder, limelight, () -> true)));
+    // START_Driver.whileHeld(new AngleAutoShooter(shooter, pistonForFeeder, intake, feeder, limelight, () -> true));
   }
 
   private void buildCameras() {

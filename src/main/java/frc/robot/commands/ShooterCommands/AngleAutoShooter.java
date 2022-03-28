@@ -20,7 +20,7 @@ import frc.robot.subsystems.Shooter;
 import vision.InterpolateUtil;
 import vision.Limelight;
 
-public class AutoShooter extends CommandBase {
+public class AngleAutoShooter extends CommandBase {
   /** Creates a new AutoShooter. */
   private Shooter shooter;
   private PistonForFeeder piston;
@@ -33,7 +33,7 @@ public class AutoShooter extends CommandBase {
   private BooleanSupplier isAligned;
   private int prevCamIndex;
 
-  public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
+  public AngleAutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
   Limelight limelight, CameraHandler camHandler, BooleanSupplier isAligned) {
     this.shooter = shooter;
     this.piston = pistonForFeeder;
@@ -50,7 +50,7 @@ public class AutoShooter extends CommandBase {
     this.isAligned = isAligned;
   }
 
-  public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
+  public AngleAutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
       Limelight limelight, BooleanSupplier isAligned) {
     this.shooter = shooter;
     this.piston = pistonForFeeder;
@@ -69,7 +69,7 @@ public class AutoShooter extends CommandBase {
   }
 
 
-   public AutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
+   public AngleAutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
       DoubleSupplier speed) {
     this.shooter = shooter;
     this.piston = pistonForFeeder;
@@ -105,7 +105,7 @@ public class AutoShooter extends CommandBase {
 
 
     shooter.setVelocity(speed);
-    if (shooter.isReadyToShoot() && isAligned.getAsBoolean()) {
+    if (shooter.isReadyToShoot() && (Math.abs(limelight.getAngleX()) <= 5.5)) {
       piston.setSolenoid(true);
       intake.r_control(0.3);
     } 

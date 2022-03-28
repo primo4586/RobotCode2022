@@ -6,6 +6,7 @@ package frc.robot.commands.DriverCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Driver;
+import frc.robot.subsystems.Shooter;
 import vision.Limelight;
 
 public class DriveUntilLimelightDistance extends CommandBase {
