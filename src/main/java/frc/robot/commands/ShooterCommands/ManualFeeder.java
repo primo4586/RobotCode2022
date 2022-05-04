@@ -3,29 +3,22 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.ShooterCommands;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import PrimoLib.PrimoShuffleboard;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Feeder;
 
 public class ManualFeeder extends CommandBase {
   /** Creates a new ManualFeeder. */
   private Feeder feeder;
-  private NetworkTableEntry feederSpeed;
   
   public ManualFeeder(Feeder feeder) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.feeder = feeder;
-    // this.feederSpeed = PrimoShuffleboard.getInstance().getPrimoTab("Feeder").addEntry("Voltage");
     addRequirements(feeder);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //SmartDashboard.putNumber("Feeder Speed", 0);
 
   }
 

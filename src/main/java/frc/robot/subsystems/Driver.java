@@ -12,10 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
-import PrimoLib.PrimoShuffleboard;
-import PrimoLib.PrimoTab;
 import autonomous.DifferentialDriveData;
-import autonomous.PIDConfig;
 import autonomous.PrimoDifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;

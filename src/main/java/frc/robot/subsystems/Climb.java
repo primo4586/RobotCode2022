@@ -2,8 +2,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import PrimoLib.PrimoShuffleboard;
-import PrimoLib.PrimoTab;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -26,24 +24,18 @@ public class Climb extends SubsystemBase {
   private DigitalInput sPistonA; // Right A
   private DigitalInput sPistonB; // Left B
 
-
-  private PrimoTab tab;
   private boolean isEnabled;
 
   public Climb() {
     this.m_climbRight = new WPI_TalonFX(ClimbConstants.rightMotorPort);
     this.m_climbleft = new WPI_TalonFX(ClimbConstants.leftMotorPort);
-
     this.m_climbleft.setInverted(true);
 
-    // this.compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
 
     this.solenoidA = new Solenoid(Constants.Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM,
         Constants.Pneumatics.climbSolenoidA);
     this.solenoidB = new Solenoid(Constants.Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM,
         Constants.Pneumatics.climbSolenoidB);
-
-    // this.brakeSolenoid = new Solenoid(Pneumatics.pcmPort, PneumaticsModuleType.CTREPCM, 0);
 
 
     this.sPistonA = new DigitalInput(ClimbConstants.sPistonAport);
@@ -53,9 +45,6 @@ public class Climb extends SubsystemBase {
     this.isEnabled = false;
     this.aSideState = ClimbConstants.PISTON_LOCKED;
     this.bSideState = ClimbConstants.PISTON_LOCKED;
-
-    // this.brake = brakeSolenoid.get();
-    // this.m_climbleft.follow(this.m_climbRight);
   }
 
   public boolean getASideState() {
@@ -86,10 +75,6 @@ public class Climb extends SubsystemBase {
   }
 
   public void enableClimb() {
-    // this.setSolenoidLevel2or4(ClimbConstants.PISTON_RELEASE);
-    // this.setSolenoidLevel3(ClimbConstants.PISTON_RELEASE);
-
-    // PrimoShuffleboard.getInstance().selectTab("Climb");
     this.isEnabled = true;
     this.solenoidA.set(Constants.ClimbConstants.PISTON_LOCKED);
     this.solenoidA.set(Constants.ClimbConstants.PISTON_LOCKED);
@@ -111,7 +96,6 @@ public class Climb extends SubsystemBase {
     bSideState = state;
   }
 
-  /* TO-DO: explain logic in comments, why do you need three functions? */
 
   public boolean isClawLockOn2or4() {
     return !this.sPistonA.get();

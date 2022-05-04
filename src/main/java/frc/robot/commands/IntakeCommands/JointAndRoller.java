@@ -4,27 +4,17 @@
 
 package frc.robot.commands.IntakeCommands;
 
-import java.util.concurrent.Delayed;
-import java.util.function.BooleanSupplier;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.Intake;
 
 public class JointAndRoller extends CommandBase {
   /** Creates a new JointAndRoller. */
   private Intake intake;
-  private boolean state;
-  private Timer timer;
-  private BooleanSupplier shouldRoll;    
 
   public JointAndRoller(Intake intake) {
     this.intake = intake;
-    this.timer = new Timer();
-    // this.shouldRoll = shouldRoll;
-    // this.isFinished = false;
     addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -33,7 +23,6 @@ public class JointAndRoller extends CommandBase {
   @Override
   public void initialize() {
     System.out.println("Start");
-    // this.state = intake.isJointOpen();
     System.out.println("State: " + intake.isJointOpen());
     intake.setJoint(!intake.isJointOpen());
   }
@@ -43,10 +32,6 @@ public class JointAndRoller extends CommandBase {
   public void execute() {
 
     intake.setVoltage(13 * IntakeConstants.rollerSpeed);
-    // if(intake.isJointOpen())  
-    //   this.intake.r_control(Constants.IntakeConstants.rollerSpeed);
-    // System.out.println("Command state: " + intake.isJointOpen());
-
   }
 
   // Called once the command ends or is interrupted.

@@ -7,9 +7,6 @@ package frc.robot.commands.ShooterCommands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import PrimoLib.PrimoShuffleboard;
-import PrimoLib.PrimoTab;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.CameraHandler;
 import frc.robot.Constants.ShooterConstants;

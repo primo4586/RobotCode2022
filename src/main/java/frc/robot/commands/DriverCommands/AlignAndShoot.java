@@ -4,15 +4,11 @@
 
 package frc.robot.commands.DriverCommands;
 
-import java.util.function.DoubleSupplier;
-
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.CameraHandler;
 import frc.robot.commands.ShooterCommands.AutoShooter;
 import frc.robot.subsystems.Driver;

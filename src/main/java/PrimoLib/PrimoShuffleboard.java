@@ -3,17 +3,9 @@ package PrimoLib;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.DoubleLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.CameraHandler;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Driver;
 import frc.robot.subsystems.Feeder;
@@ -47,7 +39,6 @@ public class PrimoShuffleboard {
         PrimoTab climbTab = getPrimoTab("Climb");
         PrimoTab driverTab = getPrimoTab("Driver");
         PrimoTab shooterTab = getPrimoTab("Shooter");
-        PrimoTab feederTab = getPrimoTab("Feeder");
         PrimoTab intakeTab = getPrimoTab("Intake");
 
 
@@ -93,14 +84,6 @@ public class PrimoShuffleboard {
         compTab.addEntry("Is Visible").forceSetBoolean(limelight.isVisible());
         compTab.addEntry("Is In Range").forceSetBoolean(shooter.isWithInRange(limelight.getDistance()));
         compTab.addEntry("Climb Enabled").forceSetBoolean(climb.isEnabled());
-        
-        // // Re-enable this when we check it at practice matches
-        // NetworkTable table = NetworkTableInstance.getDefault().getTable("Debug");
-
-        // // .addEntry("ShooterVelocity").setNumber(shooter.getShooterVelocity());
-        // table.getEntry("ShooterVel").setNumber(shooter.getShooterVelocity());
-        // table.getEntry("ShooterPID").setNumber(shooter.getPidSetpoint());
-        // table.getEntry("Battery").setNumber(RobotController.getBatteryVoltage());
     }
 
     // Adds or gets a new PrimoTab to avoid adding a tab that already exists and

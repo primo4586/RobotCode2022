@@ -1,10 +1,7 @@
 package PrimoLib.leds;
 
-import java.awt.Color;
 
-import javax.sound.midi.Soundbank;
 
-import PrimoLib.leds.LEDEffects.FlashColor;
 import PrimoLib.leds.LEDEffects.LEDEffect;
 import PrimoLib.leds.LEDEffects.StaticColor;
 import edu.wpi.first.wpilibj.AddressableLED;

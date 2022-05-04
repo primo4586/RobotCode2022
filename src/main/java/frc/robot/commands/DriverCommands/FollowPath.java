@@ -4,8 +4,6 @@
 
 package frc.robot.commands.DriverCommands;
 
-import PrimoLib.PrimoShuffleboard;
-import PrimoLib.PrimoTab;
 import autonomous.PathHandler;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -28,7 +26,6 @@ public class FollowPath extends CommandBase implements Runnable{
   private Trajectory.State goal;
   private ChassisSpeeds speeds;
   private DifferentialDriveWheelSpeeds wheelSpeeds;
-  private PrimoTab tab;
 
   /**
    * 
@@ -81,7 +78,6 @@ public class FollowPath extends CommandBase implements Runnable{
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("Finished");
     runner.stop();
     runner.close();
     rController.setEnabled(false);

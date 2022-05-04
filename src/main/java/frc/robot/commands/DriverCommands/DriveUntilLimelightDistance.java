@@ -6,7 +6,6 @@ package frc.robot.commands.DriverCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Driver;
-import frc.robot.subsystems.Shooter;
 import vision.Limelight;
 
 public class DriveUntilLimelightDistance extends CommandBase {
@@ -14,6 +13,7 @@ public class DriveUntilLimelightDistance extends CommandBase {
   private Driver driver;
   private Limelight limelight;
 
+  // TODO: Actually using the speed & tolerance values in the code itself
   private double speed, targetDistance, tolerance;
 
   

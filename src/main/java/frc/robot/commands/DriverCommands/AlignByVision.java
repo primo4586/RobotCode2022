@@ -1,20 +1,13 @@
 package frc.robot.commands.DriverCommands;
 
-import java.util.function.DoubleSupplier;
 
 import PrimoLib.PrimoCommandBase;
 import autonomous.PIDConfig;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AlignConstants;
 import frc.robot.subsystems.Driver;
 import vision.Limelight;
-import vision.LimelightConstants;
 
 public class AlignByVision extends PrimoCommandBase implements Runnable {
   

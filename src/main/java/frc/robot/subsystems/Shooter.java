@@ -7,8 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import PrimoLib.PrimoShuffleboard;
-import PrimoLib.PrimoTab;
 import autonomous.PIDConfig;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -26,8 +24,6 @@ public class Shooter extends SubsystemBase {
     this.m_shooter.setInverted(true);
     this.setConfig(ShooterConstants.SHOOTER_CONFIG);
 
-    // this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Shooter");
-    // tab.addEntry("Speed");
     this.pidSetpoint = 0;
   }
 

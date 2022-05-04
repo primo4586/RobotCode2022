@@ -4,12 +4,9 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import PrimoLib.PrimoShuffleboard;
 import PrimoLib.PrimoTab;
-import autonomous.PIDConfig;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -20,11 +17,6 @@ public class Feeder extends SubsystemBase {
 
   public Feeder() {
     this.m_feeder = new WPI_TalonSRX(Constants.ShooterConstants.FeederPort);
-
-    // this.tab = PrimoShuffleboard.getInstance().getPrimoTab("Feeder");
-
-    // tab.addEntry("setPoint").setNumber(0);
-    // tab.addEntry("Voltage").setNumber(0);
   }
 
   public void f_control(double feederSpeed) {

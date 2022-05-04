@@ -4,13 +4,6 @@
 package PrimoLib.leds;
 
 import java.util.Random;
-
-import javax.lang.model.util.ElementScanner6;
-
-import com.ctre.phoenix.led.ColorFlowAnimation;
-
-import org.opencv.video.DISOpticalFlow;
-
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
@@ -47,7 +40,6 @@ public class LEDEffects {
   public static class FlashColor implements LEDEffect {
 
     private LEDColor color;
-    private double duration;
     private double frequency;
     private Timer timer;
     private boolean flash = false;
@@ -55,7 +47,6 @@ public class LEDEffects {
 
     public FlashColor(LEDColor color, double frequency) {
       this.timer = new Timer();
-      // this.duration = duration;
       this.frequency = frequency;
       this.color = color;
     }
@@ -81,13 +72,6 @@ public class LEDEffects {
           }
       } 
     }
-
-    // @Override
-    // public boolean isFinished() {
-    //   if(duration == -1)
-    //     return false;
-    //   return timer.hasElapsed(duration);
-    // }
 
   }
 

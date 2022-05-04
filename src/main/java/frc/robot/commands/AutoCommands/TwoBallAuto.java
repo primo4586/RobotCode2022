@@ -6,14 +6,10 @@ package frc.robot.commands.AutoCommands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.DriverCommands.AlignAndShoot;
 import frc.robot.commands.DriverCommands.DriveByTime;
 import frc.robot.commands.DriverCommands.DriveUntilLimelightDistance;
 import frc.robot.commands.IntakeCommands.JointAndRoller;
-import frc.robot.commands.IntakeCommands.ManualJoint;
-import frc.robot.commands.IntakeCommands.ManualRoller;
 import frc.robot.subsystems.Driver;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;

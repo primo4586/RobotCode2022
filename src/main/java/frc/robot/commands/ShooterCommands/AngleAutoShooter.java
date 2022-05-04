@@ -7,9 +7,6 @@ package frc.robot.commands.ShooterCommands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import PrimoLib.PrimoShuffleboard;
-import PrimoLib.PrimoTab;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.CameraHandler;
 import frc.robot.Constants.ShooterConstants;
@@ -105,6 +102,7 @@ public class AngleAutoShooter extends CommandBase {
 
 
     shooter.setVelocity(speed);
+    // TODO: Re-implement this by just using the isAligned boolean supplier or just removing it, should add a constant for the angle too
     if (shooter.isReadyToShoot() && (Math.abs(limelight.getAngleX()) <= 5.5)) {
       piston.setSolenoid(true);
       intake.r_control(0.3);

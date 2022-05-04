@@ -6,14 +6,10 @@ package frc.robot;
 
 import PrimoLib.PrimoShuffleboard;
 
-import PrimoLib.PrimoTab;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -23,15 +19,10 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.ClimbCommands.ManualClawA;
 import frc.robot.commands.ClimbCommands.ManualClawB;
 import frc.robot.commands.ClimbCommands.ManualRotateChain;
-import frc.robot.commands.ClimbCommands.ReleaseClaw;
-import frc.robot.commands.DriverCommands.AlignAndShoot;
-import frc.robot.commands.DriverCommands.AlignByVision;
 import frc.robot.commands.DriverCommands.ArcadeDrive;
 import frc.robot.commands.DriverCommands.RumbleJoystick;
-import frc.robot.commands.DriverCommands.RumbleJoystick2;
 import frc.robot.commands.IntakeCommands.ManualJoint;
 import frc.robot.commands.IntakeCommands.ManualRoller;
-import frc.robot.commands.IntakeCommands.TogglePistonAndRoller;
 import frc.robot.commands.ShooterCommands.AngleAutoShooter;
 import frc.robot.commands.ShooterCommands.AutoShooter;
 import frc.robot.commands.ShooterCommands.ManualFeeder;
@@ -42,8 +33,6 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PistonForFeeder;
 import frc.robot.subsystems.Shooter;
-import vision.InterpolateUtil;
-import vision.InterpolationMap;
 import vision.Limelight;
 
 /**
@@ -57,27 +46,27 @@ import vision.Limelight;
  */
 
 public class RobotContainer {
-  // joystick setup
+
+  // Joystick Setup
   private Joystick d_joystick;
   private Joystick o_joystick;
 
-  // driver buttons:
-  private JoystickButton B_Driver; // open and close feeder piston
-  private JoystickButton Y_Driver; // spin rollers backwards
-  private JoystickButton RB_Driver; // change direction
-  private JoystickButton LB_Driver; // open and roolig roller
-  private JoystickButton X_Driver; // Auto Shoot
+  // Driver Buttons:
+  private JoystickButton B_Driver; // Auto-shooting
+  private JoystickButton Y_Driver; // Reverse roller 
+  private JoystickButton RB_Driver; // Change drivetrain direction & change cameras
+  private JoystickButton LB_Driver; // Open Intake Joint & Spin roller
+  private JoystickButton X_Driver; // Auto-shooting only within range
   private JoystickButton A_Driver; // open piston and spin roller
-  private JoystickButton START_Driver;
+  private Trigger LT_TRIGGER_Driver;
 
-  // operator buttons:
+  // Opeartor Buttons:
   private JoystickButton START_Operator; // Enable/Disable Climb Control
-  private JoystickButton B_Operator; // realse level 2
-  private JoystickButton X_Operator; // realse level 3
-  private JoystickButton RB_Operator; // manual A (2&4)
-  private JoystickButton LB_Operator; // manual B (3)
-  private JoystickButton A_Operator; // level 4 braker
-  private JoystickButton Y_Operator; // shooter
+  private JoystickButton B_Operator; // Release level 2
+  private JoystickButton X_Operator; // Release level 3
+  private JoystickButton RB_Operator; // Manual Control A side (2&4)
+  private JoystickButton LB_Operator; // Manual Control B side (3)
+  private JoystickButton Y_Operator; // Manual Shooter
   
 
   // subsystem
@@ -122,11 +111,10 @@ public class RobotContainer {
     this.LB_Driver = new JoystickButton(d_joystick, XboxController.Button.kLeftBumper.value);
     this.X_Driver = new JoystickButton(d_joystick, XboxController.Button.kX.value);
     this.A_Driver = new JoystickButton(d_joystick, XboxController.Button.kA.value);
-    this.START_Driver = new JoystickButton(d_joystick, XboxController.Button.kStart.value);
     this.B_Driver = new JoystickButton(d_joystick, XboxController.Button.kB.value);
+    this.LT_TRIGGER_Driver = new Trigger(() -> d_joystick.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0.3);
 
     this.START_Operator = new JoystickButton(o_joystick, XboxController.Button.kStart.value);
-    this.A_Operator = new JoystickButton(o_joystick, XboxController.Button.kA.value);
     this.B_Operator = new JoystickButton(o_joystick, XboxController.Button.kB.value);
     this.X_Operator = new JoystickButton(o_joystick, XboxController.Button.kX.value);
     this.Y_Operator = new JoystickButton(o_joystick, XboxController.Button.kY.value);
@@ -135,7 +123,10 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    // driver:
+    
+    /*
+      Drivetrain Controls
+    */
     driver.setDefaultCommand(new ArcadeDrive(driver, () -> d_joystick.getRawAxis(XboxController.Axis.kLeftY.value),
         () -> d_joystick.getRawAxis(XboxController.Axis.kRightX.value),
         () -> false,
@@ -150,57 +141,39 @@ public class RobotContainer {
           driver.setForward(true);    
     }, driver));
     
-    // shooter:
-    // this.A_Driver.whileHeld(new ManualShooter(shooter, () -> 0.0).alongWith(new ManualFeeder(feeder)));
-    // this.A_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, () ->PrimoShuffleboard.getInstance().getPrimoTab("Shooter").addEntry("Speed").getDouble(0),
-    // () -> PrimoShuffleboard.getInstance().getPrimoTab("Feeder").addEntry("Voltage").getDouble(5)));
-    // this.A_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, 13000));
-    // this.A_Driver.whileHeld(new TogglePistonAndRoller(pistonForFeeder, intake, camHandler));
-    Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> 13000),new ManualFeeder(feeder)));
+    RumbleJoystick rumble = new RumbleJoystick(d_joystick, () -> limelight.getDistance() * 0.1);
+
+    /*
+      Shooter Controls
+    */
     B_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake,feeder,limelight,() -> true));
-    
-    // B_Driver.whileHeld(new AlignByVision(driver, () -> -limelight.getAngleX()));  
-    // X_Driver.whileHeld(new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight,d_joystick,camHandler));
     A_Driver.whileHeld(new AutoShooter(shooter, pistonForFeeder, intake, feeder, () -> ShooterConstants.ShooterSpeed));
-    // Y_Operator.whileHeld(new ManualFeeder(feeder));
+    X_Driver.whileHeld(new SequentialCommandGroup(rumble.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()), 
+        new AutoShooter(shooter, pistonForFeeder, intake, feeder, limelight, () -> true)));
     
+ 
+    LT_TRIGGER_Driver.whileActiveOnce(new SequentialCommandGroup(rumble.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()),new AngleAutoShooter(shooter, pistonForFeeder, intake, feeder, limelight, () -> true)));
+    Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> 13000),new ManualFeeder(feeder)));
 
-    // intake:
-    
+
+    /*
+      Intake Controls
+    */
     LB_Driver.whenPressed(new ManualJoint(intake));
+    Y_Driver.whileHeld(new ManualRoller(intake, -Constants.IntakeConstants.rollerSpeed)); // plita (spinning roller in reverse)
     this.intake.setDefaultCommand(new ManualRoller(intake, Constants.IntakeConstants.rollerSpeed));
-    Y_Driver.whileHeld(new ManualRoller(intake, -Constants.IntakeConstants.rollerSpeed)); // plita
 
-    // climb:
+
+    /*
+      Climb Controls
+    */
     START_Operator.whenPressed(new InstantCommand(() -> climb.setEnabled(!climb.isEnabled()), climb));
-
-    climb.setDefaultCommand(
-        new ManualRotateChain(climb, () -> o_joystick.getRawAxis(XboxController.Axis.kRightY.value)));
-
     RB_Operator.whenPressed(new ManualClawA(climb));
     LB_Operator.whenPressed(new ManualClawB(climb));
 
-    // B_Operator.whileHeld(new ReleaseClaw(climb, 2)); // open level 2
     B_Operator.whenPressed(new ManualClawA(climb));
-    // X_Operator.whenPressed(new ReleaseClaw(climb, 3)); // open level 3
     X_Operator.whenPressed(new ManualClawB(climb));
-
-    // A_Operator.whenPressed(new InstantCommand(() -> climb.setBrake(!climb.isBrake()), climb));
-    Trigger axisTrigger = new Trigger(() -> d_joystick.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0.3);
-
-    ParallelCommandGroup rumble = new ParallelCommandGroup(new RumbleJoystick(d_joystick, () -> limelight.getDistance() * 0.1),
-    new ConditionalCommand(new RumbleJoystick(o_joystick, () -> 1), new InstantCommand(), () -> !limelight.isVisible()));
-    
-    ParallelCommandGroup rumble2 = new ParallelCommandGroup(new RumbleJoystick2(d_joystick, () -> limelight.getDistance() * 0.1),
-    new ConditionalCommand(new RumbleJoystick2(o_joystick, () -> 1), new InstantCommand(), () -> !limelight.isVisible()));
-
-
-    X_Driver.whileHeld(new SequentialCommandGroup(rumble.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()), 
-      new AutoShooter(shooter, pistonForFeeder, intake, feeder, limelight, () -> true)));
-    // axisTrigger.whileActiveOnce(new SequentialCommandGroup(rumble.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()),new AlignAndShoot(driver, shooter, intake, feeder, pistonForFeeder, limelight)));
-  
-    axisTrigger.whileActiveOnce(new SequentialCommandGroup(rumble2.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()),new AngleAutoShooter(shooter, pistonForFeeder, intake, feeder, limelight, () -> true)));
-    // START_Driver.whileHeld(new AngleAutoShooter(shooter, pistonForFeeder, intake, feeder, limelight, () -> true));
+    climb.setDefaultCommand(new ManualRotateChain(climb, () -> o_joystick.getRawAxis(XboxController.Axis.kRightY.value)));
   }
 
   private void buildCameras() {
@@ -209,11 +182,6 @@ public class RobotContainer {
 
     this.camHandler = new CameraHandler(forward, backward);
     PrimoShuffleboard.getInstance().updateCameras(camHandler);
-  }
-
-  public void updateRumble() {
-
-  
   }
 
   public CameraHandler getCamHandler() {

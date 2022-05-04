@@ -1,6 +1,5 @@
 package PrimoLib.leds;
 
-import com.ctre.phoenix.led.ColorFlowAnimation;
 
 import edu.wpi.first.wpilibj.util.Color;
 
