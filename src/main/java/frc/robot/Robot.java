@@ -5,9 +5,7 @@
 package frc.robot;
 
 import PrimoLib.PrimoShuffleboard;
-import edu.wpi.first.util.net.PortForwarder;
-import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -40,8 +38,9 @@ public class Robot extends TimedRobot {
   // Vision
   private Limelight limelight;
 
-  private AddressableLED leds;
-  private AddressableLEDBuffer buffer;
+  // LEDs (in hope that they one day will work)
+  // private AddressableLED leds;
+  // private AddressableLEDBuffer buffer;
 
   // Subsystems
   private Intake intake;
@@ -52,6 +51,8 @@ public class Robot extends TimedRobot {
   private PistonForFeeder pistonForFeeder;
 
   private boolean compFlash = false;
+  private NetworkTableEntry flashEntry;
+  private NetworkTableEntry timeEntry;
   private Timer flashTimer;
 
   /**
@@ -75,31 +76,14 @@ public class Robot extends TimedRobot {
     this.flashTimer = new Timer();
 
     limelight = new Limelight();
-    // That's literally all it takes
-    // [https://docs.wpilib.org/en/stable/docs/software/telemetry/datalog.html#standard-data-logging-using-datalogmanager]
-    // DataLogManager.start();  
 
     robotContainer = new RobotContainer(driver,shooter,feeder,intake,climb, pistonForFeeder,limelight);
     autoContainer = new AutonomousContainer(driver, shooter, feeder, intake, climb, pistonForFeeder,limelight);
 
     LiveWindow.disableAllTelemetry();
-    // Apparently there's a HUGE issue with having the limelight connected to the second port of the router instead of through a network switch
-    // when trying to access the Limelight dashboard while being connected to the robot over USB, that it seemingly unreliable and in a way not possible? 
-    // (even with us doing that before?) [https://docs.limelightvision.io/en/latest/best_practices.html#before-an-event]
-    // So this is just a percaution as said in the link
-    PortForwarder.add(5800, "limelight.local", 5800); 
-    PortForwarder.add(5801, "limelight.local", 5801); 
-    PortForwarder.add(5802, "limelight.local", 5802); 
- 
-    leds = new AddressableLED(9);
-    buffer = new AddressableLEDBuffer(200);
-    leds.setLength(buffer.getLength());
-    for(int i = 0; i < buffer.getLength(); i++) {
-      buffer.setRGB(i, 0, 0, 255);
-      
-    }
-    leds.setData(buffer);
-    leds.start();
+    
+    flashEntry = PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert");
+    timeEntry = PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Time");
   }
 
   /**
@@ -115,7 +99,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
     // commands, running already-scheduled commands, removing finished or
@@ -128,10 +111,6 @@ public class Robot extends TimedRobot {
     // PrimoShuffleboard.getInstance().updateDebug(driver, shooter, climb, feeder, intake, pistonForFeeder,limelight);
     // Separated the debug tabs from the main tabs, Maybe we could make it a toggleable thing through a debug "enable/disable" entry, or just comment out the call for the debug function
     PrimoShuffleboard.getInstance().updateCompetiton(driver, shooter, climb, feeder, intake, pistonForFeeder, limelight);
-    for(int i = 0; i < buffer.getLength(); i++) {
-      buffer.setRGB(i, 0, 0, 255);
-    }
-    leds.setData(buffer);
   }
 
   @Override
@@ -164,7 +143,7 @@ public class Robot extends TimedRobot {
     robotContainer.getCamHandler().setCamera(0);
     driver.setForward(true);
     flashTimer.start();
-    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert").forceSetBoolean(true);
+    flashEntry.forceSetBoolean(true);
     
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
@@ -174,17 +153,17 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    // TODO: Reimplement this in a less messy way.
-    if (Timer.getMatchTime() <= 40 && Timer.getMatchTime() > 30) {
-      if (flashTimer.hasElapsed(0.5)) {
-        PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert").forceSetBoolean(compFlash);
+    double matchTime = Timer.getMatchTime();
+
+    if (matchTime <= 40 && matchTime > 30 && flashTimer.hasElapsed(0.5)) {
+        flashEntry.forceSetBoolean(compFlash);
         compFlash = !compFlash;
         flashTimer.reset();
-      }
-    } else if (Timer.getMatchTime() <= 30) {
-      PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Climb Alert").forceSetBoolean(false);
+    } else if (matchTime <= 30) {
+      flashEntry.forceSetBoolean(false);
     }
-    PrimoShuffleboard.getInstance().getCompetitonBoard().addEntry("Time").forceSetNumber(Timer.getMatchTime());
+
+    timeEntry.forceSetNumber(matchTime);
   }
 
   @Override

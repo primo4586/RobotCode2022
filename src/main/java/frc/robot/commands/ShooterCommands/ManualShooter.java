@@ -1,13 +1,13 @@
 package frc.robot.commands.ShooterCommands;
 
-import PrimoLib.PrimoCommandBase;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
 import java.util.function.DoubleSupplier;
 
 
-public class ManualShooter extends PrimoCommandBase {
+public class ManualShooter extends CommandBase {
   Shooter shooter;
   // NetworkTableEntry Kp, Ki, Kd, Kf;
   NetworkTableEntry speed;

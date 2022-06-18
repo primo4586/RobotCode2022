@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.AlignConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.ClimbCommands.ManualClawA;
 import frc.robot.commands.ClimbCommands.ManualClawB;
@@ -34,16 +35,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PistonForFeeder;
 import frc.robot.subsystems.Shooter;
 import vision.Limelight;
-
-/**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in
- * the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of
- * the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
 
 public class RobotContainer {
 
@@ -134,11 +125,7 @@ public class RobotContainer {
 
     this.RB_Driver.whenPressed(new InstantCommand(() -> {
       driver.changeDirection();
-      camHandler.switchCamera();
-      if(camHandler.getIndex() == 1)
-          driver.setForward(false);
-      else
-          driver.setForward(true);    
+      camHandler.switchCamera();   
     }, driver));
     
     RumbleJoystick rumble = new RumbleJoystick(d_joystick, () -> limelight.getDistance() * 0.1);
@@ -152,15 +139,17 @@ public class RobotContainer {
         new AutoShooter(shooter, pistonForFeeder, intake, feeder, limelight, () -> true)));
     
  
-    LT_TRIGGER_Driver.whileActiveOnce(new SequentialCommandGroup(rumble.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()),new AngleAutoShooter(shooter, pistonForFeeder, intake, feeder, limelight, () -> true)));
-    Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> 13000),new ManualFeeder(feeder)));
+    LT_TRIGGER_Driver.whileActiveOnce(new SequentialCommandGroup(rumble.until(() ->  shooter.isWithInRange(limelight.getDistance()) && limelight.isVisible()),
+        new AngleAutoShooter(shooter, pistonForFeeder, intake, feeder, limelight, AlignConstants.ALIGN_TOLERANCE_ANGLE)));
+
+    Y_Operator.whileHeld(new ParallelCommandGroup(new ManualShooter(shooter, () -> ShooterConstants.ShooterSpeed),new ManualFeeder(feeder)));
 
 
     /*
       Intake Controls
     */
     LB_Driver.whenPressed(new ManualJoint(intake));
-    Y_Driver.whileHeld(new ManualRoller(intake, -Constants.IntakeConstants.rollerSpeed)); // plita (spinning roller in reverse)
+    Y_Driver.whileHeld(new ManualRoller(intake, -Constants.IntakeConstants.rollerSpeed)); // outaking "plita" (spinning roller in reverse)
     this.intake.setDefaultCommand(new ManualRoller(intake, Constants.IntakeConstants.rollerSpeed));
 
 

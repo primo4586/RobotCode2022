@@ -1,15 +1,15 @@
 package frc.robot.commands.DriverCommands;
 
 
-import PrimoLib.PrimoCommandBase;
 import autonomous.PIDConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.AlignConstants;
 import frc.robot.subsystems.Driver;
 import vision.Limelight;
 
-public class AlignByVision extends PrimoCommandBase implements Runnable {
+public class AlignByVision extends CommandBase implements Runnable {
   
   private Driver driver;
   PIDController controller;
@@ -64,7 +64,6 @@ public class AlignByVision extends PrimoCommandBase implements Runnable {
     setPoint = limelight.isVisible() ? limelight.getAngleX() : 0;
 
     double power = controller.calculate(0,setPoint);
-    // driver.getTab().addEntry("power").forceSetDouble(power);
 
     driver.driveVelocity(-power, power);
   }

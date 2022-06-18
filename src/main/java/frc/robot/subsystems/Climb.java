@@ -123,7 +123,7 @@ public class Climb extends SubsystemBase {
 
   public void setEnabled(boolean isEnabled) {
     this.isEnabled = isEnabled;
-    if(isEnabled())
+    if(isEnabled)
       enableClimb();
   }
 

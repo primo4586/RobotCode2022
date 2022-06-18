@@ -5,10 +5,8 @@
 package frc.robot.commands.ShooterCommands;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.CameraHandler;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
@@ -24,63 +22,24 @@ public class AngleAutoShooter extends CommandBase {
   private Intake intake;
   private Feeder feeder;
   private Limelight limelight;
-  private double speed;
-  private DoubleSupplier shooterSpeed;
-  private CameraHandler camHandler;
+
   private BooleanSupplier isAligned;
-  private int prevCamIndex;
+  private double speed;
 
   public AngleAutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
-  Limelight limelight, CameraHandler camHandler, BooleanSupplier isAligned) {
+      Limelight limelight, double angleTolerance) {
     this.shooter = shooter;
     this.piston = pistonForFeeder;
     this.limelight = limelight;
     this.intake = intake;
     this.feeder = feeder;
 
-    addRequirements(shooter);
-    addRequirements(intake);
-    addRequirements(feeder);
-    addRequirements(piston);
-    this.camHandler = camHandler;
-    this.prevCamIndex = camHandler.getIndex();
-    this.isAligned = isAligned;
-  }
-
-  public AngleAutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
-      Limelight limelight, BooleanSupplier isAligned) {
-    this.shooter = shooter;
-    this.piston = pistonForFeeder;
-    this.limelight = limelight;
-    this.intake = intake;
-    this.feeder = feeder;
-
-
-    this.isAligned = isAligned;
+    this.isAligned = () -> Math.abs(limelight.getAngleX()) <= angleTolerance;
 
     addRequirements(shooter);
     addRequirements(intake);
     addRequirements(feeder);
     addRequirements(piston);
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
-
-
-   public AngleAutoShooter(Shooter shooter, PistonForFeeder pistonForFeeder, Intake intake, Feeder feeder,
-      DoubleSupplier speed) {
-    this.shooter = shooter;
-    this.piston = pistonForFeeder;
-    this.intake = intake;
-    this.feeder = feeder;
-    this.isAligned = () -> true;
-    this.limelight = null;
-    this.shooterSpeed = speed;
-
-    addRequirements(shooter);
-    addRequirements(intake);
-    addRequirements(feeder);
-    addRequirements(piston);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -90,7 +49,7 @@ public class AngleAutoShooter extends CommandBase {
     if(limelight != null)
         this.speed = InterpolateUtil.interpolate(ShooterConstants.SHOOTER_VISION_MAP, limelight.getAverageDistance());
     else
-      speed = shooterSpeed.getAsDouble();        
+      speed = ShooterConstants.ShooterSpeed; // Fallback speed if not using limelight      
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -98,12 +57,11 @@ public class AngleAutoShooter extends CommandBase {
   public void execute() {
     if(limelight != null)
         this.speed = InterpolateUtil.interpolate(ShooterConstants.SHOOTER_VISION_MAP, limelight.getAverageDistance());
-    feeder.setVoltage(5);
+    feeder.setVoltage(ShooterConstants.FeederVoltage);
 
 
     shooter.setVelocity(speed);
-    // TODO: Re-implement this by just using the isAligned boolean supplier or just removing it, should add a constant for the angle too
-    if (shooter.isReadyToShoot() && (Math.abs(limelight.getAngleX()) <= 5.5)) {
+    if (shooter.isReadyToShoot() && isAligned.getAsBoolean()) {
       piston.setSolenoid(true);
       intake.r_control(0.3);
     } 
@@ -116,8 +74,6 @@ public class AngleAutoShooter extends CommandBase {
     shooter.setVelocity(0);
     intake.r_control(0);
     feeder.setVoltage(0);
-    if(camHandler != null)
-      camHandler.setCamera(prevCamIndex);
   }
 
   // Returns true when the command should end.

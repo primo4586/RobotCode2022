@@ -35,11 +35,10 @@ public class Limelight {
         double tv = table.getEntry("tv").getDouble(0);
 
         visibility = visibilityRate.calculate(tv);
-        // If it sees the target well, ("80%" visibillity) we want to keep updating, otherwise the values are not reliable
+        // If it sees the target well, ("40%" visibillity) we want to keep updating, otherwise the values might not be reliable
         if(isVisible()) {
             calculateTargetVector();
 
-            // this.angleX = Math.toDegrees(Math.atan2(targetPos.getY(), targetPos.getX()));
             this.angleX = table.getEntry("tx").getDouble(0);
             this.distance = Math.sqrt(Math.pow(targetPos.getX(), 2) + Math.pow(targetPos.getY(), 2));
             distanceAverage = distanceAverageFilter.calculate(distance);

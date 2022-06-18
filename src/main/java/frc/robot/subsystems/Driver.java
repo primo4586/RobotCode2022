@@ -34,10 +34,7 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     private PigeonIMU gyro;
     private WPI_TalonSRX gyroTalon;
     
-
     private boolean isForward; 
-    
-  
     private PrimoDifferentialDriveOdometry primoOdometry;
 
 
@@ -72,9 +69,11 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
 
     this.isForward = true;
 
+    // Setup gyro
     this.gyroTalon = new WPI_TalonSRX(Constants.DriverConstants.gyroPorts);
     this.gyro = new PigeonIMU(gyroTalon);
     this.gyro.configFactoryDefault();
+    // Setup odomerty
     primoOdometry = new PrimoDifferentialDriveOdometry(this, ()-> resetEncoders());
   }
 
@@ -171,7 +170,6 @@ public class Driver extends SubsystemBase implements DifferentialDriveData{
     diffDrive.feed();
   }
   
-  //implement Dif-drive function:
   @Override
   public double getLeftVelocity() {
     return (this.m_leftLeader.getSelectedSensorVelocity() * 0.1) / Constants.AutoConstants.METER_PER_TICK;

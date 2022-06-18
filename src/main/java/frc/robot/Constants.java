@@ -33,7 +33,7 @@ public final class Constants {
         public static final int intakeJointPort = 5;
         public static final int climbSolenoidA = 6;
         public static final int climbSolenoidB = 7;
-        public static final int feederPort = 0; // 4
+        public static final int feederPort = 0; 
     }
 
     public static final class ShooterConstants {
@@ -43,7 +43,6 @@ public final class Constants {
         public static final double FeederSpeed = 0.8;
         public static final double ShooterSpeed = 12700; // 13500
 
-        // public static final PIDConfig FEEDER_CONFIG = new PIDConfig(1, 0, 0, 0);
         public static final PIDConfig SHOOTER_CONFIG = new PIDConfig(0.22, 0, 0.2, 0.055);
         
         public static final double READY_SPEED_TOLERANCE = 400;
@@ -61,14 +60,13 @@ public final class Constants {
                 .put(2, 13200)
                 .put(2.1, 13300);
 
-
-        public static final InterpolationMap FEEDER_VISION_MAP = new InterpolationMap();   
-
     }
 
     public static final class AlignConstants {
         
         public static final PIDConfig PID = new PIDConfig(0.05, 0, 0.0005, 0);
+        // Used in {@link AngleAutoShooter}
+        public static final double ALIGN_TOLERANCE_ANGLE = 5.5; 
     }
 
     public static final class DriverConstants {
@@ -112,14 +110,13 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final double rollerSpeed = 0.75
-        ; // 0.6
+        public static final double rollerSpeed = 0.75; 
         public static final int rollerPort = 5;
     }
 
     public static final class AutoConstants {
 
-        // Koter in meters.
+        // Diamater ("קוטר") in meters.
         public static final double DIAMETER = Units.inchesToMeters(6);
 
         // Encoder ticks (Integrated TalonFX encoders have 2048 ticks)
@@ -131,7 +128,7 @@ public final class Constants {
         // Converts encoder value to speed
         public static final double METER_PER_TICK = (DIAMETER * Math.PI) / (TICKS * GEAR_RATIO);
 
-        // the dictans between two wheels
+        // The distance between the two wheels
         public static final double TRACKWIDTH = 0.57;
 
         /**
@@ -175,15 +172,4 @@ public final class Constants {
         public static final double RAMSETE_B = 2, RAMSETE_ZETA = 0.7;
 
     }
-
-    public class VisionConstants {
-        public static final double alignByVisionTolerance = 1;
-    }
-
-    public static final class pathJson {
-        public static final String shoot2ball = "";
-        public static final String test = "paths\\PathWeaver\\pathweaver.json";
-
-    }
-
 }

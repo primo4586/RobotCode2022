@@ -13,11 +13,8 @@ public class DriveUntilLimelightDistance extends CommandBase {
   private Driver driver;
   private Limelight limelight;
 
-  // TODO: Actually using the speed & tolerance values in the code itself
   private double speed, targetDistance, tolerance;
-
   
-
   /** Creates a new DriveUntilLimelightDistance. */
   public DriveUntilLimelightDistance(Driver driver, Limelight limelight, double speed, double distance, double tolerance) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -36,7 +33,7 @@ public class DriveUntilLimelightDistance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driver.driveVelocity(0.5, 0.5);  
+    driver.driveVelocity(speed, speed);  
   }
 
   // Called once the command ends or is interrupted.
@@ -48,7 +45,6 @@ public class DriveUntilLimelightDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return limelight.isVisible() && limelight.getDistance() < targetDistance;
-    // return Math.abs(targetDistance - limelight.getDistance()) <= tolerance;
+    return limelight.isVisible() && Math.abs(targetDistance - limelight.getDistance()) <= tolerance;
   }
 }
